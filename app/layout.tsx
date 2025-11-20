@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Oswald } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
+import { Suspense } from 'react';
+import { Loading } from '@/components/shared';
 
 const oswald = Oswald({
   weight: ['300', '400', '500', '600', '700'],
@@ -22,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={cn(oswald.variable, oswald.className, 'antialiased')}>
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </body>
     </html>
   );
