@@ -20,19 +20,31 @@ export type CustomOrderImageModel = runtime.Types.Result.DefaultSelection<Prisma
 
 export type AggregateCustomOrderImage = {
   _count: CustomOrderImageCountAggregateOutputType | null
+  _avg: CustomOrderImageAvgAggregateOutputType | null
+  _sum: CustomOrderImageSumAggregateOutputType | null
   _min: CustomOrderImageMinAggregateOutputType | null
   _max: CustomOrderImageMaxAggregateOutputType | null
 }
 
+export type CustomOrderImageAvgAggregateOutputType = {
+  id: number | null
+  orderId: number | null
+}
+
+export type CustomOrderImageSumAggregateOutputType = {
+  id: number | null
+  orderId: number | null
+}
+
 export type CustomOrderImageMinAggregateOutputType = {
-  id: string | null
-  orderId: string | null
+  id: number | null
+  orderId: number | null
   imageUrl: string | null
 }
 
 export type CustomOrderImageMaxAggregateOutputType = {
-  id: string | null
-  orderId: string | null
+  id: number | null
+  orderId: number | null
   imageUrl: string | null
 }
 
@@ -43,6 +55,16 @@ export type CustomOrderImageCountAggregateOutputType = {
   _all: number
 }
 
+
+export type CustomOrderImageAvgAggregateInputType = {
+  id?: true
+  orderId?: true
+}
+
+export type CustomOrderImageSumAggregateInputType = {
+  id?: true
+  orderId?: true
+}
 
 export type CustomOrderImageMinAggregateInputType = {
   id?: true
@@ -101,6 +123,18 @@ export type CustomOrderImageAggregateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CustomOrderImageAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CustomOrderImageSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CustomOrderImageMinAggregateInputType
@@ -131,15 +165,19 @@ export type CustomOrderImageGroupByArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   _count?: CustomOrderImageCountAggregateInputType | true
+  _avg?: CustomOrderImageAvgAggregateInputType
+  _sum?: CustomOrderImageSumAggregateInputType
   _min?: CustomOrderImageMinAggregateInputType
   _max?: CustomOrderImageMaxAggregateInputType
 }
 
 export type CustomOrderImageGroupByOutputType = {
-  id: string
-  orderId: string
+  id: number
+  orderId: number
   imageUrl: string
   _count: CustomOrderImageCountAggregateOutputType | null
+  _avg: CustomOrderImageAvgAggregateOutputType | null
+  _sum: CustomOrderImageSumAggregateOutputType | null
   _min: CustomOrderImageMinAggregateOutputType | null
   _max: CustomOrderImageMaxAggregateOutputType | null
 }
@@ -163,8 +201,8 @@ export type CustomOrderImageWhereInput = {
   AND?: Prisma.CustomOrderImageWhereInput | Prisma.CustomOrderImageWhereInput[]
   OR?: Prisma.CustomOrderImageWhereInput[]
   NOT?: Prisma.CustomOrderImageWhereInput | Prisma.CustomOrderImageWhereInput[]
-  id?: Prisma.StringFilter<"CustomOrderImage"> | string
-  orderId?: Prisma.StringFilter<"CustomOrderImage"> | string
+  id?: Prisma.IntFilter<"CustomOrderImage"> | number
+  orderId?: Prisma.IntFilter<"CustomOrderImage"> | number
   imageUrl?: Prisma.StringFilter<"CustomOrderImage"> | string
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
 }
@@ -177,11 +215,11 @@ export type CustomOrderImageOrderByWithRelationInput = {
 }
 
 export type CustomOrderImageWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.CustomOrderImageWhereInput | Prisma.CustomOrderImageWhereInput[]
   OR?: Prisma.CustomOrderImageWhereInput[]
   NOT?: Prisma.CustomOrderImageWhereInput | Prisma.CustomOrderImageWhereInput[]
-  orderId?: Prisma.StringFilter<"CustomOrderImage"> | string
+  orderId?: Prisma.IntFilter<"CustomOrderImage"> | number
   imageUrl?: Prisma.StringFilter<"CustomOrderImage"> | string
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
 }, "id">
@@ -191,57 +229,56 @@ export type CustomOrderImageOrderByWithAggregationInput = {
   orderId?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   _count?: Prisma.CustomOrderImageCountOrderByAggregateInput
+  _avg?: Prisma.CustomOrderImageAvgOrderByAggregateInput
   _max?: Prisma.CustomOrderImageMaxOrderByAggregateInput
   _min?: Prisma.CustomOrderImageMinOrderByAggregateInput
+  _sum?: Prisma.CustomOrderImageSumOrderByAggregateInput
 }
 
 export type CustomOrderImageScalarWhereWithAggregatesInput = {
   AND?: Prisma.CustomOrderImageScalarWhereWithAggregatesInput | Prisma.CustomOrderImageScalarWhereWithAggregatesInput[]
   OR?: Prisma.CustomOrderImageScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CustomOrderImageScalarWhereWithAggregatesInput | Prisma.CustomOrderImageScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"CustomOrderImage"> | string
-  orderId?: Prisma.StringWithAggregatesFilter<"CustomOrderImage"> | string
+  id?: Prisma.IntWithAggregatesFilter<"CustomOrderImage"> | number
+  orderId?: Prisma.IntWithAggregatesFilter<"CustomOrderImage"> | number
   imageUrl?: Prisma.StringWithAggregatesFilter<"CustomOrderImage"> | string
 }
 
 export type CustomOrderImageCreateInput = {
-  id?: string
   imageUrl: string
   order: Prisma.OrderCreateNestedOneWithoutCustomImagesInput
 }
 
 export type CustomOrderImageUncheckedCreateInput = {
-  id?: string
-  orderId: string
+  id?: number
+  orderId: number
   imageUrl: string
 }
 
 export type CustomOrderImageUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.OrderUpdateOneRequiredWithoutCustomImagesNestedInput
 }
 
 export type CustomOrderImageUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CustomOrderImageCreateManyInput = {
-  id?: string
-  orderId: string
+  id?: number
+  orderId: number
   imageUrl: string
 }
 
 export type CustomOrderImageUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CustomOrderImageUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -261,6 +298,11 @@ export type CustomOrderImageCountOrderByAggregateInput = {
   imageUrl?: Prisma.SortOrder
 }
 
+export type CustomOrderImageAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
+}
+
 export type CustomOrderImageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
@@ -271,6 +313,11 @@ export type CustomOrderImageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
+}
+
+export type CustomOrderImageSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
 }
 
 export type CustomOrderImageCreateNestedManyWithoutOrderInput = {
@@ -316,12 +363,11 @@ export type CustomOrderImageUncheckedUpdateManyWithoutOrderNestedInput = {
 }
 
 export type CustomOrderImageCreateWithoutOrderInput = {
-  id?: string
   imageUrl: string
 }
 
 export type CustomOrderImageUncheckedCreateWithoutOrderInput = {
-  id?: string
+  id?: number
   imageUrl: string
 }
 
@@ -355,28 +401,27 @@ export type CustomOrderImageScalarWhereInput = {
   AND?: Prisma.CustomOrderImageScalarWhereInput | Prisma.CustomOrderImageScalarWhereInput[]
   OR?: Prisma.CustomOrderImageScalarWhereInput[]
   NOT?: Prisma.CustomOrderImageScalarWhereInput | Prisma.CustomOrderImageScalarWhereInput[]
-  id?: Prisma.StringFilter<"CustomOrderImage"> | string
-  orderId?: Prisma.StringFilter<"CustomOrderImage"> | string
+  id?: Prisma.IntFilter<"CustomOrderImage"> | number
+  orderId?: Prisma.IntFilter<"CustomOrderImage"> | number
   imageUrl?: Prisma.StringFilter<"CustomOrderImage"> | string
 }
 
 export type CustomOrderImageCreateManyOrderInput = {
-  id?: string
+  id?: number
   imageUrl: string
 }
 
 export type CustomOrderImageUpdateWithoutOrderInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CustomOrderImageUncheckedUpdateWithoutOrderInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CustomOrderImageUncheckedUpdateManyWithoutOrderInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -426,8 +471,8 @@ export type $CustomOrderImagePayload<ExtArgs extends runtime.Types.Extensions.In
     order: Prisma.$OrderPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    orderId: string
+    id: number
+    orderId: number
     imageUrl: string
   }, ExtArgs["result"]["customOrderImage"]>
   composites: {}
@@ -853,8 +898,8 @@ export interface Prisma__CustomOrderImageClient<T, Null = never, ExtArgs extends
  * Fields of the CustomOrderImage model
  */
 export interface CustomOrderImageFieldRefs {
-  readonly id: Prisma.FieldRef<"CustomOrderImage", 'String'>
-  readonly orderId: Prisma.FieldRef<"CustomOrderImage", 'String'>
+  readonly id: Prisma.FieldRef<"CustomOrderImage", 'Int'>
+  readonly orderId: Prisma.FieldRef<"CustomOrderImage", 'Int'>
   readonly imageUrl: Prisma.FieldRef<"CustomOrderImage", 'String'>
 }
     

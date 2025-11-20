@@ -3,20 +3,21 @@ CREATE TYPE "UserRole" AS ENUM ('SUPER_ADMIN', 'ADMIN', 'CUSTOMER');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" "UserRole" NOT NULL DEFAULT 'CUSTOMER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "refreshToken" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
 
@@ -25,17 +26,17 @@ CREATE TABLE "Category" (
 
 -- CreateTable
 CREATE TABLE "SubCategory" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL,
+    "categoryId" INTEGER NOT NULL,
 
     CONSTRAINT "SubCategory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Color" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "hex" TEXT,
 
@@ -44,7 +45,7 @@ CREATE TABLE "Color" (
 
 -- CreateTable
 CREATE TABLE "Size" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Size_pkey" PRIMARY KEY ("id")
@@ -52,7 +53,7 @@ CREATE TABLE "Size" (
 
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "catalogId" TEXT,
     "title" TEXT NOT NULL,
     "shortDescription" TEXT,
@@ -67,8 +68,8 @@ CREATE TABLE "Product" (
     "isDelete" BOOLEAN NOT NULL DEFAULT false,
     "mainImage" TEXT,
     "alternativeImage" TEXT,
-    "categoryId" TEXT NOT NULL,
-    "subCategoryId" TEXT,
+    "categoryId" INTEGER NOT NULL,
+    "subCategoryId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -77,19 +78,19 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "ProductGallery" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "imageUrl" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
+    "productId" INTEGER NOT NULL,
 
     CONSTRAINT "ProductGallery_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ProductVariant" (
-    "id" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
-    "colorId" TEXT NOT NULL,
-    "sizeId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "productId" INTEGER NOT NULL,
+    "colorId" INTEGER NOT NULL,
+    "sizeId" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "ProductVariant_pkey" PRIMARY KEY ("id")
@@ -97,19 +98,19 @@ CREATE TABLE "ProductVariant" (
 
 -- CreateTable
 CREATE TABLE "QuantityDiscount" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "minQty" INTEGER NOT NULL,
     "maxQty" INTEGER NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "note" TEXT,
-    "productId" TEXT NOT NULL,
+    "productId" INTEGER NOT NULL,
 
     CONSTRAINT "QuantityDiscount_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ShippingCharge" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "region" TEXT NOT NULL,
     "inside_au" BOOLEAN,
     "outside_au" BOOLEAN,
@@ -126,7 +127,7 @@ CREATE TABLE "ShippingCharge" (
 
 -- CreateTable
 CREATE TABLE "PromoCode" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "code" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
@@ -140,8 +141,8 @@ CREATE TABLE "PromoCode" (
 
 -- CreateTable
 CREATE TABLE "Order" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
     "customNote" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -151,10 +152,10 @@ CREATE TABLE "Order" (
 
 -- CreateTable
 CREATE TABLE "OrderItem" (
-    "id" TEXT NOT NULL,
-    "orderId" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
-    "variantId" TEXT,
+    "id" SERIAL NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "productId" INTEGER NOT NULL,
+    "variantId" INTEGER,
     "quantity" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "total" DOUBLE PRECISION NOT NULL,
@@ -164,8 +165,8 @@ CREATE TABLE "OrderItem" (
 
 -- CreateTable
 CREATE TABLE "CustomOrderImage" (
-    "id" TEXT NOT NULL,
-    "orderId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "orderId" INTEGER NOT NULL,
     "imageUrl" TEXT NOT NULL,
 
     CONSTRAINT "CustomOrderImage_pkey" PRIMARY KEY ("id")

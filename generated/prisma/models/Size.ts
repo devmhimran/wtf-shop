@@ -20,17 +20,27 @@ export type SizeModel = runtime.Types.Result.DefaultSelection<Prisma.$SizePayloa
 
 export type AggregateSize = {
   _count: SizeCountAggregateOutputType | null
+  _avg: SizeAvgAggregateOutputType | null
+  _sum: SizeSumAggregateOutputType | null
   _min: SizeMinAggregateOutputType | null
   _max: SizeMaxAggregateOutputType | null
 }
 
+export type SizeAvgAggregateOutputType = {
+  id: number | null
+}
+
+export type SizeSumAggregateOutputType = {
+  id: number | null
+}
+
 export type SizeMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   name: string | null
 }
 
 export type SizeMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   name: string | null
 }
 
@@ -40,6 +50,14 @@ export type SizeCountAggregateOutputType = {
   _all: number
 }
 
+
+export type SizeAvgAggregateInputType = {
+  id?: true
+}
+
+export type SizeSumAggregateInputType = {
+  id?: true
+}
 
 export type SizeMinAggregateInputType = {
   id?: true
@@ -95,6 +113,18 @@ export type SizeAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: SizeAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: SizeSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: SizeMinAggregateInputType
@@ -125,14 +155,18 @@ export type SizeGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: SizeCountAggregateInputType | true
+  _avg?: SizeAvgAggregateInputType
+  _sum?: SizeSumAggregateInputType
   _min?: SizeMinAggregateInputType
   _max?: SizeMaxAggregateInputType
 }
 
 export type SizeGroupByOutputType = {
-  id: string
+  id: number
   name: string
   _count: SizeCountAggregateOutputType | null
+  _avg: SizeAvgAggregateOutputType | null
+  _sum: SizeSumAggregateOutputType | null
   _min: SizeMinAggregateOutputType | null
   _max: SizeMaxAggregateOutputType | null
 }
@@ -156,7 +190,7 @@ export type SizeWhereInput = {
   AND?: Prisma.SizeWhereInput | Prisma.SizeWhereInput[]
   OR?: Prisma.SizeWhereInput[]
   NOT?: Prisma.SizeWhereInput | Prisma.SizeWhereInput[]
-  id?: Prisma.StringFilter<"Size"> | string
+  id?: Prisma.IntFilter<"Size"> | number
   name?: Prisma.StringFilter<"Size"> | string
   variants?: Prisma.ProductVariantListRelationFilter
 }
@@ -168,7 +202,7 @@ export type SizeOrderByWithRelationInput = {
 }
 
 export type SizeWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   name?: string
   AND?: Prisma.SizeWhereInput | Prisma.SizeWhereInput[]
   OR?: Prisma.SizeWhereInput[]
@@ -180,60 +214,63 @@ export type SizeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   _count?: Prisma.SizeCountOrderByAggregateInput
+  _avg?: Prisma.SizeAvgOrderByAggregateInput
   _max?: Prisma.SizeMaxOrderByAggregateInput
   _min?: Prisma.SizeMinOrderByAggregateInput
+  _sum?: Prisma.SizeSumOrderByAggregateInput
 }
 
 export type SizeScalarWhereWithAggregatesInput = {
   AND?: Prisma.SizeScalarWhereWithAggregatesInput | Prisma.SizeScalarWhereWithAggregatesInput[]
   OR?: Prisma.SizeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SizeScalarWhereWithAggregatesInput | Prisma.SizeScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Size"> | string
+  id?: Prisma.IntWithAggregatesFilter<"Size"> | number
   name?: Prisma.StringWithAggregatesFilter<"Size"> | string
 }
 
 export type SizeCreateInput = {
-  id?: string
   name: string
   variants?: Prisma.ProductVariantCreateNestedManyWithoutSizeInput
 }
 
 export type SizeUncheckedCreateInput = {
-  id?: string
+  id?: number
   name: string
   variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutSizeInput
 }
 
 export type SizeUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   variants?: Prisma.ProductVariantUpdateManyWithoutSizeNestedInput
 }
 
 export type SizeUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutSizeNestedInput
 }
 
 export type SizeCreateManyInput = {
-  id?: string
+  id?: number
   name: string
 }
 
 export type SizeUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SizeUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SizeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+}
+
+export type SizeAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
 }
 
 export type SizeMaxOrderByAggregateInput = {
@@ -244,6 +281,10 @@ export type SizeMaxOrderByAggregateInput = {
 export type SizeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+}
+
+export type SizeSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
 }
 
 export type SizeScalarRelationFilter = {
@@ -266,12 +307,11 @@ export type SizeUpdateOneRequiredWithoutVariantsNestedInput = {
 }
 
 export type SizeCreateWithoutVariantsInput = {
-  id?: string
   name: string
 }
 
 export type SizeUncheckedCreateWithoutVariantsInput = {
-  id?: string
+  id?: number
   name: string
 }
 
@@ -292,12 +332,11 @@ export type SizeUpdateToOneWithWhereWithoutVariantsInput = {
 }
 
 export type SizeUpdateWithoutVariantsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SizeUncheckedUpdateWithoutVariantsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -368,7 +407,7 @@ export type $SizePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     variants: Prisma.$ProductVariantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     name: string
   }, ExtArgs["result"]["size"]>
   composites: {}
@@ -794,7 +833,7 @@ export interface Prisma__SizeClient<T, Null = never, ExtArgs extends runtime.Typ
  * Fields of the Size model
  */
 export interface SizeFieldRefs {
-  readonly id: Prisma.FieldRef<"Size", 'String'>
+  readonly id: Prisma.FieldRef<"Size", 'Int'>
   readonly name: Prisma.FieldRef<"Size", 'String'>
 }
     

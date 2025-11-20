@@ -20,18 +20,28 @@ export type ColorModel = runtime.Types.Result.DefaultSelection<Prisma.$ColorPayl
 
 export type AggregateColor = {
   _count: ColorCountAggregateOutputType | null
+  _avg: ColorAvgAggregateOutputType | null
+  _sum: ColorSumAggregateOutputType | null
   _min: ColorMinAggregateOutputType | null
   _max: ColorMaxAggregateOutputType | null
 }
 
+export type ColorAvgAggregateOutputType = {
+  id: number | null
+}
+
+export type ColorSumAggregateOutputType = {
+  id: number | null
+}
+
 export type ColorMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   name: string | null
   hex: string | null
 }
 
 export type ColorMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   name: string | null
   hex: string | null
 }
@@ -43,6 +53,14 @@ export type ColorCountAggregateOutputType = {
   _all: number
 }
 
+
+export type ColorAvgAggregateInputType = {
+  id?: true
+}
+
+export type ColorSumAggregateInputType = {
+  id?: true
+}
 
 export type ColorMinAggregateInputType = {
   id?: true
@@ -101,6 +119,18 @@ export type ColorAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ColorAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ColorSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ColorMinAggregateInputType
@@ -131,15 +161,19 @@ export type ColorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   _count?: ColorCountAggregateInputType | true
+  _avg?: ColorAvgAggregateInputType
+  _sum?: ColorSumAggregateInputType
   _min?: ColorMinAggregateInputType
   _max?: ColorMaxAggregateInputType
 }
 
 export type ColorGroupByOutputType = {
-  id: string
+  id: number
   name: string
   hex: string | null
   _count: ColorCountAggregateOutputType | null
+  _avg: ColorAvgAggregateOutputType | null
+  _sum: ColorSumAggregateOutputType | null
   _min: ColorMinAggregateOutputType | null
   _max: ColorMaxAggregateOutputType | null
 }
@@ -163,7 +197,7 @@ export type ColorWhereInput = {
   AND?: Prisma.ColorWhereInput | Prisma.ColorWhereInput[]
   OR?: Prisma.ColorWhereInput[]
   NOT?: Prisma.ColorWhereInput | Prisma.ColorWhereInput[]
-  id?: Prisma.StringFilter<"Color"> | string
+  id?: Prisma.IntFilter<"Color"> | number
   name?: Prisma.StringFilter<"Color"> | string
   hex?: Prisma.StringNullableFilter<"Color"> | string | null
   variants?: Prisma.ProductVariantListRelationFilter
@@ -177,7 +211,7 @@ export type ColorOrderByWithRelationInput = {
 }
 
 export type ColorWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   name?: string
   AND?: Prisma.ColorWhereInput | Prisma.ColorWhereInput[]
   OR?: Prisma.ColorWhereInput[]
@@ -191,61 +225,60 @@ export type ColorOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   hex?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ColorCountOrderByAggregateInput
+  _avg?: Prisma.ColorAvgOrderByAggregateInput
   _max?: Prisma.ColorMaxOrderByAggregateInput
   _min?: Prisma.ColorMinOrderByAggregateInput
+  _sum?: Prisma.ColorSumOrderByAggregateInput
 }
 
 export type ColorScalarWhereWithAggregatesInput = {
   AND?: Prisma.ColorScalarWhereWithAggregatesInput | Prisma.ColorScalarWhereWithAggregatesInput[]
   OR?: Prisma.ColorScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ColorScalarWhereWithAggregatesInput | Prisma.ColorScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Color"> | string
+  id?: Prisma.IntWithAggregatesFilter<"Color"> | number
   name?: Prisma.StringWithAggregatesFilter<"Color"> | string
   hex?: Prisma.StringNullableWithAggregatesFilter<"Color"> | string | null
 }
 
 export type ColorCreateInput = {
-  id?: string
   name: string
   hex?: string | null
   variants?: Prisma.ProductVariantCreateNestedManyWithoutColorInput
 }
 
 export type ColorUncheckedCreateInput = {
-  id?: string
+  id?: number
   name: string
   hex?: string | null
   variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutColorInput
 }
 
 export type ColorUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   hex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.ProductVariantUpdateManyWithoutColorNestedInput
 }
 
 export type ColorUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   hex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutColorNestedInput
 }
 
 export type ColorCreateManyInput = {
-  id?: string
+  id?: number
   name: string
   hex?: string | null
 }
 
 export type ColorUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   hex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ColorUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   hex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -254,6 +287,10 @@ export type ColorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   hex?: Prisma.SortOrder
+}
+
+export type ColorAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
 }
 
 export type ColorMaxOrderByAggregateInput = {
@@ -266,6 +303,10 @@ export type ColorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   hex?: Prisma.SortOrder
+}
+
+export type ColorSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
 }
 
 export type ColorScalarRelationFilter = {
@@ -288,13 +329,12 @@ export type ColorUpdateOneRequiredWithoutVariantsNestedInput = {
 }
 
 export type ColorCreateWithoutVariantsInput = {
-  id?: string
   name: string
   hex?: string | null
 }
 
 export type ColorUncheckedCreateWithoutVariantsInput = {
-  id?: string
+  id?: number
   name: string
   hex?: string | null
 }
@@ -316,13 +356,12 @@ export type ColorUpdateToOneWithWhereWithoutVariantsInput = {
 }
 
 export type ColorUpdateWithoutVariantsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   hex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ColorUncheckedUpdateWithoutVariantsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   hex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -398,7 +437,7 @@ export type $ColorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     variants: Prisma.$ProductVariantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     name: string
     hex: string | null
   }, ExtArgs["result"]["color"]>
@@ -825,7 +864,7 @@ export interface Prisma__ColorClient<T, Null = never, ExtArgs extends runtime.Ty
  * Fields of the Color model
  */
 export interface ColorFieldRefs {
-  readonly id: Prisma.FieldRef<"Color", 'String'>
+  readonly id: Prisma.FieldRef<"Color", 'Int'>
   readonly name: Prisma.FieldRef<"Color", 'String'>
   readonly hex: Prisma.FieldRef<"Color", 'String'>
 }

@@ -27,15 +27,17 @@ export type AggregatePromoCode = {
 }
 
 export type PromoCodeAvgAggregateOutputType = {
+  id: number | null
   amount: number | null
 }
 
 export type PromoCodeSumAggregateOutputType = {
+  id: number | null
   amount: number | null
 }
 
 export type PromoCodeMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   code: string | null
   title: string | null
   amount: number | null
@@ -46,7 +48,7 @@ export type PromoCodeMinAggregateOutputType = {
 }
 
 export type PromoCodeMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   code: string | null
   title: string | null
   amount: number | null
@@ -70,10 +72,12 @@ export type PromoCodeCountAggregateOutputType = {
 
 
 export type PromoCodeAvgAggregateInputType = {
+  id?: true
   amount?: true
 }
 
 export type PromoCodeSumAggregateInputType = {
+  id?: true
   amount?: true
 }
 
@@ -198,7 +202,7 @@ export type PromoCodeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 export type PromoCodeGroupByOutputType = {
-  id: string
+  id: number
   code: string
   title: string
   amount: number
@@ -232,7 +236,7 @@ export type PromoCodeWhereInput = {
   AND?: Prisma.PromoCodeWhereInput | Prisma.PromoCodeWhereInput[]
   OR?: Prisma.PromoCodeWhereInput[]
   NOT?: Prisma.PromoCodeWhereInput | Prisma.PromoCodeWhereInput[]
-  id?: Prisma.StringFilter<"PromoCode"> | string
+  id?: Prisma.IntFilter<"PromoCode"> | number
   code?: Prisma.StringFilter<"PromoCode"> | string
   title?: Prisma.StringFilter<"PromoCode"> | string
   amount?: Prisma.FloatFilter<"PromoCode"> | number
@@ -254,7 +258,7 @@ export type PromoCodeOrderByWithRelationInput = {
 }
 
 export type PromoCodeWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   code?: string
   AND?: Prisma.PromoCodeWhereInput | Prisma.PromoCodeWhereInput[]
   OR?: Prisma.PromoCodeWhereInput[]
@@ -287,7 +291,7 @@ export type PromoCodeScalarWhereWithAggregatesInput = {
   AND?: Prisma.PromoCodeScalarWhereWithAggregatesInput | Prisma.PromoCodeScalarWhereWithAggregatesInput[]
   OR?: Prisma.PromoCodeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PromoCodeScalarWhereWithAggregatesInput | Prisma.PromoCodeScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PromoCode"> | string
+  id?: Prisma.IntWithAggregatesFilter<"PromoCode"> | number
   code?: Prisma.StringWithAggregatesFilter<"PromoCode"> | string
   title?: Prisma.StringWithAggregatesFilter<"PromoCode"> | string
   amount?: Prisma.FloatWithAggregatesFilter<"PromoCode"> | number
@@ -298,7 +302,6 @@ export type PromoCodeScalarWhereWithAggregatesInput = {
 }
 
 export type PromoCodeCreateInput = {
-  id?: string
   code: string
   title: string
   amount: number
@@ -309,7 +312,7 @@ export type PromoCodeCreateInput = {
 }
 
 export type PromoCodeUncheckedCreateInput = {
-  id?: string
+  id?: number
   code: string
   title: string
   amount: number
@@ -320,7 +323,6 @@ export type PromoCodeUncheckedCreateInput = {
 }
 
 export type PromoCodeUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -331,7 +333,7 @@ export type PromoCodeUpdateInput = {
 }
 
 export type PromoCodeUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -342,7 +344,7 @@ export type PromoCodeUncheckedUpdateInput = {
 }
 
 export type PromoCodeCreateManyInput = {
-  id?: string
+  id?: number
   code: string
   title: string
   amount: number
@@ -353,7 +355,6 @@ export type PromoCodeCreateManyInput = {
 }
 
 export type PromoCodeUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -364,7 +365,7 @@ export type PromoCodeUpdateManyMutationInput = {
 }
 
 export type PromoCodeUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -386,6 +387,7 @@ export type PromoCodeCountOrderByAggregateInput = {
 }
 
 export type PromoCodeAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -412,6 +414,7 @@ export type PromoCodeMinOrderByAggregateInput = {
 }
 
 export type PromoCodeSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -467,7 +470,7 @@ export type $PromoCodePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "PromoCode"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     code: string
     title: string
     amount: number
@@ -898,7 +901,7 @@ export interface Prisma__PromoCodeClient<T, Null = never, ExtArgs extends runtim
  * Fields of the PromoCode model
  */
 export interface PromoCodeFieldRefs {
-  readonly id: Prisma.FieldRef<"PromoCode", 'String'>
+  readonly id: Prisma.FieldRef<"PromoCode", 'Int'>
   readonly code: Prisma.FieldRef<"PromoCode", 'String'>
   readonly title: Prisma.FieldRef<"PromoCode", 'String'>
   readonly amount: Prisma.FieldRef<"PromoCode", 'Float'>

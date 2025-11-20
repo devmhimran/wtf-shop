@@ -27,33 +27,37 @@ export type AggregateQuantityDiscount = {
 }
 
 export type QuantityDiscountAvgAggregateOutputType = {
+  id: number | null
   minQty: number | null
   maxQty: number | null
   amount: number | null
+  productId: number | null
 }
 
 export type QuantityDiscountSumAggregateOutputType = {
+  id: number | null
   minQty: number | null
   maxQty: number | null
   amount: number | null
+  productId: number | null
 }
 
 export type QuantityDiscountMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   minQty: number | null
   maxQty: number | null
   amount: number | null
   note: string | null
-  productId: string | null
+  productId: number | null
 }
 
 export type QuantityDiscountMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   minQty: number | null
   maxQty: number | null
   amount: number | null
   note: string | null
-  productId: string | null
+  productId: number | null
 }
 
 export type QuantityDiscountCountAggregateOutputType = {
@@ -68,15 +72,19 @@ export type QuantityDiscountCountAggregateOutputType = {
 
 
 export type QuantityDiscountAvgAggregateInputType = {
+  id?: true
   minQty?: true
   maxQty?: true
   amount?: true
+  productId?: true
 }
 
 export type QuantityDiscountSumAggregateInputType = {
+  id?: true
   minQty?: true
   maxQty?: true
   amount?: true
+  productId?: true
 }
 
 export type QuantityDiscountMinAggregateInputType = {
@@ -194,12 +202,12 @@ export type QuantityDiscountGroupByArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 export type QuantityDiscountGroupByOutputType = {
-  id: string
+  id: number
   minQty: number
   maxQty: number
   amount: number
   note: string | null
-  productId: string
+  productId: number
   _count: QuantityDiscountCountAggregateOutputType | null
   _avg: QuantityDiscountAvgAggregateOutputType | null
   _sum: QuantityDiscountSumAggregateOutputType | null
@@ -226,12 +234,12 @@ export type QuantityDiscountWhereInput = {
   AND?: Prisma.QuantityDiscountWhereInput | Prisma.QuantityDiscountWhereInput[]
   OR?: Prisma.QuantityDiscountWhereInput[]
   NOT?: Prisma.QuantityDiscountWhereInput | Prisma.QuantityDiscountWhereInput[]
-  id?: Prisma.StringFilter<"QuantityDiscount"> | string
+  id?: Prisma.IntFilter<"QuantityDiscount"> | number
   minQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   maxQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.StringFilter<"QuantityDiscount"> | string
+  productId?: Prisma.IntFilter<"QuantityDiscount"> | number
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
 }
 
@@ -246,7 +254,7 @@ export type QuantityDiscountOrderByWithRelationInput = {
 }
 
 export type QuantityDiscountWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.QuantityDiscountWhereInput | Prisma.QuantityDiscountWhereInput[]
   OR?: Prisma.QuantityDiscountWhereInput[]
   NOT?: Prisma.QuantityDiscountWhereInput | Prisma.QuantityDiscountWhereInput[]
@@ -254,7 +262,7 @@ export type QuantityDiscountWhereUniqueInput = Prisma.AtLeast<{
   maxQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.StringFilter<"QuantityDiscount"> | string
+  productId?: Prisma.IntFilter<"QuantityDiscount"> | number
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
 }, "id">
 
@@ -276,16 +284,15 @@ export type QuantityDiscountScalarWhereWithAggregatesInput = {
   AND?: Prisma.QuantityDiscountScalarWhereWithAggregatesInput | Prisma.QuantityDiscountScalarWhereWithAggregatesInput[]
   OR?: Prisma.QuantityDiscountScalarWhereWithAggregatesInput[]
   NOT?: Prisma.QuantityDiscountScalarWhereWithAggregatesInput | Prisma.QuantityDiscountScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"QuantityDiscount"> | string
+  id?: Prisma.IntWithAggregatesFilter<"QuantityDiscount"> | number
   minQty?: Prisma.IntWithAggregatesFilter<"QuantityDiscount"> | number
   maxQty?: Prisma.IntWithAggregatesFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatWithAggregatesFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableWithAggregatesFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.StringWithAggregatesFilter<"QuantityDiscount"> | string
+  productId?: Prisma.IntWithAggregatesFilter<"QuantityDiscount"> | number
 }
 
 export type QuantityDiscountCreateInput = {
-  id?: string
   minQty: number
   maxQty: number
   amount: number
@@ -294,16 +301,15 @@ export type QuantityDiscountCreateInput = {
 }
 
 export type QuantityDiscountUncheckedCreateInput = {
-  id?: string
+  id?: number
   minQty: number
   maxQty: number
   amount: number
   note?: string | null
-  productId: string
+  productId: number
 }
 
 export type QuantityDiscountUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -312,25 +318,24 @@ export type QuantityDiscountUpdateInput = {
 }
 
 export type QuantityDiscountUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productId?: Prisma.StringFieldUpdateOperationsInput | string
+  productId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuantityDiscountCreateManyInput = {
-  id?: string
+  id?: number
   minQty: number
   maxQty: number
   amount: number
   note?: string | null
-  productId: string
+  productId: number
 }
 
 export type QuantityDiscountUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -338,12 +343,12 @@ export type QuantityDiscountUpdateManyMutationInput = {
 }
 
 export type QuantityDiscountUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productId?: Prisma.StringFieldUpdateOperationsInput | string
+  productId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuantityDiscountListRelationFilter = {
@@ -366,9 +371,11 @@ export type QuantityDiscountCountOrderByAggregateInput = {
 }
 
 export type QuantityDiscountAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrder
   amount?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
 }
 
 export type QuantityDiscountMaxOrderByAggregateInput = {
@@ -390,9 +397,11 @@ export type QuantityDiscountMinOrderByAggregateInput = {
 }
 
 export type QuantityDiscountSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrder
   amount?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
 }
 
 export type QuantityDiscountCreateNestedManyWithoutProductInput = {
@@ -437,16 +446,7 @@ export type QuantityDiscountUncheckedUpdateManyWithoutProductNestedInput = {
   deleteMany?: Prisma.QuantityDiscountScalarWhereInput | Prisma.QuantityDiscountScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type QuantityDiscountCreateWithoutProductInput = {
-  id?: string
   minQty: number
   maxQty: number
   amount: number
@@ -454,7 +454,7 @@ export type QuantityDiscountCreateWithoutProductInput = {
 }
 
 export type QuantityDiscountUncheckedCreateWithoutProductInput = {
-  id?: string
+  id?: number
   minQty: number
   maxQty: number
   amount: number
@@ -491,16 +491,16 @@ export type QuantityDiscountScalarWhereInput = {
   AND?: Prisma.QuantityDiscountScalarWhereInput | Prisma.QuantityDiscountScalarWhereInput[]
   OR?: Prisma.QuantityDiscountScalarWhereInput[]
   NOT?: Prisma.QuantityDiscountScalarWhereInput | Prisma.QuantityDiscountScalarWhereInput[]
-  id?: Prisma.StringFilter<"QuantityDiscount"> | string
+  id?: Prisma.IntFilter<"QuantityDiscount"> | number
   minQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   maxQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.StringFilter<"QuantityDiscount"> | string
+  productId?: Prisma.IntFilter<"QuantityDiscount"> | number
 }
 
 export type QuantityDiscountCreateManyProductInput = {
-  id?: string
+  id?: number
   minQty: number
   maxQty: number
   amount: number
@@ -508,7 +508,6 @@ export type QuantityDiscountCreateManyProductInput = {
 }
 
 export type QuantityDiscountUpdateWithoutProductInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -516,7 +515,7 @@ export type QuantityDiscountUpdateWithoutProductInput = {
 }
 
 export type QuantityDiscountUncheckedUpdateWithoutProductInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -524,7 +523,7 @@ export type QuantityDiscountUncheckedUpdateWithoutProductInput = {
 }
 
 export type QuantityDiscountUncheckedUpdateManyWithoutProductInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -589,12 +588,12 @@ export type $QuantityDiscountPayload<ExtArgs extends runtime.Types.Extensions.In
     product: Prisma.$ProductPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     minQty: number
     maxQty: number
     amount: number
     note: string | null
-    productId: string
+    productId: number
   }, ExtArgs["result"]["quantityDiscount"]>
   composites: {}
 }
@@ -1019,12 +1018,12 @@ export interface Prisma__QuantityDiscountClient<T, Null = never, ExtArgs extends
  * Fields of the QuantityDiscount model
  */
 export interface QuantityDiscountFieldRefs {
-  readonly id: Prisma.FieldRef<"QuantityDiscount", 'String'>
+  readonly id: Prisma.FieldRef<"QuantityDiscount", 'Int'>
   readonly minQty: Prisma.FieldRef<"QuantityDiscount", 'Int'>
   readonly maxQty: Prisma.FieldRef<"QuantityDiscount", 'Int'>
   readonly amount: Prisma.FieldRef<"QuantityDiscount", 'Float'>
   readonly note: Prisma.FieldRef<"QuantityDiscount", 'String'>
-  readonly productId: Prisma.FieldRef<"QuantityDiscount", 'String'>
+  readonly productId: Prisma.FieldRef<"QuantityDiscount", 'Int'>
 }
     
 

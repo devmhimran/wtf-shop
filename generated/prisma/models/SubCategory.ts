@@ -20,22 +20,34 @@ export type SubCategoryModel = runtime.Types.Result.DefaultSelection<Prisma.$Sub
 
 export type AggregateSubCategory = {
   _count: SubCategoryCountAggregateOutputType | null
+  _avg: SubCategoryAvgAggregateOutputType | null
+  _sum: SubCategorySumAggregateOutputType | null
   _min: SubCategoryMinAggregateOutputType | null
   _max: SubCategoryMaxAggregateOutputType | null
 }
 
+export type SubCategoryAvgAggregateOutputType = {
+  id: number | null
+  categoryId: number | null
+}
+
+export type SubCategorySumAggregateOutputType = {
+  id: number | null
+  categoryId: number | null
+}
+
 export type SubCategoryMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   name: string | null
   slug: string | null
-  categoryId: string | null
+  categoryId: number | null
 }
 
 export type SubCategoryMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   name: string | null
   slug: string | null
-  categoryId: string | null
+  categoryId: number | null
 }
 
 export type SubCategoryCountAggregateOutputType = {
@@ -46,6 +58,16 @@ export type SubCategoryCountAggregateOutputType = {
   _all: number
 }
 
+
+export type SubCategoryAvgAggregateInputType = {
+  id?: true
+  categoryId?: true
+}
+
+export type SubCategorySumAggregateInputType = {
+  id?: true
+  categoryId?: true
+}
 
 export type SubCategoryMinAggregateInputType = {
   id?: true
@@ -107,6 +129,18 @@ export type SubCategoryAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: SubCategoryAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: SubCategorySumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: SubCategoryMinAggregateInputType
@@ -137,16 +171,20 @@ export type SubCategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: SubCategoryCountAggregateInputType | true
+  _avg?: SubCategoryAvgAggregateInputType
+  _sum?: SubCategorySumAggregateInputType
   _min?: SubCategoryMinAggregateInputType
   _max?: SubCategoryMaxAggregateInputType
 }
 
 export type SubCategoryGroupByOutputType = {
-  id: string
+  id: number
   name: string
   slug: string
-  categoryId: string
+  categoryId: number
   _count: SubCategoryCountAggregateOutputType | null
+  _avg: SubCategoryAvgAggregateOutputType | null
+  _sum: SubCategorySumAggregateOutputType | null
   _min: SubCategoryMinAggregateOutputType | null
   _max: SubCategoryMaxAggregateOutputType | null
 }
@@ -170,10 +208,10 @@ export type SubCategoryWhereInput = {
   AND?: Prisma.SubCategoryWhereInput | Prisma.SubCategoryWhereInput[]
   OR?: Prisma.SubCategoryWhereInput[]
   NOT?: Prisma.SubCategoryWhereInput | Prisma.SubCategoryWhereInput[]
-  id?: Prisma.StringFilter<"SubCategory"> | string
+  id?: Prisma.IntFilter<"SubCategory"> | number
   name?: Prisma.StringFilter<"SubCategory"> | string
   slug?: Prisma.StringFilter<"SubCategory"> | string
-  categoryId?: Prisma.StringFilter<"SubCategory"> | string
+  categoryId?: Prisma.IntFilter<"SubCategory"> | number
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   products?: Prisma.ProductListRelationFilter
 }
@@ -188,13 +226,13 @@ export type SubCategoryOrderByWithRelationInput = {
 }
 
 export type SubCategoryWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   slug?: string
   AND?: Prisma.SubCategoryWhereInput | Prisma.SubCategoryWhereInput[]
   OR?: Prisma.SubCategoryWhereInput[]
   NOT?: Prisma.SubCategoryWhereInput | Prisma.SubCategoryWhereInput[]
   name?: Prisma.StringFilter<"SubCategory"> | string
-  categoryId?: Prisma.StringFilter<"SubCategory"> | string
+  categoryId?: Prisma.IntFilter<"SubCategory"> | number
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   products?: Prisma.ProductListRelationFilter
 }, "id" | "slug">
@@ -205,22 +243,23 @@ export type SubCategoryOrderByWithAggregationInput = {
   slug?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   _count?: Prisma.SubCategoryCountOrderByAggregateInput
+  _avg?: Prisma.SubCategoryAvgOrderByAggregateInput
   _max?: Prisma.SubCategoryMaxOrderByAggregateInput
   _min?: Prisma.SubCategoryMinOrderByAggregateInput
+  _sum?: Prisma.SubCategorySumOrderByAggregateInput
 }
 
 export type SubCategoryScalarWhereWithAggregatesInput = {
   AND?: Prisma.SubCategoryScalarWhereWithAggregatesInput | Prisma.SubCategoryScalarWhereWithAggregatesInput[]
   OR?: Prisma.SubCategoryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SubCategoryScalarWhereWithAggregatesInput | Prisma.SubCategoryScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"SubCategory"> | string
+  id?: Prisma.IntWithAggregatesFilter<"SubCategory"> | number
   name?: Prisma.StringWithAggregatesFilter<"SubCategory"> | string
   slug?: Prisma.StringWithAggregatesFilter<"SubCategory"> | string
-  categoryId?: Prisma.StringWithAggregatesFilter<"SubCategory"> | string
+  categoryId?: Prisma.IntWithAggregatesFilter<"SubCategory"> | number
 }
 
 export type SubCategoryCreateInput = {
-  id?: string
   name: string
   slug: string
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
@@ -228,15 +267,14 @@ export type SubCategoryCreateInput = {
 }
 
 export type SubCategoryUncheckedCreateInput = {
-  id?: string
+  id?: number
   name: string
   slug: string
-  categoryId: string
+  categoryId: number
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutSubCategoryInput
 }
 
 export type SubCategoryUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
@@ -244,31 +282,30 @@ export type SubCategoryUpdateInput = {
 }
 
 export type SubCategoryUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   products?: Prisma.ProductUncheckedUpdateManyWithoutSubCategoryNestedInput
 }
 
 export type SubCategoryCreateManyInput = {
-  id?: string
+  id?: number
   name: string
   slug: string
-  categoryId: string
+  categoryId: number
 }
 
 export type SubCategoryUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SubCategoryUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SubCategoryListRelationFilter = {
@@ -288,6 +325,11 @@ export type SubCategoryCountOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
 }
 
+export type SubCategoryAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
+}
+
 export type SubCategoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -299,6 +341,11 @@ export type SubCategoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
+}
+
+export type SubCategorySumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
 }
 
@@ -366,14 +413,13 @@ export type SubCategoryUpdateOneWithoutProductsNestedInput = {
 }
 
 export type SubCategoryCreateWithoutCategoryInput = {
-  id?: string
   name: string
   slug: string
   products?: Prisma.ProductCreateNestedManyWithoutSubCategoryInput
 }
 
 export type SubCategoryUncheckedCreateWithoutCategoryInput = {
-  id?: string
+  id?: number
   name: string
   slug: string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutSubCategoryInput
@@ -409,24 +455,23 @@ export type SubCategoryScalarWhereInput = {
   AND?: Prisma.SubCategoryScalarWhereInput | Prisma.SubCategoryScalarWhereInput[]
   OR?: Prisma.SubCategoryScalarWhereInput[]
   NOT?: Prisma.SubCategoryScalarWhereInput | Prisma.SubCategoryScalarWhereInput[]
-  id?: Prisma.StringFilter<"SubCategory"> | string
+  id?: Prisma.IntFilter<"SubCategory"> | number
   name?: Prisma.StringFilter<"SubCategory"> | string
   slug?: Prisma.StringFilter<"SubCategory"> | string
-  categoryId?: Prisma.StringFilter<"SubCategory"> | string
+  categoryId?: Prisma.IntFilter<"SubCategory"> | number
 }
 
 export type SubCategoryCreateWithoutProductsInput = {
-  id?: string
   name: string
   slug: string
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
 }
 
 export type SubCategoryUncheckedCreateWithoutProductsInput = {
-  id?: string
+  id?: number
   name: string
   slug: string
-  categoryId: string
+  categoryId: number
 }
 
 export type SubCategoryCreateOrConnectWithoutProductsInput = {
@@ -446,41 +491,39 @@ export type SubCategoryUpdateToOneWithWhereWithoutProductsInput = {
 }
 
 export type SubCategoryUpdateWithoutProductsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
 
 export type SubCategoryUncheckedUpdateWithoutProductsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SubCategoryCreateManyCategoryInput = {
-  id?: string
+  id?: number
   name: string
   slug: string
 }
 
 export type SubCategoryUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   products?: Prisma.ProductUpdateManyWithoutSubCategoryNestedInput
 }
 
 export type SubCategoryUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutSubCategoryNestedInput
 }
 
 export type SubCategoryUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -569,10 +612,10 @@ export type $SubCategoryPayload<ExtArgs extends runtime.Types.Extensions.Interna
     products: Prisma.$ProductPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     name: string
     slug: string
-    categoryId: string
+    categoryId: number
   }, ExtArgs["result"]["subCategory"]>
   composites: {}
 }
@@ -998,10 +1041,10 @@ export interface Prisma__SubCategoryClient<T, Null = never, ExtArgs extends runt
  * Fields of the SubCategory model
  */
 export interface SubCategoryFieldRefs {
-  readonly id: Prisma.FieldRef<"SubCategory", 'String'>
+  readonly id: Prisma.FieldRef<"SubCategory", 'Int'>
   readonly name: Prisma.FieldRef<"SubCategory", 'String'>
   readonly slug: Prisma.FieldRef<"SubCategory", 'String'>
-  readonly categoryId: Prisma.FieldRef<"SubCategory", 'String'>
+  readonly categoryId: Prisma.FieldRef<"SubCategory", 'Int'>
 }
     
 

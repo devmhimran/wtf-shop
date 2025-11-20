@@ -20,20 +20,32 @@ export type ProductGalleryModel = runtime.Types.Result.DefaultSelection<Prisma.$
 
 export type AggregateProductGallery = {
   _count: ProductGalleryCountAggregateOutputType | null
+  _avg: ProductGalleryAvgAggregateOutputType | null
+  _sum: ProductGallerySumAggregateOutputType | null
   _min: ProductGalleryMinAggregateOutputType | null
   _max: ProductGalleryMaxAggregateOutputType | null
 }
 
+export type ProductGalleryAvgAggregateOutputType = {
+  id: number | null
+  productId: number | null
+}
+
+export type ProductGallerySumAggregateOutputType = {
+  id: number | null
+  productId: number | null
+}
+
 export type ProductGalleryMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   imageUrl: string | null
-  productId: string | null
+  productId: number | null
 }
 
 export type ProductGalleryMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   imageUrl: string | null
-  productId: string | null
+  productId: number | null
 }
 
 export type ProductGalleryCountAggregateOutputType = {
@@ -43,6 +55,16 @@ export type ProductGalleryCountAggregateOutputType = {
   _all: number
 }
 
+
+export type ProductGalleryAvgAggregateInputType = {
+  id?: true
+  productId?: true
+}
+
+export type ProductGallerySumAggregateInputType = {
+  id?: true
+  productId?: true
+}
 
 export type ProductGalleryMinAggregateInputType = {
   id?: true
@@ -101,6 +123,18 @@ export type ProductGalleryAggregateArgs<ExtArgs extends runtime.Types.Extensions
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ProductGalleryAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ProductGallerySumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ProductGalleryMinAggregateInputType
@@ -131,15 +165,19 @@ export type ProductGalleryGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   _count?: ProductGalleryCountAggregateInputType | true
+  _avg?: ProductGalleryAvgAggregateInputType
+  _sum?: ProductGallerySumAggregateInputType
   _min?: ProductGalleryMinAggregateInputType
   _max?: ProductGalleryMaxAggregateInputType
 }
 
 export type ProductGalleryGroupByOutputType = {
-  id: string
+  id: number
   imageUrl: string
-  productId: string
+  productId: number
   _count: ProductGalleryCountAggregateOutputType | null
+  _avg: ProductGalleryAvgAggregateOutputType | null
+  _sum: ProductGallerySumAggregateOutputType | null
   _min: ProductGalleryMinAggregateOutputType | null
   _max: ProductGalleryMaxAggregateOutputType | null
 }
@@ -163,9 +201,9 @@ export type ProductGalleryWhereInput = {
   AND?: Prisma.ProductGalleryWhereInput | Prisma.ProductGalleryWhereInput[]
   OR?: Prisma.ProductGalleryWhereInput[]
   NOT?: Prisma.ProductGalleryWhereInput | Prisma.ProductGalleryWhereInput[]
-  id?: Prisma.StringFilter<"ProductGallery"> | string
+  id?: Prisma.IntFilter<"ProductGallery"> | number
   imageUrl?: Prisma.StringFilter<"ProductGallery"> | string
-  productId?: Prisma.StringFilter<"ProductGallery"> | string
+  productId?: Prisma.IntFilter<"ProductGallery"> | number
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
 }
 
@@ -177,12 +215,12 @@ export type ProductGalleryOrderByWithRelationInput = {
 }
 
 export type ProductGalleryWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.ProductGalleryWhereInput | Prisma.ProductGalleryWhereInput[]
   OR?: Prisma.ProductGalleryWhereInput[]
   NOT?: Prisma.ProductGalleryWhereInput | Prisma.ProductGalleryWhereInput[]
   imageUrl?: Prisma.StringFilter<"ProductGallery"> | string
-  productId?: Prisma.StringFilter<"ProductGallery"> | string
+  productId?: Prisma.IntFilter<"ProductGallery"> | number
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
 }, "id">
 
@@ -191,58 +229,57 @@ export type ProductGalleryOrderByWithAggregationInput = {
   imageUrl?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   _count?: Prisma.ProductGalleryCountOrderByAggregateInput
+  _avg?: Prisma.ProductGalleryAvgOrderByAggregateInput
   _max?: Prisma.ProductGalleryMaxOrderByAggregateInput
   _min?: Prisma.ProductGalleryMinOrderByAggregateInput
+  _sum?: Prisma.ProductGallerySumOrderByAggregateInput
 }
 
 export type ProductGalleryScalarWhereWithAggregatesInput = {
   AND?: Prisma.ProductGalleryScalarWhereWithAggregatesInput | Prisma.ProductGalleryScalarWhereWithAggregatesInput[]
   OR?: Prisma.ProductGalleryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProductGalleryScalarWhereWithAggregatesInput | Prisma.ProductGalleryScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"ProductGallery"> | string
+  id?: Prisma.IntWithAggregatesFilter<"ProductGallery"> | number
   imageUrl?: Prisma.StringWithAggregatesFilter<"ProductGallery"> | string
-  productId?: Prisma.StringWithAggregatesFilter<"ProductGallery"> | string
+  productId?: Prisma.IntWithAggregatesFilter<"ProductGallery"> | number
 }
 
 export type ProductGalleryCreateInput = {
-  id?: string
   imageUrl: string
   product: Prisma.ProductCreateNestedOneWithoutGalleryInput
 }
 
 export type ProductGalleryUncheckedCreateInput = {
-  id?: string
+  id?: number
   imageUrl: string
-  productId: string
+  productId: number
 }
 
 export type ProductGalleryUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   product?: Prisma.ProductUpdateOneRequiredWithoutGalleryNestedInput
 }
 
 export type ProductGalleryUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  productId?: Prisma.StringFieldUpdateOperationsInput | string
+  productId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductGalleryCreateManyInput = {
-  id?: string
+  id?: number
   imageUrl: string
-  productId: string
+  productId: number
 }
 
 export type ProductGalleryUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ProductGalleryUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  productId?: Prisma.StringFieldUpdateOperationsInput | string
+  productId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductGalleryListRelationFilter = {
@@ -261,6 +298,11 @@ export type ProductGalleryCountOrderByAggregateInput = {
   productId?: Prisma.SortOrder
 }
 
+export type ProductGalleryAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
+}
+
 export type ProductGalleryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
@@ -270,6 +312,11 @@ export type ProductGalleryMaxOrderByAggregateInput = {
 export type ProductGalleryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
+  productId?: Prisma.SortOrder
+}
+
+export type ProductGallerySumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   productId?: Prisma.SortOrder
 }
 
@@ -316,12 +363,11 @@ export type ProductGalleryUncheckedUpdateManyWithoutProductNestedInput = {
 }
 
 export type ProductGalleryCreateWithoutProductInput = {
-  id?: string
   imageUrl: string
 }
 
 export type ProductGalleryUncheckedCreateWithoutProductInput = {
-  id?: string
+  id?: number
   imageUrl: string
 }
 
@@ -355,28 +401,27 @@ export type ProductGalleryScalarWhereInput = {
   AND?: Prisma.ProductGalleryScalarWhereInput | Prisma.ProductGalleryScalarWhereInput[]
   OR?: Prisma.ProductGalleryScalarWhereInput[]
   NOT?: Prisma.ProductGalleryScalarWhereInput | Prisma.ProductGalleryScalarWhereInput[]
-  id?: Prisma.StringFilter<"ProductGallery"> | string
+  id?: Prisma.IntFilter<"ProductGallery"> | number
   imageUrl?: Prisma.StringFilter<"ProductGallery"> | string
-  productId?: Prisma.StringFilter<"ProductGallery"> | string
+  productId?: Prisma.IntFilter<"ProductGallery"> | number
 }
 
 export type ProductGalleryCreateManyProductInput = {
-  id?: string
+  id?: number
   imageUrl: string
 }
 
 export type ProductGalleryUpdateWithoutProductInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ProductGalleryUncheckedUpdateWithoutProductInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ProductGalleryUncheckedUpdateManyWithoutProductInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -426,9 +471,9 @@ export type $ProductGalleryPayload<ExtArgs extends runtime.Types.Extensions.Inte
     product: Prisma.$ProductPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     imageUrl: string
-    productId: string
+    productId: number
   }, ExtArgs["result"]["productGallery"]>
   composites: {}
 }
@@ -853,9 +898,9 @@ export interface Prisma__ProductGalleryClient<T, Null = never, ExtArgs extends r
  * Fields of the ProductGallery model
  */
 export interface ProductGalleryFieldRefs {
-  readonly id: Prisma.FieldRef<"ProductGallery", 'String'>
+  readonly id: Prisma.FieldRef<"ProductGallery", 'Int'>
   readonly imageUrl: Prisma.FieldRef<"ProductGallery", 'String'>
-  readonly productId: Prisma.FieldRef<"ProductGallery", 'String'>
+  readonly productId: Prisma.FieldRef<"ProductGallery", 'Int'>
 }
     
 
