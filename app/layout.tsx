@@ -1,10 +1,11 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Oswald } from 'next/font/google';
+
 import './globals.css';
 import { cn } from '@/lib/utils';
-import { Suspense } from 'react';
 import { Loading } from '@/components/shared';
-import DefaultLayout from '@/components/layouts/default-layout';
+import { DefaultLayout } from '@/components/layouts';
 
 const oswald = Oswald({
   weight: ['300', '400', '500', '600', '700'],
