@@ -1,19 +1,11 @@
-import { verifyAccessToken } from '@/lib/jwt';
+import { authenticateRequest } from '@/lib/utils';
 import { prisma } from '@/prisma/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get('authorization');
   try {
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.split(' ')[1];
-    const payload = await verifyAccessToken(token);
-    if (!payload) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
+    const { error, payload } = await authenticateRequest(request);
+    if (error) return error;
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },

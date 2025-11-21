@@ -89,6 +89,8 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
+  isDelete: 'isDelete',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   refreshToken: 'refreshToken'
@@ -151,6 +153,7 @@ export const ProductScalarFieldEnum = {
   alternativeImage: 'alternativeImage',
   categoryId: 'categoryId',
   subCategoryId: 'subCategoryId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

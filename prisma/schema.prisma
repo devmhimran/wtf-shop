@@ -22,8 +22,11 @@ model User {
   email     String   @unique
   password  String
   role      UserRole @default(CUSTOMER)
+  isDelete  Boolean  @default(false)
+  isActive Boolean  @default(true)
 
-  orders    Order[]
+  orders          Order[]
+  createdProducts Product[] @relation("ProductCreatedBy")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -99,6 +102,9 @@ model Product {
 
   subCategory     SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId   Int?
+
+  createdBy     User      @relation("ProductCreatedBy", fields: [createdById], references: [id])
+  createdById   Int
 
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt

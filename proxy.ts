@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccessToken } from '@/lib/jwt';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   request.headers.append('Access-Control-Allow-Credentials', 'true');
   request.headers.append('Access-Control-Allow-Origin', '*');
   request.headers.append(

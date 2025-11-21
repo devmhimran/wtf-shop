@@ -24,6 +24,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (user.isDelete) {
+      return NextResponse.json(
+        { error: 'Your account has been deleted' },
+        { status: 403 }
+      );
+    }
+
+    if (!user.isActive) {
+      return NextResponse.json(
+        { error: 'Your account is not active. Please contact support' },
+        { status: 403 }
+      );
+    }
+
     const accessToken = await generateAccessToken(user.id);
     const refreshToken = await generateRefreshToken(user.id);
 
