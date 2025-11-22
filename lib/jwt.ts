@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
 
-const ACCESS_TOKEN_EXPIRES = 1 * 5;
+const ACCESS_TOKEN_EXPIRES = 45 * 60;
 const REFRESH_TOKEN_EXPIRES = 7 * 24 * 60 * 60;
 
 function getAccessSecret() {
