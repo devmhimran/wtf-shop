@@ -20,3 +20,8 @@ export type MeResponse = {
   message: string;
   user: UserType;
 };
+
+export type UserMeResponse = {
+  message: string;
+  user: UserType;
+};
