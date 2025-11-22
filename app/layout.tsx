@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Oswald } from 'next/font/google';
+import { Toaster } from 'sonner';
 
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -25,9 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn(oswald.variable, oswald.className, 'antialiased')}>
+      <body
+        className={cn(oswald.variable, oswald.className, 'antialiased')}
+        suppressHydrationWarning
+      >
         <Suspense fallback={<Loading />}>
-          <DefaultLayout>{children}</DefaultLayout>
+          <DefaultLayout>
+            {children}
+            <Toaster />
+          </DefaultLayout>
         </Suspense>
       </body>
     </html>
