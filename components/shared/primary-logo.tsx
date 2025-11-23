@@ -13,18 +13,21 @@ type PrimaryLogoProps = {
 export function PrimaryLogo({
   width = 120,
   height = 80,
-  link = '/',
+  link,
   className,
 }: PrimaryLogoProps) {
-  return (
-    <Link href={link}>
-      <Image
-        src='/assets/png/what-the-funk.png'
-        width={width}
-        height={height}
-        alt='Logo Main'
-        className={cn('w-14 inline', className)}
-      />
-    </Link>
+  const logo = (
+    <Image
+      src='/assets/png/what-the-funk.png'
+      width={width}
+      height={height}
+      alt='Logo Main'
+      className={cn('w-14 inline', className)}
+    />
   );
+
+  if (!link) {
+    return logo;
+  }
+  return <Link href={link}>{logo}</Link>;
 }

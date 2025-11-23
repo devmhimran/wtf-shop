@@ -115,7 +115,7 @@ export function AppSidebar() {
           className='flex items-center gap-2 px-4 py-2 hover:bg-sidebar-accent rounded-md'
         >
           <div className='flex aspect-square size-8 items-center justify-center rounded-lg'>
-            <PrimaryLogo link='/dashboard/' />
+            <PrimaryLogo />
           </div>
           <div className='grid flex-1 text-left text-sm leading-tight'>
             <span className='truncate font-semibold'>Whatthefunk</span>

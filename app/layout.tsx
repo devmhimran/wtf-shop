@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { Oswald } from 'next/font/google';
+import { Inter, Oswald } from 'next/font/google';
 import { Toaster } from 'sonner';
 
 import './globals.css';
@@ -12,6 +12,12 @@ const oswald = Oswald({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-oswald',
+});
+
+const inter = Inter({
+  weight: ['300', '400', '500', '600', '700', '800'],
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
@@ -27,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={cn(oswald.variable, oswald.className, 'antialiased')}
+        className={cn(oswald.variable, inter.variable, 'antialiased')}
         suppressHydrationWarning
       >
         <Suspense fallback={<Loading />}>
