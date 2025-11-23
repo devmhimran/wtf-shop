@@ -1,6 +1,7 @@
+import { twMerge } from 'tailwind-merge';
 import { clsx, type ClassValue } from 'clsx';
 import { NextRequest, NextResponse } from 'next/server';
-import { twMerge } from 'tailwind-merge';
+
 import { verifyAccessToken } from './jwt';
 
 export function cn(...inputs: ClassValue[]) {
@@ -32,3 +33,9 @@ export async function authenticateRequest(request: NextRequest) {
     payload,
   };
 }
+
+export const roleConvert = {
+  ADMIN: 'Admin',
+  SUPER_ADMIN: 'Super Admin',
+  CUSTOMER: 'Customer',
+};
