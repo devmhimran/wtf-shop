@@ -1,7 +1,11 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import { getSession } from 'next-auth/react';
+
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import axios, {
+  type AxiosRequestConfig,
+  type AxiosRequestHeaders,
+} from 'axios';
 
 export const uploadSettings = {
   headers: {
@@ -55,6 +59,30 @@ axiosInstanceWithAuth.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+axiosInstanceWithAuth.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+    };
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      await fetch('/api/auth/session');
+      let newSession = await getClientAccessToken();
+      if (!newSession) {
+        newSession = await getServerAccessToken();
+      }
+
+      if (newSession) {
+        const headers = originalRequest.headers as AxiosRequestHeaders;
+        headers.Authorization = `Bearer ${newSession}`;
+        return axiosInstanceWithAuth(originalRequest);
+      }
+    }
     return Promise.reject(error);
   }
 );
