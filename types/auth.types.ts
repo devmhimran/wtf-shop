@@ -10,6 +10,10 @@ export type UserType = {
 export type SignInResponse = {
   accessToken: string;
   refreshToken: string;
+  user: {
+    id: number;
+    role: UserRole;
+  };
 };
 export type SignInRequest = {
   email: string;

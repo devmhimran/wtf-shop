@@ -46,7 +46,14 @@ export async function POST(request: NextRequest) {
       data: { refreshToken },
     });
 
-    return NextResponse.json({ accessToken, refreshToken });
+    return NextResponse.json({
+      accessToken,
+      refreshToken,
+      user: {
+        id: user.id,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

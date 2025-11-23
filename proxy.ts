@@ -1,33 +1,101 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyAccessToken } from '@/lib/jwt';
+import { withAuth } from 'next-auth/middleware';
+import { NextResponse } from 'next/server';
 
-export async function proxy(request: NextRequest) {
-  request.headers.append('Access-Control-Allow-Credentials', 'true');
-  request.headers.append('Access-Control-Allow-Origin', '*');
-  request.headers.append(
-    'Access-Control-Allow-Methods',
-    'GET,DELETE,PATCH,POST,PUT'
-  );
-  request.headers.append(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-  const authHeader = request.headers.get('authorization');
+const SUPER_ADMIN_PATHS = [
+  '/dashboard/',
+  '/dashboard/products',
+  '/dashboard/custom-products',
+  '/dashboard/orders',
+  '/dashboard/customers',
+  '/dashboard/users',
+];
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+const ADMIN_PATHS = [
+  '/dashboard/products',
+  '/dashboard/custom-products',
+  '/dashboard/orders',
+  '/dashboard/customers',
+];
+
+const CUSTOMER_PATHS = ['/c/my-orders'];
+const COMMON_PATHS = ['/my-profile'];
+
+export default withAuth(
+  function proxy(req) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const role = (req.nextauth?.token as any)?.user?.user.role;
+    const path = req.nextUrl.pathname;
+
+    if (COMMON_PATHS.some((commonPath) => path.startsWith(commonPath))) {
+      return NextResponse.next();
+    }
+
+    if (role === 'CUSTOMER') {
+      if (SUPER_ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath))) {
+        return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
+      }
+
+      const isAllowedPath = CUSTOMER_PATHS.some((customerPath) =>
+        path.startsWith(customerPath)
+      );
+
+      if (!isAllowedPath) {
+        return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
+      }
+    }
+
+    if (role === 'ADMIN') {
+      if (
+        CUSTOMER_PATHS.some((customerPath) => path.startsWith(customerPath))
+      ) {
+        return NextResponse.redirect(new URL('/dashboard/products', req.url));
+      }
+
+      if (
+        SUPER_ADMIN_PATHS.some((superAdminPath) =>
+          path.startsWith(superAdminPath)
+        ) &&
+        !ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath))
+      ) {
+        return NextResponse.redirect(new URL('/dashboard/products', req.url));
+      }
+
+      const isAllowedPath = ADMIN_PATHS.some((adminPath) =>
+        path.startsWith(adminPath)
+      );
+
+      if (!isAllowedPath) {
+        return NextResponse.redirect(new URL('/dashboard/products', req.url));
+      }
+    }
+
+    if (role === 'SUPER_ADMIN') {
+      if (
+        CUSTOMER_PATHS.some((customerPath) => path.startsWith(customerPath))
+      ) {
+        return NextResponse.redirect(new URL('/dashboard/dashboard', req.url));
+      }
+      return NextResponse.next();
+    }
+
+    if (!role) {
+      return NextResponse.redirect(new URL('/signin', req.url));
+    }
+
+    return NextResponse.next();
+  },
+  {
+    secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
+    callbacks: {
+      authorized: async ({ token }) => {
+        return !!token;
+      },
+    },
+    pages: {
+      signIn: '/signin',
+      error: '/signin',
+    },
   }
+);
 
-  const token = authHeader.split(' ')[1];
-  const payload = await verifyAccessToken(token);
-
-  if (!payload) {
-    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-  }
-
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: ['/api/protected/:path*'],
-};
+export const config = { matcher: ['/dashboard/:path*', '/c/:path*'] };

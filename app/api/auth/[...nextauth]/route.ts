@@ -9,6 +9,10 @@ declare module 'next-auth' {
     id: string;
     accessToken: string;
     refreshToken: string;
+    user: {
+      id: number;
+      role: string;
+    };
   }
 
   interface Session {
@@ -79,6 +83,7 @@ const authOptions = {
               id: email,
               accessToken: response.data.accessToken,
               refreshToken: response.data.refreshToken,
+              user: response.data.user,
             };
           }
 
@@ -148,6 +153,7 @@ const authOptions = {
       if (token) {
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
+        session.user = token.user as User;
       }
       return session;
     },
