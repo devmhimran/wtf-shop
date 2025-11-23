@@ -27,23 +27,53 @@ interface DecodedToken {
   userId?: string;
 }
 
-async function refreshAccessToken(token: import('next-auth/jwt').JWT) {
-  try {
-    const response = await authApi.refreshToken(token.refreshToken as string);
-    const refreshedTokens = response.data;
+let isRefreshing = false;
+let refreshPromise: Promise<import('next-auth/jwt').JWT> | null = null;
 
-    return {
-      ...token,
-      accessToken: refreshedTokens.accessToken,
-      refreshToken: refreshedTokens.refreshToken,
-    };
-  } catch (error) {
-    console.error('Error refreshing access token:', error);
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    };
+async function refreshAccessToken(token: import('next-auth/jwt').JWT) {
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
   }
+
+  isRefreshing = true;
+
+  refreshPromise = (async () => {
+    try {
+      const response = await authApi.refreshToken(token.refreshToken as string);
+      const refreshedTokens = response.data;
+
+      let accessTokenExpires;
+      try {
+        const decoded = jwtDecode<DecodedToken>(refreshedTokens.accessToken);
+        accessTokenExpires = decoded?.exp
+          ? decoded.exp * 1000
+          : Date.now() + 15 * 60 * 1000;
+      } catch {
+        accessTokenExpires = Date.now() + 15 * 60 * 1000;
+      }
+
+      const newToken = {
+        ...token,
+        accessToken: refreshedTokens.accessToken,
+        refreshToken: refreshedTokens.refreshToken ?? token.refreshToken,
+        accessTokenExpires,
+        error: undefined,
+      };
+
+      return newToken;
+    } catch (err) {
+      console.error('refreshAccessToken error', err);
+      return {
+        ...token,
+        error: 'RefreshAccessTokenError',
+      };
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
 }
 
 const authOptions = {
