@@ -1502,7 +1502,8 @@ export const UserScalarFieldEnum = {
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  refreshToken: 'refreshToken'
+  refreshToken: 'refreshToken',
+  refreshTokenUpdatedAt: 'refreshTokenUpdatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

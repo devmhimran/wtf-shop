@@ -7,16 +7,16 @@ import { jwtDecode } from 'jwt-decode';
 declare module 'next-auth' {
   interface User {
     id: string;
+    role: string;
     accessToken: string;
     refreshToken: string;
-    user: {
-      id: number;
-      role: string;
-    };
   }
 
   interface Session {
-    user: User;
+    user: {
+      id: string;
+      role: string;
+    };
     accessToken: string;
     refreshToken: string;
   }
@@ -80,10 +80,10 @@ const authOptions = {
 
           if (response.data) {
             return {
-              id: email,
+              id: response.data.user.id.toString(),
+              role: response.data.user.role,
               accessToken: response.data.accessToken,
               refreshToken: response.data.refreshToken,
-              user: response.data.user,
             };
           }
 
@@ -153,7 +153,11 @@ const authOptions = {
       if (token) {
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
-        session.user = token.user as User;
+        const user = token.user as User;
+        session.user = {
+          id: user.id,
+          role: user.role,
+        };
       }
       return session;
     },

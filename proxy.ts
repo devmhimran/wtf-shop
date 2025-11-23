@@ -23,7 +23,7 @@ const COMMON_PATHS = ['/my-profile'];
 export default withAuth(
   function proxy(req) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const role = (req.nextauth?.token as any)?.user?.user.role;
+    const role = (req.nextauth?.token as any)?.user?.role;
     const path = req.nextUrl.pathname;
 
     if (COMMON_PATHS.some((commonPath) => path.startsWith(commonPath))) {
