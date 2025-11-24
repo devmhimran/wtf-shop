@@ -1,8 +1,13 @@
-import { authApi } from '@/lib/api-helper';
-import NextAuth, { SessionStrategy, User } from 'next-auth';
+import NextAuth, { SessionStrategy } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
 import { jwtDecode } from 'jwt-decode';
+
+import { authApi } from '@/lib/api-helper';
+
+interface DecodedToken {
+  exp?: number;
+  userId?: string;
+}
 
 declare module 'next-auth' {
   interface User {
@@ -10,26 +15,32 @@ declare module 'next-auth' {
     role: string;
     accessToken: string;
     refreshToken: string;
+    accessTokenExpires: number;
   }
 
   interface Session {
-    user: {
-      id: string;
-      role: string;
-    };
+    user: { id: string; role: string };
     accessToken: string;
     refreshToken: string;
   }
 }
 
-interface DecodedToken {
-  exp?: number;
-  userId?: string;
+declare module 'next-auth/jwt' {
+  interface JWT {
+    accessToken?: string;
+    refreshToken?: string;
+    accessTokenExpires?: number;
+    user?: { id: string; role: string };
+    error?: string;
+  }
 }
 
 let isRefreshing = false;
 let refreshPromise: Promise<import('next-auth/jwt').JWT> | null = null;
 
+// ----------------------------------------------------------------------------------------
+// REFRESH FUNCTION
+// ----------------------------------------------------------------------------------------
 async function refreshAccessToken(token: import('next-auth/jwt').JWT) {
   if (isRefreshing && refreshPromise) {
     return refreshPromise;
@@ -40,27 +51,24 @@ async function refreshAccessToken(token: import('next-auth/jwt').JWT) {
   refreshPromise = (async () => {
     try {
       const response = await authApi.refreshToken(token.refreshToken as string);
-      const refreshedTokens = response.data;
+      const refreshed = response.data;
 
-      let accessTokenExpires;
-      try {
-        const decoded = jwtDecode<DecodedToken>(refreshedTokens.accessToken);
-        accessTokenExpires = decoded?.exp
-          ? decoded.exp * 1000
-          : Date.now() + 15 * 60 * 1000;
-      } catch {
-        accessTokenExpires = Date.now() + 15 * 60 * 1000;
-      }
+      const decoded = jwtDecode<DecodedToken>(refreshed.accessToken);
 
-      const newToken = {
+      // --------------------------------------------------------
+      // 🔥 REPLACE THIS RETURN BLOCK WITH THE NEW ONE
+      // --------------------------------------------------------
+      return {
         ...token,
-        accessToken: refreshedTokens.accessToken,
-        refreshToken: refreshedTokens.refreshToken ?? token.refreshToken,
-        accessTokenExpires,
-        error: undefined,
-      };
+        accessToken: refreshed.accessToken,
+        refreshToken: refreshed.refreshToken ?? token.refreshToken,
+        accessTokenExpires: decoded?.exp
+          ? decoded.exp * 1000
+          : Date.now() + 15 * 60 * 1000,
 
-      return newToken;
+        // 🔥 ADD THIS — forces NextAuth to rewrite cookie every refresh
+        token_version: ((token.token_version as number) || 1) + 1,
+      };
     } catch (err) {
       console.error('refreshAccessToken error', err);
       return {
@@ -76,52 +84,44 @@ async function refreshAccessToken(token: import('next-auth/jwt').JWT) {
   return refreshPromise;
 }
 
+// ----------------------------------------------------------------------------------------
+// NEXTAUTH CONFIG
+// ----------------------------------------------------------------------------------------
 const authOptions = {
   session: {
     strategy: 'jwt' as SessionStrategy,
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
 
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'hello@example.com',
-        },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(
-        credentials: Record<'email' | 'password', string> | undefined
-      ): Promise<User | null> {
-        if (!credentials) {
+
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) {
           throw new Error('Missing credentials');
         }
 
-        const { email, password } = credentials;
-        if (!email || !password) {
-          throw new Error('Email and password are required');
-        }
+        const res = await authApi.signIn(credentials);
 
-        try {
-          const response = await authApi.signIn({ email, password });
+        if (!res.data) return null;
 
-          if (response.data) {
-            return {
-              id: response.data.user.id.toString(),
-              role: response.data.user.role,
-              accessToken: response.data.accessToken,
-              refreshToken: response.data.refreshToken,
-            };
-          }
-
-          return null;
-        } catch (error) {
-          console.error('Sign in error:', error);
-          return null;
-        }
+        const user = res.data.user;
+        const decoded = jwtDecode<DecodedToken>(res.data.accessToken);
+        console.log({ decoded });
+        return {
+          id: user.id.toString(),
+          role: user.role,
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+          accessTokenExpires: decoded?.exp
+            ? decoded.exp * 1000
+            : Date.now() + 15 * 60 * 1000,
+        };
       },
     }),
   ],
@@ -134,45 +134,40 @@ const authOptions = {
   secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
 
   callbacks: {
+    // ----------------------------------------------------------------------------------
+    // JWT CALLBACK
+    // ----------------------------------------------------------------------------------
     async jwt({
       token,
       user,
-      account,
     }: {
       token: import('next-auth/jwt').JWT;
       user?: import('next-auth').User;
-      account?: import('next-auth').Account | null;
     }) {
-      // Decode and set token expiration
-      if (token.accessToken) {
-        const decodedToken = jwtDecode<DecodedToken>(
-          token.accessToken as string
-        );
-
-        token.accessTokenExpires = decodedToken?.exp
-          ? decodedToken.exp * 1000
-          : Date.now() + 3600000;
-      }
-
-      if (account && user) {
+      // Initial login — store tokens
+      if (user) {
         return {
           ...token,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
-          user,
+          accessTokenExpires: user.accessTokenExpires,
+          user: { id: user.id, role: user.role },
+          token_version: 1, // 🔥 NEW: forces cookie update after login
         };
       }
 
-      if (
-        token.accessTokenExpires &&
-        Date.now() < (token.accessTokenExpires as number)
-      ) {
+      // Access token still valid
+      if (Date.now() < (token.accessTokenExpires as number)) {
         return token;
       }
 
-      return refreshAccessToken(token);
+      // Access expired — try refresh
+      return await refreshAccessToken(token);
     },
 
+    // ----------------------------------------------------------------------------------
+    // SESSION CALLBACK
+    // ----------------------------------------------------------------------------------
     async session({
       session,
       token,
@@ -180,15 +175,14 @@ const authOptions = {
       session: import('next-auth').Session;
       token: import('next-auth/jwt').JWT;
     }) {
-      if (token) {
-        session.accessToken = token.accessToken as string;
-        session.refreshToken = token.refreshToken as string;
-        const user = token.user as User;
-        session.user = {
-          id: user.id,
-          role: user.role,
-        };
-      }
+      session.accessToken = token.accessToken as string;
+      session.refreshToken = token.refreshToken as string;
+
+      session.user = {
+        id: (token.user as { id: string; role: string }).id,
+        role: (token.user as { id: string; role: string }).role,
+      };
+
       return session;
     },
   },
