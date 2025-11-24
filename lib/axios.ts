@@ -1,7 +1,3 @@
-import { getServerSession } from 'next-auth';
-import { getSession } from 'next-auth/react';
-
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import axios from 'axios';
 
 export const uploadSettings = {
@@ -19,46 +15,22 @@ export const axiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+export const axiosUpload = axios.create({
+  timeout: 50000,
+  baseURL: baseUrl,
+  headers: {
+    Accept: '*/*',
+    'content-type': 'multipart/form-data',
+  },
+  withCredentials: true,
+});
+
 export const axiosInstanceWithAuth = axios.create({
   timeout: 50000,
   baseURL: baseUrl,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
-
-async function getClientAccessToken() {
-  if (typeof window !== 'undefined') {
-    const session = await getSession();
-    return session?.accessToken || null;
-  }
-  return null;
-}
-
-async function getServerAccessToken() {
-  if (typeof window === 'undefined') {
-    const session = await getServerSession(authOptions);
-    return session?.accessToken || null;
-  }
-  return null;
-}
-
-axiosInstanceWithAuth.interceptors.request.use(
-  async (config) => {
-    let token = await getClientAccessToken();
-
-    if (!token) {
-      token = await getServerAccessToken();
-    }
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 axiosInstanceWithAuth.interceptors.response.use(
   (res) => res,
@@ -68,14 +40,22 @@ axiosInstanceWithAuth.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      // force update next-auth session to trigger refresh
-      await fetch('/api/auth/session');
+      try {
+        const refreshRes = await axiosInstance.post(
+          '/auth/refresh',
+          {},
+          { withCredentials: true }
+        );
 
-      const newToken = await getClientAccessToken();
+        if (refreshRes.status === 200) {
+          return axiosInstanceWithAuth(originalRequest);
+        }
+      } catch (err) {
+        console.error('Refresh failed', err);
+      }
 
-      if (newToken) {
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        return axiosInstanceWithAuth(originalRequest);
+      if (typeof window !== 'undefined') {
+        window.location.href = '/signin';
       }
     }
 

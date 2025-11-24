@@ -3,34 +3,41 @@ import { clsx, type ClassValue } from 'clsx';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { verifyAccessToken } from './jwt';
+import { authApi } from './api-helper';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export async function authenticateRequest(request: NextRequest) {
-  const authHeader = request.headers.get('authorization');
+  const token = request.cookies.get('accessToken')?.value;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     return {
-      error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+      error: NextResponse.json(
+        { error: 'Unauthorized: No access token' },
+        { status: 401 }
+      ),
       payload: null,
     };
   }
 
-  const token = authHeader.split(' ')[1];
   const payload = await verifyAccessToken(token);
 
   if (!payload) {
     return {
-      error: NextResponse.json({ error: 'Invalid token' }, { status: 401 }),
+      error: NextResponse.json(
+        { error: 'Invalid or expired access token' },
+        { status: 401 }
+      ),
       payload: null,
     };
   }
 
+  // 3. Return payload (userId + role)
   return {
     error: null,
-    payload,
+    payload, // { userId, role }
   };
 }
 
@@ -70,4 +77,12 @@ export const roleConvert = {
 export const userStatusConvert = {
   ACTIVE: 'Active',
   INACTIVE: 'Inactive',
+};
+
+export const authLogout = async () => {
+  await authApi.logout();
+
+  if (typeof window !== 'undefined') {
+    window.location.href = '/signin';
+  }
 };

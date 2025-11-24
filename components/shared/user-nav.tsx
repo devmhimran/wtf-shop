@@ -1,5 +1,7 @@
 'use client';
 
+import { User, LogOut, ChevronsUpDown } from 'lucide-react';
+
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,14 +14,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUser } from '@/hooks';
-import { roleConvert } from '@/lib/utils';
-import { User, LogOut, ChevronsUpDown } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
+import { roleConvert, authLogout } from '@/lib/utils';
+
 import Link from 'next/link';
 import { UserNavSkeleton } from '../skeletons';
 
 export function UserNav() {
-  const { data: session } = useSession();
   const { fetchMe, fetchMeMutation } = useUser();
 
   const initials =
@@ -49,7 +49,7 @@ export function UserNav() {
               {fetchMe?.name || ''}
             </span>
             <span className='truncate text-xs text-muted-foreground'>
-              {roleConvert[session?.user.role as keyof typeof roleConvert]}
+              {roleConvert[fetchMe?.role as keyof typeof roleConvert]}
             </span>
           </div>
           <ChevronsUpDown className='ml-auto h-4 w-4 shrink-0 opacity-50' />
@@ -77,7 +77,7 @@ export function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => signOut()}
+          onClick={() => authLogout()}
           className='cursor-pointer text-red-600 focus:text-red-600'
         >
           <LogOut className='mr-2 h-4 w-4' />
