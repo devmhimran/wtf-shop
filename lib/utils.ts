@@ -34,8 +34,40 @@ export async function authenticateRequest(request: NextRequest) {
   };
 }
 
+export const catchError = (error: unknown) => {
+  return {
+    success: false,
+    message: error instanceof Error ? error.message : 'Something went wrong',
+  };
+};
+
+export function generateQueryString(params: Record<string, string>) {
+  const isEmpty = Object.values(params).every((value) => value === '');
+
+  if (isEmpty) {
+    return '';
+  }
+
+  const queryString = Object.entries(params)
+    .filter(([, value]) => value !== '')
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(
+          value as unknown as string
+        )}`
+    )
+    .join('&');
+
+  return `?${queryString}`;
+}
+
 export const roleConvert = {
   ADMIN: 'Admin',
   SUPER_ADMIN: 'Super Admin',
   CUSTOMER: 'Customer',
+};
+
+export const userStatusConvert = {
+  ACTIVE: 'Active',
+  INACTIVE: 'Inactive',
 };

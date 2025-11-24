@@ -1,3 +1,4 @@
+import { UserRole } from '@/types';
 import { SignJWT, jwtVerify } from 'jose';
 
 const ACCESS_TOKEN_EXPIRES = 45 * 60;
@@ -11,15 +12,15 @@ function getRefreshSecret() {
   return new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_REFRESH_SECRET!);
 }
 
-export async function generateAccessToken(userId: number) {
-  return await new SignJWT({ userId })
+export async function generateAccessToken(userId: number, role: UserRole) {
+  return await new SignJWT({ userId, role })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime(`${ACCESS_TOKEN_EXPIRES}s`)
     .sign(getAccessSecret());
 }
 
-export async function generateRefreshToken(userId: number) {
-  return await new SignJWT({ userId })
+export async function generateRefreshToken(userId: number, role: UserRole) {
+  return await new SignJWT({ userId, role })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime(`${REFRESH_TOKEN_EXPIRES}s`)
     .sign(getRefreshSecret());
@@ -28,7 +29,7 @@ export async function generateRefreshToken(userId: number) {
 export async function verifyAccessToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, getAccessSecret());
-    return payload as { userId: number };
+    return payload as { userId: number; role: UserRole };
   } catch {
     return null;
   }

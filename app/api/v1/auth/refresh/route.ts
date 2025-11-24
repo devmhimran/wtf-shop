@@ -46,8 +46,8 @@ export async function POST(req: NextRequest) {
       : 0;
 
     if (storedToken && storedToken === refreshToken) {
-      const newAccessToken = await generateAccessToken(user.id);
-      const newRefreshToken = await generateRefreshToken(user.id);
+      const newAccessToken = await generateAccessToken(user.id, user.role);
+      const newRefreshToken = await generateRefreshToken(user.id, user.role);
 
       await prisma.user.update({
         where: { id: user.id },
@@ -64,8 +64,8 @@ export async function POST(req: NextRequest) {
     }
 
     if (storedToken && now - updatedAt <= REFRESH_TOKEN_REUSE_WINDOW) {
-      const newAccessToken = await generateAccessToken(user.id);
-      const newRefreshToken = await generateRefreshToken(user.id);
+      const newAccessToken = await generateAccessToken(user.id, user.role);
+      const newRefreshToken = await generateRefreshToken(user.id, user.role);
 
       await prisma.user.update({
         where: { id: user.id },

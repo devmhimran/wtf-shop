@@ -5,6 +5,7 @@ import {
   UserRole,
 } from './auth.types';
 import { Response, Meta } from './common.types';
+import { UsersType } from './users.types';
 
 export type {
   SignInResponse,
@@ -13,4 +14,5 @@ export type {
   Response,
   Meta,
   UserRole,
+  UsersType,
 };

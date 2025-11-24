@@ -39,7 +39,7 @@ export default function RootLayout({
         <Suspense fallback={<Loading />}>
           <DefaultLayout>
             {children}
-            <Toaster />
+            <Toaster richColors position='top-center' />
           </DefaultLayout>
         </Suspense>
       </body>
