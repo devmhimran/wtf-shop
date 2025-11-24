@@ -10,8 +10,16 @@ export const authApi = {
     const url = '/protected/me';
     return axiosInstanceWithAuth.get(url);
   },
-  refreshToken: (refreshToken: string) => {
+  refreshToken: () => {
     const url = '/auth/refresh';
-    return axiosInstance.post<SignInResponse>(url, { refreshToken });
+    return axiosInstance.post<SignInResponse>(
+      url,
+      {},
+      { withCredentials: true }
+    );
+  },
+  logout: () => {
+    const url = '/auth/logout';
+    return axiosInstanceWithAuth.post(url);
   },
 };

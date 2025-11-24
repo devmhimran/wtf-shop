@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { comparePassword } from '@/lib/bcrypt';
-import { generateAccessToken, generateRefreshToken } from '@/lib/jwt';
+import {
+  ACCESS_TOKEN_EXPIRES,
+  generateAccessToken,
+  generateRefreshToken,
+  REFRESH_TOKEN_EXPIRES,
+} from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
 
 export async function POST(request: NextRequest) {
@@ -38,22 +43,42 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate tokens
     const accessToken = await generateAccessToken(user.id, user.role);
     const refreshToken = await generateRefreshToken(user.id, user.role);
 
+    // Store refresh token in DB
     await prisma.user.update({
       where: { id: user.id },
       data: { refreshToken },
     });
 
-    return NextResponse.json({
-      accessToken,
-      refreshToken,
+    // Response object
+    const res = NextResponse.json({
+      message: 'Login successful',
       user: {
         id: user.id,
         role: user.role,
       },
     });
+
+    // Set Access Token Cookie (HttpOnly)
+    res.cookies.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: ACCESS_TOKEN_EXPIRES,
+    });
+
+    // Set Refresh Token Cookie (HttpOnly)
+    res.cookies.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: REFRESH_TOKEN_EXPIRES,
+    });
+
+    return res;
   } catch (error) {
     console.error(error);
     return NextResponse.json(

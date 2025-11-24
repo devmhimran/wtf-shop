@@ -1,6 +1,5 @@
 'use client';
 
-import { signIn, SignInResponse, useSession } from 'next-auth/react';
 import { useEffect, useState, useTransition } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -27,6 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { authApi } from '@/lib/api-helper';
 
 const FormSchema = z.object({
   email: z
@@ -43,7 +43,6 @@ export function SignInForm() {
   const previousURL = searchParams.get('callbackUrl');
   const [showPass, setShowPass] = useState(false);
 
-  const { status } = useSession();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -56,15 +55,20 @@ export function SignInForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     startTransition(async () => {
-      const result: SignInResponse | undefined = await signIn('credentials', {
+      // const result: SignInResponse | undefined = await signIn('credentials', {
+      //   email: data.email,
+      //   password: data.password,
+      //   redirect: false,
+      //   callbackUrl: '/dashboard',
+      // });
+
+      const result = await authApi.signIn({
         email: data.email,
         password: data.password,
-        redirect: false,
-        callbackUrl: '/dashboard',
       });
 
       if (result) {
-        if (result.ok && result.status === 200) {
+        if (result.status === 200) {
           toast.success('Login successfully');
           router.push(previousURL ?? '/dashboard');
         } else {
@@ -75,16 +79,12 @@ export function SignInForm() {
       }
     });
   }
-  useEffect(() => {
-    if (status === 'authenticated') {
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-      router.replace(callbackUrl);
-    }
-  }, [status, router, searchParams]);
-
-  if (status === 'authenticated') {
-    return null;
-  }
+  // useEffect(() => {
+  //   if (status === 'authenticated') {
+  //     const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  //     router.replace(callbackUrl);
+  //   }
+  // }, [ router, searchParams]);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 dark:bg-background'>

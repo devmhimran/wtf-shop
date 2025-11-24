@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import {
   Users,
   LayoutDashboard,
@@ -28,6 +27,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { UserNav } from './user-nav';
 import { PrimaryLogo } from './primary-logo';
+import { useUser } from '@/hooks';
 
 const superAdminMenuItems = [
   {
@@ -101,8 +101,8 @@ const MenuSkeleton = () => (
 );
 
 export function AppSidebar() {
-  const { data: session, status } = useSession();
-  const userRole = session?.user?.role;
+  const { fetchMe, fetchMeMutation } = useUser();
+  const userRole = fetchMe?.role;
   const pathname = usePathname();
 
   // Loading skeleton component for menu items
@@ -126,7 +126,7 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        {status === 'loading' ? (
+        {fetchMeMutation.isLoading ? (
           <MenuSkeleton />
         ) : (
           <>
