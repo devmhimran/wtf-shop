@@ -1,7 +1,7 @@
 import { UserRole } from '@/types';
 import { SignJWT, jwtVerify } from 'jose';
 
-export const ACCESS_TOKEN_EXPIRES = 30 * 60;
+export const ACCESS_TOKEN_EXPIRES = 1 * 60;
 export const REFRESH_TOKEN_EXPIRES = 7 * 24 * 60 * 60;
 
 function getAccessSecret() {
