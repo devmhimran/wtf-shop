@@ -97,7 +97,7 @@ export function UpdateUserForm({
 
     setIsPending(true);
     toast.promise(response, {
-      loading: 'Creating Blog...',
+      loading: 'Creating User...',
       success: (response) => {
         form.reset();
         setIsPending(false);

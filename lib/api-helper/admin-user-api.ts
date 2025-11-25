@@ -10,7 +10,7 @@ export const adminUserApi = {
       protectedUrl + '/users' + params + '&limit=' + USER_COUNT_PER_PAGE;
     return axiosInstanceWithAuth.get(url);
   },
-  createBlog: (data: CreateAdminUserType) => {
+  createUser: (data: CreateAdminUserType) => {
     const url = '/protected/users';
     return axiosInstanceWithAuth.post(url, data);
   },

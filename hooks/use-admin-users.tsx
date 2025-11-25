@@ -17,7 +17,7 @@ const queryClient = getQueryClient();
 export function useAdminUsersMutation() {
   const createUserMutation = useMutation({
     mutationFn: async (data: CreateAdminUserType) =>
-      await adminUserApi.createBlog(data).then((res) => res.data),
+      await adminUserApi.createUser(data).then((res) => res.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
     },
