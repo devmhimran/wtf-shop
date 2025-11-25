@@ -14,6 +14,10 @@ export const adminUserApi = {
     const url = '/protected/users';
     return axiosInstanceWithAuth.post(url, data);
   },
+  updateUser: (id: number, updateData: Partial<CreateAdminUserType>) => {
+    const url = `/protected/users/${id}`;
+    return axiosInstanceWithAuth.patch(url, updateData);
+  },
   deleteUser: (id: number) => {
     const url = `/protected/users/${id}`;
     return axiosInstanceWithAuth.delete(url);

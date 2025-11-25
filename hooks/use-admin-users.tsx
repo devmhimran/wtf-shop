@@ -3,7 +3,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { adminUserApi } from '@/lib/api-helper';
-import { CreateAdminUserType, Meta, Response, UsersType } from '@/types';
+import {
+  CreateAdminUserType,
+  Meta,
+  Response,
+  UpdateAdminUserType,
+  UsersType,
+} from '@/types';
 import { getQueryClient } from '@/lib/react-query';
 
 const queryClient = getQueryClient();
@@ -12,6 +18,14 @@ export function useAdminUsersMutation() {
   const createUserMutation = useMutation({
     mutationFn: async (data: CreateAdminUserType) =>
       await adminUserApi.createBlog(data).then((res) => res.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    },
+  });
+
+  const updateUserMutation = useMutation({
+    mutationFn: async (data: UpdateAdminUserType) =>
+      await adminUserApi.updateUser(data.id, data).then((res) => res.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
     },
@@ -32,6 +46,9 @@ export function useAdminUsersMutation() {
     deleteUser: deleteUserMutation.mutate,
     deleteUserAsync: deleteUserMutation.mutateAsync,
     deleteUserMutation,
+    updateUserMutation,
+    updateUser: updateUserMutation.mutate,
+    updateUserAsync: updateUserMutation.mutateAsync,
   };
 }
 

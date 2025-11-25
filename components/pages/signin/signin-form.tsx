@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { authApi } from '@/lib/api-helper';
+import { getErrorResponse } from '@/lib/utils';
 
 const FormSchema = z.object({
   email: z
@@ -39,9 +40,10 @@ const FormSchema = z.object({
 
 export function SignInForm() {
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
   const previousURL = searchParams.get('callbackUrl');
   const [showPass, setShowPass] = useState(false);
+
+  const [isPending, setIsPending] = useState(false);
 
   const router = useRouter();
 
@@ -54,22 +56,24 @@ export function SignInForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    startTransition(async () => {
-      const result = await authApi.signIn({
-        email: data.email,
-        password: data.password,
-      });
+    const result = authApi.signIn({
+      email: data.email,
+      password: data.password,
+    });
 
-      if (result) {
-        if (result.status === 200) {
-          toast.success('Login successfully');
-          router.push(previousURL ?? '/dashboard');
-        } else {
-          toast.error('Wrong username or password');
-        }
-      } else {
-        toast.error('An error occurred during login');
-      }
+    setIsPending(true);
+    toast.promise(result, {
+      loading: 'Signing in...',
+      success: () => {
+        form.reset();
+        setIsPending(false);
+        router.push(previousURL ?? '/dashboard');
+        return 'Signed in successfully!';
+      },
+      error: (error) => {
+        setIsPending(false);
+        return getErrorResponse(error);
+      },
     });
   }
   // useEffect(() => {

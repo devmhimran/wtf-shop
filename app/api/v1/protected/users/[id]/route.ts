@@ -59,7 +59,7 @@ export async function DELETE(
 export const PATCH = catchAsyncNext<{ params: Promise<{ id: string }> }>(
   async (request, context) => {
     if (!context?.params) throw new Error('Missing params');
-    const { id } = await context.params;
+    const { id: userId } = await context.params;
 
     const { error, payload } = await authenticateRequest(request);
     if (error) return error;
@@ -67,10 +67,11 @@ export const PATCH = catchAsyncNext<{ params: Promise<{ id: string }> }>(
     if (payload.role === 'CUSTOMER') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-    if (!id) throw new Error('Missing userId parameter');
+    if (!userId) throw new Error('Missing userId parameter');
 
     const body = await request.json();
-    const parsed = userSchema.parse(body);
+    const { id, ...rest } = body;
+    const parsed = userSchema.parse(rest);
 
     const existingUser = await prisma.user.findUnique({ where: { id: +id } });
     if (!existingUser || existingUser.isDelete)
@@ -86,7 +87,7 @@ export const PATCH = catchAsyncNext<{ params: Promise<{ id: string }> }>(
       updateData.password = await hashPassword(parsed.password);
 
     const updatedUser = await prisma.user.update({
-      where: { id: +id },
+      where: { id: +userId },
       data: updateData,
       select: {
         id: true,

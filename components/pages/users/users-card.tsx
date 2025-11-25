@@ -35,6 +35,7 @@ import { useUser } from '@/hooks';
 import { useAdminUsersMutation } from '@/hooks/use-admin-users';
 import { AlertModal, ConfirmModal } from '@/components/shared';
 import { UserDetails } from './user-details';
+import { UpdateUserForm } from '@/components/forms';
 
 type UsersCardProps = {
   data?: UsersType[];
@@ -49,6 +50,7 @@ export function UsersCard({ data, loading }: UsersCardProps) {
   const [openUserDetails, setOpenUserDetails] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const { deleteUserAsync } = useAdminUsersMutation();
 
@@ -92,6 +94,11 @@ export function UsersCard({ data, loading }: UsersCardProps) {
     setOpenUserDetails(true);
   };
 
+  const handleEditUser = (user: UsersType) => {
+    setUserDetails(user);
+    setOpenUpdateModal(true);
+  };
+
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
       {data.map((user) => {
@@ -118,9 +125,7 @@ export function UsersCard({ data, loading }: UsersCardProps) {
                       <Eye className='mr-2 h-4 w-4' />
                       Details
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                    // onClick={() => handleEditUser(user)}
-                    >
+                    <DropdownMenuItem onClick={() => handleEditUser(user)}>
                       <Edit className='mr-2 h-4 w-4' />
                       Edit
                     </DropdownMenuItem>
@@ -186,6 +191,15 @@ export function UsersCard({ data, loading }: UsersCardProps) {
         title='This action cannot be undone. This will permanently delete your user '
         onClick={handleDeleUser}
       />
+
+      <AlertModal
+        isOpen={openUpdateModal}
+        setIsOpen={setOpenUpdateModal}
+        title='View User Details'
+        description=' '
+      >
+        <UpdateUserForm setIsOpen={setOpenUpdateModal} data={userDetails} />
+      </AlertModal>
 
       <AlertModal
         isOpen={openUserDetails}

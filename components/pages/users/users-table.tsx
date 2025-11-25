@@ -32,6 +32,7 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@/hooks';
 import { Button } from '@/components/ui/button';
 import { UserDetails } from './user-details';
+import { UpdateUserForm } from '@/components/forms';
 
 type UsersTableProps = {
   data?: UsersType[];
@@ -44,6 +45,7 @@ export function UsersTable({ data, loading }: UsersTableProps) {
   const [userId, setUserId] = useState<number | null>(null);
   const [userDetails, setUserDetails] = useState<UsersType | null>(null);
   const [openUserDetails, setOpenUserDetails] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
@@ -74,6 +76,11 @@ export function UsersTable({ data, loading }: UsersTableProps) {
   const handleViewUser = (user: UsersType) => {
     setUserDetails(user);
     setOpenUserDetails(true);
+  };
+
+  const handleEditUser = (user: UsersType) => {
+    setUserDetails(user);
+    setOpenUpdateModal(true);
   };
 
   return loading ? (
@@ -112,45 +119,50 @@ export function UsersTable({ data, loading }: UsersTableProps) {
                 {dayjs(user.createdAt).format('DD-MM-YYYY')}
               </TableCell>
               <TableCell className='flex gap-2 justify-center'>
-                <div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Button variant='outline'>
-                        <EllipsisVertical className='w-5 h-5 text-gray-600' />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end'>
-                      <DropdownMenuLabel>Options</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button variant='outline'>
+                      <EllipsisVertical className='w-5 h-5 text-gray-600' />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align='end'>
+                    <DropdownMenuLabel>Options</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
 
-                      <DropdownMenuItem onClick={() => handleViewUser(user)}>
-                        <Eye className='mr-2 h-4 w-4' />
-                        Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                      // onClick={() => handleEditUser(user)}
-                      >
-                        <Edit className='mr-2 h-4 w-4' />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        disabled={isPending || fetchMe?.id === user.id}
-                        onClick={() => {
-                          setConfirmModal(true);
-                          setUserId(user.id);
-                        }}
-                        className='text-red-600'
-                      >
-                        <UserX className='mr-2 h-4 w-4' />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
+                    <DropdownMenuItem onClick={() => handleViewUser(user)}>
+                      <Eye className='mr-2 h-4 w-4' />
+                      Details
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleEditUser(user)}>
+                      <Edit className='mr-2 h-4 w-4' />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      disabled={isPending || fetchMe?.id === user.id}
+                      onClick={() => {
+                        setConfirmModal(true);
+                        setUserId(user.id);
+                      }}
+                      className='text-red-600'
+                    >
+                      <UserX className='mr-2 h-4 w-4' />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
             </TableRow>
           ))}
       </TableBody>
+
+      <AlertModal
+        isOpen={openUpdateModal}
+        setIsOpen={setOpenUpdateModal}
+        title='View User Details'
+        description=' '
+      >
+        <UpdateUserForm setIsOpen={setOpenUpdateModal} data={userDetails} />
+      </AlertModal>
 
       <AlertModal
         isOpen={openUserDetails}

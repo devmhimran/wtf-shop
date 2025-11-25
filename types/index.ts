@@ -5,7 +5,11 @@ import {
   UserRole,
 } from './auth.types';
 import { Response, Meta } from './common.types';
-import { UsersType, CreateAdminUserType } from './users.types';
+import {
+  UsersType,
+  CreateAdminUserType,
+  UpdateAdminUserType,
+} from './users.types';
 
 export type {
   SignInResponse,
@@ -16,4 +20,5 @@ export type {
   UserRole,
   UsersType,
   CreateAdminUserType,
+  UpdateAdminUserType,
 };
