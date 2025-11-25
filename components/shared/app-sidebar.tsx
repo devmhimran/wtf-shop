@@ -105,8 +105,6 @@ export function AppSidebar() {
   const userRole = fetchMe?.role;
   const pathname = usePathname();
 
-  // Loading skeleton component for menu items
-
   return (
     <Sidebar>
       <SidebarHeader>

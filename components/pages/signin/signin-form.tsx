@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -55,13 +55,6 @@ export function SignInForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     startTransition(async () => {
-      // const result: SignInResponse | undefined = await signIn('credentials', {
-      //   email: data.email,
-      //   password: data.password,
-      //   redirect: false,
-      //   callbackUrl: '/dashboard',
-      // });
-
       const result = await authApi.signIn({
         email: data.email,
         password: data.password,

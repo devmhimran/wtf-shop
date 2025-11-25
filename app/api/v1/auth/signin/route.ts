@@ -43,17 +43,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate tokens
     const accessToken = await generateAccessToken(user.id, user.role);
     const refreshToken = await generateRefreshToken(user.id, user.role);
 
-    // Store refresh token in DB
     await prisma.user.update({
       where: { id: user.id },
       data: { refreshToken },
     });
 
-    // Response object
     const res = NextResponse.json({
       message: 'Login successful',
       user: {
@@ -62,7 +59,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Set Access Token Cookie (HttpOnly)
     res.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -70,7 +66,6 @@ export async function POST(request: NextRequest) {
       maxAge: ACCESS_TOKEN_EXPIRES,
     });
 
-    // Set Refresh Token Cookie (HttpOnly)
     res.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

@@ -1,7 +1,7 @@
 import { UserRole } from '@/types';
 import { SignJWT, jwtVerify } from 'jose';
 
-export const ACCESS_TOKEN_EXPIRES = 45 * 60;
+export const ACCESS_TOKEN_EXPIRES = 1 * 10;
 export const REFRESH_TOKEN_EXPIRES = 7 * 24 * 60 * 60;
 
 function getAccessSecret() {
@@ -35,7 +35,6 @@ export async function verifyAccessToken(token: string) {
   }
 }
 
-// Verify Refresh Token
 export async function verifyRefreshToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, getRefreshSecret());

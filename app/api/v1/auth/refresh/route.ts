@@ -76,7 +76,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Set new cookies
     res.cookies.set('accessToken', newAccessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

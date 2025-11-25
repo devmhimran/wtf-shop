@@ -61,7 +61,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Non-Error thrown value
     console.error('Signup error: Non-Error thrown', { error });
     return NextResponse.json(
       { error: 'Internal server error', details: String(error) },
