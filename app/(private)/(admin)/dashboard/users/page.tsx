@@ -62,7 +62,7 @@ export default function UsersPage() {
   }, 500);
 
   useEffect(() => {
-    router.push(queryString);
+    router.replace(queryString, { scroll: false });
   }, [queryString, router]);
 
   return (
