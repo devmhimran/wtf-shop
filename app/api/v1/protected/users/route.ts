@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import * as z from 'zod';
 
 import { $Enums, Prisma } from '@/generated/prisma/client';
@@ -91,7 +94,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         success: true,
         data: users,
@@ -99,6 +102,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
+
+    response.headers.set('Cache-Control', 'no-store, max-age=0');
+
+    return response;
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },

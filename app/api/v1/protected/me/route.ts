@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { authenticateRequest } from '@/lib/utils';
 import { prisma } from '@/prisma/prisma';
 import { NextRequest, NextResponse } from 'next/server';
@@ -77,7 +80,10 @@ export async function GET(request: NextRequest) {
       },
     };
 
-    return NextResponse.json(responseData);
+    const response = NextResponse.json(responseData, { status: 200 });
+    response.headers.set('Cache-Control', 'no-store, max-age=0');
+
+    return response;
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },

@@ -61,16 +61,16 @@ export async function POST(request: NextRequest) {
 
     res.cookies.set('accessToken', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       path: '/',
       maxAge: ACCESS_TOKEN_EXPIRES,
     });
 
     res.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       path: '/',
       maxAge: REFRESH_TOKEN_EXPIRES,
     });
