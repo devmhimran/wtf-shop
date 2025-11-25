@@ -3,5 +3,5 @@ export default function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className='font-inter'>{children}</div>;
+  return <main className='font-inter'>{children}</main>;
 }

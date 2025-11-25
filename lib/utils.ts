@@ -4,10 +4,35 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { verifyAccessToken } from './jwt';
 import { authApi } from './api-helper';
+import { CommonApiResponseError } from '@/types/common.types';
+
+export const USER_COUNT_PER_PAGE = 10;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const getErrorMessage = (error: unknown) => {
+  let message;
+
+  if (error instanceof Error) {
+    message = error.message;
+  } else if (error && typeof error === 'object' && 'message' in error) {
+    message = String(error.message);
+  } else if (typeof error === 'string') {
+    message = error;
+  } else {
+    message = 'Something went wrong';
+  }
+
+  return message;
+};
+
+export const getErrorResponse = (error: CommonApiResponseError) => {
+  return (
+    error?.response?.data?.error || error.message || 'Failed to create user'
+  );
+};
 
 export async function authenticateRequest(request: NextRequest) {
   const token = request.cookies.get('accessToken')?.value;

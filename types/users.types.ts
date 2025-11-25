@@ -8,3 +8,11 @@ export type UsersType = {
   isActive: boolean;
   createdAt: Date;
 };
+
+export type CreateAdminUserType = {
+  name: string;
+  email: string;
+  password: string;
+  role: 'SUPER_ADMIN' | 'ADMIN';
+  isActive: boolean;
+};

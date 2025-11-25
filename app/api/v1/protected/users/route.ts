@@ -95,9 +95,7 @@ export async function GET(request: NextRequest) {
       {
         success: true,
         data: users,
-        meta: {
-          meta: { count, totalPages, page: Number(page), limit: Number(limit) },
-        },
+        meta: { count, totalPages, page: Number(page), limit: Number(limit) },
       },
       { status: 200 }
     );

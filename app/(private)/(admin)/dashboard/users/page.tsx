@@ -1,17 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  ChevronLeft,
-  ChevronRight,
-  Edit,
-  EllipsisVertical,
-  Eye,
-  Plus,
-  Search,
-  UserX,
-  X,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -30,26 +20,12 @@ import {
   roleConvert,
   userStatusConvert,
 } from '@/lib/utils';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { UsersTable } from '@/components/pages/users';
+
+import { UsersCard, UsersTable } from '@/components/pages/users';
 import { useAdminUsers } from '@/hooks/use-admin-users';
-import { AlertModal, Modal } from '@/components/shared';
 import { UsersTableSkeleton } from '@/components/skeletons';
+import { AlertModal } from '@/components/shared';
+import { CreateUserForm } from '@/components/forms';
 
 export default function UsersPage() {
   const searchParams = useSearchParams();
@@ -127,7 +103,7 @@ export default function UsersPage() {
                 setStatusFilter(value);
               }}
             >
-              <SelectTrigger className='w-[180px]'>
+              <SelectTrigger className='w-full md:w-[180px]'>
                 <SelectValue placeholder='Filter by status' />
               </SelectTrigger>
               <SelectContent>
@@ -146,7 +122,7 @@ export default function UsersPage() {
                 setRoleFilter(value);
               }}
             >
-              <SelectTrigger className='w-[180px]'>
+              <SelectTrigger className='w-full md:w-[180px]'>
                 <SelectValue placeholder='Filter by role' />
               </SelectTrigger>
               <SelectContent>
@@ -219,24 +195,21 @@ export default function UsersPage() {
           <CardTitle>Users List</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Desktop Table View */}
           {!fetchAdminUsersMutation.isLoading ? (
-            <div className='hidden md:block'>
-              <UsersTable data={fetchAdminUsersData?.data || []} />
-            </div>
+            <>
+              <div className='hidden md:block'>
+                <UsersTable data={fetchAdminUsersData?.data || []} />
+              </div>
+              <div className='md:hidden block'>
+                <UsersCard data={fetchAdminUsersData?.data || []} />
+              </div>
+            </>
           ) : (
             <UsersTableSkeleton />
           )}
 
           {fetchAdminUsersData && fetchAdminUsersData.meta.count > 0 && (
-            <div className='flex md:flex-row flex-col items-center md:justify-between justify-center gap-3 py-4'>
-              <div className='text-sm text-muted-foreground'>
-                {fetchAdminUsersData &&
-                  ` Showing ${params.page} to ${
-                    fetchAdminUsersData.meta.page *
-                    fetchAdminUsersData.data.length
-                  } of ${fetchAdminUsersData.meta.count} results`}
-              </div>
+            <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
               <div className='flex items-center space-x-2'>
                 <Button
                   variant='outline'
@@ -274,6 +247,15 @@ export default function UsersPage() {
           )}
         </CardContent>
       </Card>
+
+      <AlertModal
+        isOpen={addUserOpen}
+        setIsOpen={setAddUserOpen}
+        title='Create new user'
+        description=' '
+      >
+        <CreateUserForm setIsOpen={setAddUserOpen} />
+      </AlertModal>
       {/* <AlertModal
         isOpen={addUserOpen}
         setIsOpen={setAddUserOpen}
