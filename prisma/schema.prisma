@@ -91,6 +91,7 @@ model Product {
   isNew              Boolean           @default(false)
   isActive           Boolean           @default(true)
   isDelete           Boolean           @default(false)
+  slug             String           @unique 
 
   mainImage          String?
   alternativeImage   String?
