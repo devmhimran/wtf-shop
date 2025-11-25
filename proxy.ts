@@ -30,7 +30,11 @@ export async function proxy(req: NextRequest) {
 
     const refreshRes = await fetch(`${baseUrl}/auth/refresh`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', cookie: cookieHeader },
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: cookieHeader,
+        credentials: 'include',
+      },
     });
 
     if (refreshRes.ok) {

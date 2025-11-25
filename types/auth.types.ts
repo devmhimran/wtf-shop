@@ -1,6 +1,6 @@
 export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'CUSTOMER';
 
-export type UserType = {
+export type ProfileType = {
   id: number;
   email: string;
   name: string;
@@ -8,8 +8,6 @@ export type UserType = {
 };
 
 export type SignInResponse = {
-  accessToken: string;
-  refreshToken: string;
   user: {
     id: number;
     role: UserRole;
@@ -22,10 +20,10 @@ export type SignInRequest = {
 
 export type MeResponse = {
   message: string;
-  user: UserType;
+  user: ProfileType;
 };
 
 export type UserMeResponse = {
   message: string;
-  user: UserType;
+  user: ProfileType;
 };

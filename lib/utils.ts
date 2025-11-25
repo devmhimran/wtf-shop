@@ -34,10 +34,9 @@ export async function authenticateRequest(request: NextRequest) {
     };
   }
 
-  // 3. Return payload (userId + role)
   return {
     error: null,
-    payload, // { userId, role }
+    payload,
   };
 }
 
