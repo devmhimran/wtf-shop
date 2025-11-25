@@ -33,7 +33,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useUser } from '@/hooks';
 import { useAdminUsersMutation } from '@/hooks/use-admin-users';
-import { ConfirmModal } from '@/components/shared';
+import { AlertModal, ConfirmModal } from '@/components/shared';
+import { UserDetails } from './user-details';
 
 type UsersCardProps = {
   data?: UsersType[];
@@ -44,6 +45,8 @@ export function UsersCard({ data, loading }: UsersCardProps) {
   const { fetchMe } = useUser();
   const router = useRouter();
   const [userId, setUserId] = useState<number | null>(null);
+  const [userDetails, setUserDetails] = useState<UsersType | null>(null);
+  const [openUserDetails, setOpenUserDetails] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
@@ -84,6 +87,11 @@ export function UsersCard({ data, loading }: UsersCardProps) {
     );
   }
 
+  const handleViewUser = (user: UsersType) => {
+    setUserDetails(user);
+    setOpenUserDetails(true);
+  };
+
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
       {data.map((user) => {
@@ -106,9 +114,7 @@ export function UsersCard({ data, loading }: UsersCardProps) {
                     <DropdownMenuLabel>Options</DropdownMenuLabel>
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem
-                    // onClick={() => handleViewUser(user)}
-                    >
+                    <DropdownMenuItem onClick={() => handleViewUser(user)}>
                       <Eye className='mr-2 h-4 w-4' />
                       Details
                     </DropdownMenuItem>
@@ -180,6 +186,15 @@ export function UsersCard({ data, loading }: UsersCardProps) {
         title='This action cannot be undone. This will permanently delete your user '
         onClick={handleDeleUser}
       />
+
+      <AlertModal
+        isOpen={openUserDetails}
+        setIsOpen={setOpenUserDetails}
+        title='View User Details'
+        description=' '
+      >
+        <UserDetails data={userDetails} />
+      </AlertModal>
     </div>
   );
 }

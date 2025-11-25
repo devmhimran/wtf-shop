@@ -5,6 +5,7 @@ import { PrimaryLogo } from './primary-logo';
 import { AlertModal } from './alert-modal';
 import { Modal } from './modal';
 import { ConfirmModal } from './confirm-modal';
+import { DetailItems } from './detail-items';
 
 export {
   AppSidebar,
@@ -14,4 +15,5 @@ export {
   AlertModal,
   Modal,
   ConfirmModal,
+  DetailItems,
 };

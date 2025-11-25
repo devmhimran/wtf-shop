@@ -7,6 +7,7 @@ export type UsersType = {
   isDelete: boolean;
   isActive: boolean;
   createdAt: Date;
+  updatedAt: Date;
 };
 
 export type CreateAdminUserType = {

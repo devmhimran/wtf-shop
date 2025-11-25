@@ -24,13 +24,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { ConfirmModal } from '@/components/shared';
+import { AlertModal, ConfirmModal } from '@/components/shared';
 
 import { useAdminUsersMutation } from '@/hooks/use-admin-users';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/hooks';
 import { Button } from '@/components/ui/button';
+import { UserDetails } from './user-details';
 
 type UsersTableProps = {
   data?: UsersType[];
@@ -41,6 +42,8 @@ export function UsersTable({ data, loading }: UsersTableProps) {
   const { fetchMe } = useUser();
   const router = useRouter();
   const [userId, setUserId] = useState<number | null>(null);
+  const [userDetails, setUserDetails] = useState<UsersType | null>(null);
+  const [openUserDetails, setOpenUserDetails] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
@@ -66,6 +69,11 @@ export function UsersTable({ data, loading }: UsersTableProps) {
         );
       },
     });
+  };
+
+  const handleViewUser = (user: UsersType) => {
+    setUserDetails(user);
+    setOpenUserDetails(true);
   };
 
   return loading ? (
@@ -115,9 +123,7 @@ export function UsersTable({ data, loading }: UsersTableProps) {
                       <DropdownMenuLabel>Options</DropdownMenuLabel>
                       <DropdownMenuSeparator />
 
-                      <DropdownMenuItem
-                      // onClick={() => handleViewUser(user)}
-                      >
+                      <DropdownMenuItem onClick={() => handleViewUser(user)}>
                         <Eye className='mr-2 h-4 w-4' />
                         Details
                       </DropdownMenuItem>
@@ -146,14 +152,14 @@ export function UsersTable({ data, loading }: UsersTableProps) {
           ))}
       </TableBody>
 
-      {/* <AlertModal
-        isOpen={updateUserModal}
-        setIsOpen={setUpdateUserModal}
-        title='Update user'
+      <AlertModal
+        isOpen={openUserDetails}
+        setIsOpen={setOpenUserDetails}
+        title='View User Details'
         description=' '
       >
-        <UpdateUserForm setIsOpen={setUpdateUserModal} data={updateUser} />
-      </AlertModal> */}
+        <UserDetails data={userDetails} />
+      </AlertModal>
       <ConfirmModal
         isOpen={confirmModal}
         setIsOpen={setConfirmModal}
