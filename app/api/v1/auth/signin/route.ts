@@ -50,7 +50,10 @@ export async function POST(request: NextRequest) {
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { refreshToken },
+      data: {
+        refreshToken,
+        refreshTokenUpdatedAt: new Date(),
+      },
     });
 
     const res = NextResponse.json({
@@ -60,24 +63,23 @@ export async function POST(request: NextRequest) {
         role: user.role,
       },
     });
+
     const cookieOptions: Partial<ResponseCookie> = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
+      sameSite: 'lax', // Changed from 'none' (only use 'none' if cross-domain)
       path: '/',
+      maxAge: ACCESS_TOKEN_EXPIRES,
     };
 
-    res.cookies.set('accessToken', accessToken, {
-      ...cookieOptions,
-      maxAge: ACCESS_TOKEN_EXPIRES,
-    });
+    res.cookies.set('accessToken', accessToken, cookieOptions);
 
     res.cookies.set('refreshToken', refreshToken, {
       ...cookieOptions,
       maxAge: REFRESH_TOKEN_EXPIRES,
     });
 
-    res.headers.set('Cache-Control', 'no-store');
+    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
 
     return res;
   } catch (error) {
