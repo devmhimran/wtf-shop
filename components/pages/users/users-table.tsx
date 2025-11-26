@@ -3,6 +3,8 @@
 import dayjs from 'dayjs';
 import { Edit, EllipsisVertical, Eye, UserX } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 import { UsersTableSkeleton } from '@/components/skeletons';
 import {
@@ -14,7 +16,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { roleConvert } from '@/lib/utils';
-import { UsersType } from '@/types/users.types';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,14 +26,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { AlertModal, ConfirmModal } from '@/components/shared';
-
 import { useAdminUsersMutation } from '@/hooks/use-admin-users';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+
 import { useUser } from '@/hooks';
-import { Button } from '@/components/ui/button';
 import { UserDetails } from './user-details';
 import { UpdateUserForm } from '@/components/forms';
+import { UsersType } from '@/types';
 
 type UsersTableProps = {
   data?: UsersType[];
@@ -120,10 +119,8 @@ export function UsersTable({ data, loading }: UsersTableProps) {
               </TableCell>
               <TableCell className='flex gap-2 justify-center'>
                 <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <Button variant='outline'>
-                      <EllipsisVertical className='w-5 h-5 text-gray-600' />
-                    </Button>
+                  <DropdownMenuTrigger className='p-2 border rounded-md bg-white hover:bg-gray-50 cursor-pointer'>
+                    <EllipsisVertical className='w-5 h-5 text-gray-600' />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
                     <DropdownMenuLabel>Options</DropdownMenuLabel>
