@@ -6,6 +6,8 @@ import {
   ListOrdered,
   List,
   Package,
+  Palette,
+  RulerDimensionLine,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -44,6 +46,26 @@ const superAdminMenuItems = [
     title: 'Custom Products',
     url: '/dashboard/custom-products',
     icon: List,
+  },
+  {
+    title: 'Categories',
+    url: '/dashboard/categories',
+    icon: List,
+  },
+  {
+    title: 'Sub Categories',
+    url: '/dashboard/sub-categories',
+    icon: List,
+  },
+  {
+    title: 'Colors',
+    url: '/dashboard/colors',
+    icon: Palette,
+  },
+  {
+    title: 'Sizes',
+    url: '/dashboard/sizes',
+    icon: RulerDimensionLine,
   },
   {
     title: 'Orders',

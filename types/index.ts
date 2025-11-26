@@ -11,6 +11,8 @@ import {
   UpdateAdminUserType,
 } from './users.types';
 
+import { CategoryType, CreateCategoryType } from './categories';
+
 export type {
   SignInResponse,
   SignInRequest,
@@ -21,4 +23,6 @@ export type {
   UsersType,
   CreateAdminUserType,
   UpdateAdminUserType,
+  CategoryType,
+  CreateCategoryType,
 };

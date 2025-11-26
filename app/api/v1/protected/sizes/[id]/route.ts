@@ -39,7 +39,7 @@ export const GET = catchAsyncNext(
 export const PUT = catchAsyncNext(
   async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
     if (!context?.params) throw new Error('Missing params');
-    const { id } = await context.params;
+    const { id: sizeId } = await context.params;
 
     const { error, payload } = await authenticateRequest(req);
     if (error) return error;
@@ -51,8 +51,8 @@ export const PUT = catchAsyncNext(
       );
     }
 
-    const idNumber = Number(id);
-    if (isNaN(idNumber)) {
+    const id = Number(sizeId);
+    if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid size ID' }, { status: 400 });
     }
 
@@ -67,7 +67,7 @@ export const PUT = catchAsyncNext(
     }
 
     const size = await prisma.size.update({
-      where: { id: idNumber },
+      where: { id },
       data: { name },
     });
 
@@ -83,7 +83,7 @@ export const PUT = catchAsyncNext(
 export const DELETE = catchAsyncNext(
   async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
     if (!context?.params) throw new Error('Missing params');
-    const { id } = await context.params;
+    const { id: sizeId } = await context.params;
 
     const { error, payload } = await authenticateRequest(req);
     if (error) return error;
@@ -95,14 +95,13 @@ export const DELETE = catchAsyncNext(
       );
     }
 
-    const idNumber = Number(id);
-
-    if (isNaN(idNumber)) {
+    const id = Number(sizeId);
+    if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid size ID' }, { status: 400 });
     }
 
     await prisma.size.delete({
-      where: { id: idNumber },
+      where: { id },
     });
 
     return NextResponse.json({

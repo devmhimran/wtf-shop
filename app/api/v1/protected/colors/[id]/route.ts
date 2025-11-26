@@ -9,11 +9,14 @@ type RouteParams = {
 
 // GET single color
 export const GET = catchAsyncNext(
-  async (req: NextRequest, context?: { params: RouteParams }) => {
+  async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
+    if (!context?.params) throw new Error('Missing params');
+    const { id: colorId } = await context.params;
+
     const { error } = await authenticateRequest(req);
     if (error) return error;
 
-    const id = Number(context?.params.id);
+    const id = Number(colorId);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid color ID' }, { status: 400 });
     }
@@ -35,9 +38,9 @@ export const GET = catchAsyncNext(
 
 // PUT - Update color
 export const PUT = catchAsyncNext(
-  async (req: NextRequest, context?: { params: Promise<{ id: string }> }) => {
+  async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
     if (!context?.params) throw new Error('Missing params');
-    const { id } = await context.params;
+    const { id: colorId } = await context.params;
 
     const { error, payload } = await authenticateRequest(req);
     if (error) return error;
@@ -49,7 +52,8 @@ export const PUT = catchAsyncNext(
       );
     }
 
-    if (isNaN(+id)) {
+    const id = Number(colorId);
+    if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid color ID' }, { status: 400 });
     }
 
