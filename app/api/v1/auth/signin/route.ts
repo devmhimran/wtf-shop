@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
+import { NextRequest, NextResponse } from 'next/server';
 import { comparePassword } from '@/lib/bcrypt';
 import {
   ACCESS_TOKEN_EXPIRES,
@@ -8,6 +10,7 @@ import {
   REFRESH_TOKEN_EXPIRES,
 } from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
+import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,7 +24,6 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
-
     if (!user || !(await comparePassword(password, user.password))) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
@@ -58,22 +60,24 @@ export async function POST(request: NextRequest) {
         role: user.role,
       },
     });
-
-    res.cookies.set('accessToken', accessToken, {
+    const cookieOptions: Partial<ResponseCookie> = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
       path: '/',
+    };
+
+    res.cookies.set('accessToken', accessToken, {
+      ...cookieOptions,
       maxAge: ACCESS_TOKEN_EXPIRES,
     });
 
     res.cookies.set('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      path: '/',
+      ...cookieOptions,
       maxAge: REFRESH_TOKEN_EXPIRES,
     });
+
+    res.headers.set('Cache-Control', 'no-store');
 
     return res;
   } catch (error) {
