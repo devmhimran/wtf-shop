@@ -26,7 +26,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const [colors, totalCount] = await Promise.all([
     prisma.color.findMany({
       where,
-      orderBy: { id: 'asc' },
+      orderBy: { id: 'desc' },
       skip,
       take: limit,
     }),

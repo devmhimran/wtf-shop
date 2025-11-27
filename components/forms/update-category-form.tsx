@@ -18,6 +18,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { useCategories } from '@/hooks';
+import { CategoryType } from '@/types';
 
 const FormSchema = z.object({
   name: z
@@ -34,34 +35,36 @@ const FormSchema = z.object({
     }),
 });
 
-export function CreateCategoryForm({
+export function UpdateCategoryForm({
   setIsOpen,
+  data,
 }: {
   setIsOpen: (open: boolean) => void;
+  data: CategoryType | null;
 }) {
   const [isPending, setIsPending] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: '',
-      slug: '',
+      name: data?.name || '',
+      slug: data?.slug || '',
     },
   });
 
-  const { createCategoryAsync } = useCategories();
+  const { updateCategoryAsync } = useCategories();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const response = createCategoryAsync(data);
+    const response = updateCategoryAsync(data);
 
     setIsPending(true);
     toast.promise(response, {
-      loading: 'Creating category...',
+      loading: 'Creating User...',
       success: (response) => {
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        return response.data?.message || 'Successfully created category!';
+        return response.data?.message || 'Successfully updated Category!';
       },
 
       error: (error) => {
@@ -120,7 +123,7 @@ export function CreateCategoryForm({
           className='flex justify-start'
         >
           {isPending && <Loader2Icon className='animate-spin' />}
-          Create
+          Edit
         </Button>
       </form>
     </Form>

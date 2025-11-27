@@ -36,7 +36,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const [categories, totalCount] = await Promise.all([
     prisma.category.findMany({
       where,
-      orderBy: { name: 'asc' },
+      orderBy: { id: 'desc' },
       skip,
       take: limit,
       include: {

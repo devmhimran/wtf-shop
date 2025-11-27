@@ -4,7 +4,6 @@ import { Loader2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -65,7 +64,6 @@ export function UpdateUserForm({
   setIsOpen: (open: boolean) => void;
   data: UsersType | null;
 }) {
-  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const { updateUserAsync } = useAdminUsersMutation();
 
@@ -102,7 +100,6 @@ export function UpdateUserForm({
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        router.push(`/dashboard/users`);
         return response.data?.message || 'Successfully created User!';
       },
 

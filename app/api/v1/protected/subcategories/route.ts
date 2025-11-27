@@ -47,7 +47,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const [subcategories, totalCount] = await Promise.all([
     prisma.subCategory.findMany({
       where,
-      orderBy: { name: 'asc' },
+      orderBy: { id: 'desc' },
       skip,
       take: limit,
       include: {

@@ -26,7 +26,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const [sizes, totalCount] = await Promise.all([
     prisma.size.findMany({
       where,
-      orderBy: { id: 'asc' },
+      orderBy: { id: 'desc' },
       skip,
       take: limit,
     }),

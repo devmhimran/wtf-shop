@@ -45,7 +45,7 @@ export default function CategoriesPage() {
   }, [queryString, router]);
 
   return (
-    <div className='space-y-6 w-5/6 md:w-4/6 lg:w-3/6 mx-auto '>
+    <div className='space-y-6 w-full md:w-4/6 lg:w-3/6 mx-auto '>
       {' '}
       <div className='flex items-center justify-between'>
         <h1 className='text-xl md:text-3xl font-bold'>Categories</h1>

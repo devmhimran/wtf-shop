@@ -23,14 +23,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ConfirmModal } from '@/components/shared';
+import { AlertModal, ConfirmModal } from '@/components/shared';
 import { useCategories } from '@/hooks';
+import { UpdateCategoryForm } from '@/components/forms';
 
 export function CategoriesCard({ data }: { data?: CategoryType[] }) {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
-  const [categorySlug, setCategorySlug] = useState<string | null>(null);
+  const [categoryDetails, setCategoryDetails] = useState<CategoryType | null>(
+    null
+  );
+
+  const [categorySlug, setCategoryDetailsSlug] = useState<string | null>(null);
 
   const { deleteCategoryAsync } = useCategories();
 
@@ -54,6 +60,11 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
         );
       },
     });
+  };
+
+  const handleEditCategory = (category: CategoryType) => {
+    setCategoryDetails(category);
+    setOpenUpdateModal(true);
   };
 
   if (!data || data.length === 0) {
@@ -93,11 +104,15 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
                   <DropdownMenuContent className='font-inter font-medium'>
                     <DropdownMenuLabel>Option</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleEditCategory(category)}
+                    >
+                      Edit
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       className='text-red-600'
                       onClick={() => {
-                        setCategorySlug(category.slug);
+                        setCategoryDetailsSlug(category.slug);
                         setConfirmModal(true);
                       }}
                     >
@@ -137,6 +152,18 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
         title='This action cannot be undone. This will permanently delete your user '
         onClick={handleDeleUser}
       />
+
+      <AlertModal
+        isOpen={openUpdateModal}
+        setIsOpen={setOpenUpdateModal}
+        title='Edit category'
+        description=' '
+      >
+        <UpdateCategoryForm
+          setIsOpen={setOpenUpdateModal}
+          data={categoryDetails}
+        />
+      </AlertModal>
     </div>
   );
 }
