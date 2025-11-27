@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { FolderOpen, Package, Layers, EllipsisVertical } from 'lucide-react';
 
@@ -28,7 +27,6 @@ import { useCategories } from '@/hooks';
 import { UpdateCategoryForm } from '@/components/forms';
 
 export function CategoriesCard({ data }: { data?: CategoryType[] }) {
-  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -48,7 +46,6 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
       success: () => {
         setConfirmModal(false);
         setIsPending(false);
-        router.push('/dashboard/categories');
         return 'Successfully category deleted';
       },
       error: (error) => {
