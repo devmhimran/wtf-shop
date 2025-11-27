@@ -1,9 +1,10 @@
 'use client';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
+
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
 import { CategoryType, CreateCategoryType, Meta, Response } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -41,13 +42,14 @@ export function useCategories() {
   });
 
   return {
+    deleteCategoryMutation,
     deleteCategory: deleteCategoryMutation.mutate,
     deleteCategoryAsync: deleteCategoryMutation.mutateAsync,
-    deleteCategoryMutation,
 
+    createCategoryMutation,
     createCategory: createCategoryMutation.mutate,
     createCategoryAsync: createCategoryMutation.mutateAsync,
-    createCategoryMutation,
+
     updateCategoryMutation,
     updateCategory: updateCategoryMutation.mutate,
     updateCategoryAsync: updateCategoryMutation.mutateAsync,

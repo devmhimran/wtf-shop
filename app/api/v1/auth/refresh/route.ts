@@ -11,7 +11,7 @@ import {
 } from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
 
-const REFRESH_TOKEN_REUSE_WINDOW = 10 * 60 * 1000;
+const REFRESH_TOKEN_REUSE_WINDOW = 60 * 1000;
 
 export async function POST(req: NextRequest) {
   try {

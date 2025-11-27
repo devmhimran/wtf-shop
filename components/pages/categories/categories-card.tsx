@@ -75,7 +75,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
   }
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-2  gap-4 font-inter'>
+    <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 font-inter'>
       {data.map((category) => (
         <Card className='p-4' key={category.id}>
           <CardHeader className='px-0'>

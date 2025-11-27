@@ -95,7 +95,7 @@ export default function CategoriesPage() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Users List</CardTitle>
+          <CardTitle>Categories List</CardTitle>
         </CardHeader>
         <CardContent>
           {fetchAllCategoriesMutation.isLoading ? (

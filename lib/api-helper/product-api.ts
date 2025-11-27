@@ -1,4 +1,11 @@
-import { CategoryType, CreateCategoryType, Meta, Response } from '@/types';
+import {
+  CategoryType,
+  CreateCategoryType,
+  CreateSubCategoryType,
+  Meta,
+  Response,
+  SubCategoryType,
+} from '@/types';
 import { axiosInstanceWithAuth } from '../axios';
 
 export const productApi = {
@@ -17,6 +24,27 @@ export const productApi = {
     },
     deleteCategory: (slug: string) => {
       const url = `/protected/categories/${slug}`;
+      return axiosInstanceWithAuth.delete(url);
+    },
+  },
+  subCategories: {
+    getSubCategories: (params?: string) => {
+      const url = '/protected/subcategories' + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<SubCategoryType[], Meta>>(url);
+    },
+    createSubCategory: (data: CreateSubCategoryType) => {
+      const url = '/protected/subcategories';
+      return axiosInstanceWithAuth.post(url, data);
+    },
+    updateSubCategory: (
+      slug: string,
+      updateData: Partial<CreateSubCategoryType>
+    ) => {
+      const url = `/protected/subcategories/${slug}`;
+      return axiosInstanceWithAuth.put(url, updateData);
+    },
+    deleteSubCategory: (slug: string) => {
+      const url = `/protected/subcategories/${slug}`;
       return axiosInstanceWithAuth.delete(url);
     },
   },
