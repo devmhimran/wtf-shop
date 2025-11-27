@@ -17,8 +17,16 @@ export function useCategories() {
   });
 
   const updateCategoryMutation = useMutation({
-    mutationFn: async (data: CreateCategoryType) =>
-      await productApi.categories.createCategory(data).then(({ data }) => data),
+    mutationFn: async ({
+      slug,
+      data,
+    }: {
+      slug: string;
+      data: CreateCategoryType;
+    }) =>
+      await productApi.categories
+        .updateCategory(slug, data)
+        .then(({ data }) => data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },

@@ -13,7 +13,7 @@ export const productApi = {
     },
     updateCategory: (slug: string, updateData: Partial<CreateCategoryType>) => {
       const url = `/protected/categories/${slug}`;
-      return axiosInstanceWithAuth.patch(url, updateData);
+      return axiosInstanceWithAuth.put(url, updateData);
     },
     deleteCategory: (slug: string) => {
       const url = `/protected/categories/${slug}`;

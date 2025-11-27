@@ -256,49 +256,6 @@ export default function UsersPage() {
       >
         <CreateUserForm setIsOpen={setAddUserOpen} />
       </AlertModal>
-      {/* <AlertModal
-        isOpen={addUserOpen}
-        setIsOpen={setAddUserOpen}
-        title='Create new user'
-        description=' '
-      >
-        <AddUserForm setIsOpen={setAddUserOpen} />
-      </AlertModal>
-      <AlertModal
-        isOpen={createUserPaymentOpen}
-        setIsOpen={setCreateUserPaymentOpen}
-        title='Create new user payment'
-        description=' '
-      >
-        <CreateUserPaymentForm
-          setIsOpen={setCreateUserPaymentOpen}
-          userId={paymentUserId}
-          salary={salary}
-        />
-      </AlertModal>
-      <AlertModal
-        isOpen={updateUserModal}
-        setIsOpen={setUpdateUserModal}
-        title='Update user'
-        description=' '
-      >
-        <UpdateUserForm setIsOpen={setUpdateUserModal} data={updateUser} />
-      </AlertModal>
-      <Modal
-        isOpen={viewUserModal}
-        setIsOpen={setViewUserModal}
-        title='User Details'
-        description=' '
-      >
-        {viewUser && <UserDetailsView user={viewUser} />}
-      </Modal>
-      <ConfirmModal
-        isOpen={confirmModal}
-        setIsOpen={setConfirmModal}
-        loading={isPending}
-        title='This action cannot be undone. This will permanently delete your user '
-        onClick={handleDeleUser}
-      /> */}
     </div>
   );
 }

@@ -100,7 +100,7 @@ export function UpdateUserForm({
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        return response.data?.message || 'Successfully created User!';
+        return response.message || 'Successfully updated User!';
       },
 
       error: (error) => {
@@ -234,7 +234,7 @@ export function UpdateUserForm({
           className='flex justify-start'
         >
           {isPending && <Loader2Icon className='animate-spin' />}
-          Create
+          Edit
         </Button>
       </form>
     </Form>

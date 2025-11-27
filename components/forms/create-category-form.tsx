@@ -61,7 +61,7 @@ export function CreateCategoryForm({
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        return response.data?.message || 'Successfully created category!';
+        return response.message || 'Successfully created category!';
       },
 
       error: (error) => {

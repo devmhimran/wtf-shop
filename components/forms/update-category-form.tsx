@@ -54,8 +54,12 @@ export function UpdateCategoryForm({
 
   const { updateCategoryAsync } = useCategories();
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    const response = updateCategoryAsync(data);
+  function onSubmit(formData: z.infer<typeof FormSchema>) {
+    if (!data) return;
+    const response = updateCategoryAsync({
+      slug: data.slug,
+      data: formData,
+    });
 
     setIsPending(true);
     toast.promise(response, {
@@ -64,7 +68,7 @@ export function UpdateCategoryForm({
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        return response.data?.message || 'Successfully updated Category!';
+        return response.message || 'Successfully updated Category!';
       },
 
       error: (error) => {

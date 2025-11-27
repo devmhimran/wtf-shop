@@ -1,4 +1,6 @@
 export type Response<X, Y> = {
+  success?: boolean;
+  message: string;
   data: X;
   meta: Y;
 };
