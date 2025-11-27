@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { verifyAccessToken } from '@/lib/jwt';
-import { baseUrl } from '@/lib/axios';
+import { baseURL } from './lib/axios';
 
 const SUPER_ADMIN_PATHS = [
   '/dashboard/',
@@ -28,7 +29,7 @@ export async function proxy(req: NextRequest) {
   if (!payload) {
     const cookieHeader = req.headers.get('cookie') || '';
 
-    const refreshRes = await fetch(`${baseUrl}/auth/refresh`, {
+    const refreshRes = await fetch(`${baseURL}/auth/refresh`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

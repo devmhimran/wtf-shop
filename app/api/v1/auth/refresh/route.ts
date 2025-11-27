@@ -83,27 +83,27 @@ export async function POST(req: NextRequest) {
       user: { id: user.id, role: user.role },
     });
 
-    const isProduction = process.env.NODE_ENV === 'production';
-    const isCrossDomain =
-      process.env.NEXT_PUBLIC_BASE_URL?.includes('localhost') === false;
-
     res.cookies.set('accessToken', newAccessToken, {
       httpOnly: true,
-      secure: isProduction || isCrossDomain,
-      sameSite: isCrossDomain ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       path: '/',
       maxAge: ACCESS_TOKEN_EXPIRES,
     });
 
     res.cookies.set('refreshToken', newRefreshToken, {
       httpOnly: true,
-      secure: isProduction || isCrossDomain,
-      sameSite: isCrossDomain ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       path: '/',
       maxAge: REFRESH_TOKEN_EXPIRES,
     });
 
-    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    console.log('✅ Token refreshed successfully for user:', user.id);
+    res.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, private'
+    );
 
     return res;
   } catch (err) {

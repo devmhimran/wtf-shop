@@ -10,7 +10,6 @@ import {
   REFRESH_TOKEN_EXPIRES,
 } from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export async function POST(request: NextRequest) {
   try {
@@ -64,26 +63,33 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const cookieOptions: Partial<ResponseCookie> = {
+    // Use simple, permissive settings for same-domain setup
+    // This works for both localhost and production same-domain
+    res.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax', // Changed from 'none' (only use 'none' if cross-domain)
+      sameSite: 'lax',
       path: '/',
       maxAge: ACCESS_TOKEN_EXPIRES,
-    };
-
-    res.cookies.set('accessToken', accessToken, cookieOptions);
+    });
 
     res.cookies.set('refreshToken', refreshToken, {
-      ...cookieOptions,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
       maxAge: REFRESH_TOKEN_EXPIRES,
     });
 
-    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    console.log('✅ Signin successful - Cookies set for user:', user.id);
+    res.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, private'
+    );
 
     return res;
   } catch (error) {
-    console.error(error);
+    console.error('❌ Signin error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
