@@ -10,6 +10,10 @@ const SUPER_ADMIN_PATHS = [
   '/dashboard/orders',
   '/dashboard/customers',
   '/dashboard/users',
+  '/dashboard/categories',
+  '/dashboard/sub-categories',
+  '/dashboard/colors',
+  '/dashboard/sizes',
 ];
 
 const ADMIN_PATHS = [
