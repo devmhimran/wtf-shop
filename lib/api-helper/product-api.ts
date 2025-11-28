@@ -3,9 +3,11 @@ import {
   ColorType,
   CreateCategoryType,
   CreateColorsType,
+  CreateSizesType,
   CreateSubCategoryType,
   Meta,
   Response,
+  SizeType,
   SubCategoryType,
 } from '@/types';
 import { axiosInstanceWithAuth } from '../axios';
@@ -65,6 +67,24 @@ export const productApi = {
     },
     deleteColor: (id: number) => {
       const url = `/protected/colors/${id}`;
+      return axiosInstanceWithAuth.delete(url);
+    },
+  },
+  sizes: {
+    getSizes: (params?: string) => {
+      const url = '/protected/sizes' + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<SizeType[], Meta>>(url);
+    },
+    createSize: (data: CreateSizesType) => {
+      const url = '/protected/sizes';
+      return axiosInstanceWithAuth.post(url, data);
+    },
+    updateSize: (id: number, updateData: Partial<CreateSizesType>) => {
+      const url = `/protected/sizes/${id}`;
+      return axiosInstanceWithAuth.put(url, updateData);
+    },
+    deleteSize: (id: number) => {
+      const url = `/protected/sizes/${id}`;
       return axiosInstanceWithAuth.delete(url);
     },
   },

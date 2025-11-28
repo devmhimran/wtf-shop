@@ -10,15 +10,14 @@ import {
   CreateAdminUserType,
   UpdateAdminUserType,
 } from './users.types';
-
 import {
   CategoryType,
   CreateCategoryType,
   CreateSubCategoryType,
   SubCategoryType,
 } from './categories.types';
-
 import { ColorType, CreateColorsType } from './colors.types';
+import { SizeType, CreateSizesType } from './size.types';
 
 export type {
   SignInResponse,
@@ -36,4 +35,6 @@ export type {
   SubCategoryType,
   ColorType,
   CreateColorsType,
+  SizeType,
+  CreateSizesType,
 };

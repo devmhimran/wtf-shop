@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { catchAsyncNext } from '@/lib/catch-async';
 import { authenticateRequest } from '@/lib/utils';
 import { prisma } from '@/prisma/prisma';
+import * as z from 'zod';
+
+const sizeSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: 'Name must be at least 1 character long' }),
+});
 
 // GET all sizes
 export const GET = catchAsyncNext(async (req: NextRequest) => {
@@ -59,7 +66,8 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   }
 
   const body = await req.json();
-  const { name } = body;
+  const parsedBody = sizeSchema.parse(body);
+  const { name } = parsedBody;
 
   if (!name) {
     return NextResponse.json(
