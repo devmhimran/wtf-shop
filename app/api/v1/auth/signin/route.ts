@@ -1,7 +1,5 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 import { NextRequest, NextResponse } from 'next/server';
+
 import { comparePassword } from '@/lib/bcrypt';
 import {
   ACCESS_TOKEN_EXPIRES,
@@ -23,6 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
+
     if (!user || !(await comparePassword(password, user.password))) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
@@ -49,10 +48,7 @@ export async function POST(request: NextRequest) {
 
     await prisma.user.update({
       where: { id: user.id },
-      data: {
-        refreshToken,
-        refreshTokenUpdatedAt: new Date(),
-      },
+      data: { refreshToken },
     });
 
     const res = NextResponse.json({
@@ -63,11 +59,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Use simple, permissive settings for same-domain setup
-    // This works for both localhost and production same-domain
     res.cookies.set('accessToken', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'lax',
       path: '/',
       maxAge: ACCESS_TOKEN_EXPIRES,
@@ -75,21 +69,15 @@ export async function POST(request: NextRequest) {
 
     res.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'lax',
       path: '/',
       maxAge: REFRESH_TOKEN_EXPIRES,
     });
 
-    console.log('✅ Signin successful - Cookies set for user:', user.id);
-    res.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate, private'
-    );
-
     return res;
   } catch (error) {
-    console.error('❌ Signin error:', error);
+    console.error(error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
