@@ -14,7 +14,12 @@ export type Meta = {
 
 export type CommonApiResponseError = {
   response?: {
-    data: { error: string };
+    data: { error: ErrorItem[] };
   };
   message?: string;
+};
+
+export type ErrorItem = {
+  path?: string;
+  message: string;
 };

@@ -4,6 +4,8 @@ import { CreateCategoryForm } from './create-category-form';
 import { UpdateCategoryForm } from './update-category-form';
 import { CreateSubCategoryForm } from './create-sub-category-form';
 import { UpdateSubCategoryForm } from './update-sub-category-form';
+import { CreateColorsForm } from './create-colors-form';
+import { UpdateColorsForm } from './update-color-form';
 
 export {
   CreateUserForm,
@@ -12,4 +14,6 @@ export {
   UpdateCategoryForm,
   CreateSubCategoryForm,
   UpdateSubCategoryForm,
+  CreateColorsForm,
+  UpdateColorsForm,
 };

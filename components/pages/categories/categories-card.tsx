@@ -34,7 +34,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
     null
   );
 
-  const [categorySlug, setCategoryDetailsSlug] = useState<string | null>(null);
+  const [categorySlug, setCategorySlug] = useState<string | null>(null);
 
   const { deleteCategoryAsync } = useCategories();
 
@@ -109,7 +109,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
                     <DropdownMenuItem
                       className='text-red-600'
                       onClick={() => {
-                        setCategoryDetailsSlug(category.slug);
+                        setCategorySlug(category.slug);
                         setConfirmModal(true);
                       }}
                     >

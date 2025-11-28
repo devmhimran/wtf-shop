@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { verifyAccessToken } from './jwt';
 import { authApi } from './api-helper';
-import { CommonApiResponseError } from '@/types/common.types';
+import { CommonApiResponseError, ErrorItem } from '@/types/common.types';
+import { ZodError } from 'zod';
 
 export const USER_COUNT_PER_PAGE = 10;
 
@@ -28,10 +29,16 @@ export const getErrorMessage = (error: unknown) => {
   return message;
 };
 
-export const getErrorResponse = (error: CommonApiResponseError) => {
-  return (
-    error?.response?.data?.error || error.message || 'Failed to create user'
-  );
+export const getErrorResponse = (error: unknown) => {
+  const apiError = error as CommonApiResponseError;
+  const backendErrors: ErrorItem[] = apiError?.response?.data?.error ?? [];
+  if (backendErrors.length > 0) {
+    // Join all messages into a single string
+    return backendErrors.map((e) => e.message).join(', ');
+  }
+
+  // fallback
+  return apiError?.message || 'Something went wrong';
 };
 
 export async function authenticateRequest(request: NextRequest) {
@@ -121,3 +128,19 @@ export function generateSlug(text: string): string {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 }
+
+export const formatZodErrors = (zodError: ZodError) => {
+  const formatted: Record<string, string> = {};
+
+  zodError.issues.forEach((issue) => {
+    const field = issue.path.join('.');
+    formatted[field] = issue.message;
+  });
+
+  const combinedMessage = Object.values(formatted).join('; ');
+
+  return {
+    formatted,
+    combinedMessage,
+  };
+};

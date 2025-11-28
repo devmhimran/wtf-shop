@@ -2,6 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { catchAsyncNext } from '@/lib/catch-async';
 import { authenticateRequest } from '@/lib/utils';
 import { prisma } from '@/prisma/prisma';
+import * as z from 'zod';
+
+const colorSchema = z.object({
+  name: z
+    .string()
+    .min(4, { message: 'Name must be at least 4 characters long' }),
+  hex: z
+    .string()
+    .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+      message: 'Invalid hex color. Must be in format #RGB or #RRGGBB',
+    })
+    .optional()
+    .or(z.literal('')),
+});
 
 // GET all colors
 export const GET = catchAsyncNext(async (req: NextRequest) => {
@@ -59,7 +73,9 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   }
 
   const body = await req.json();
-  const { name, hex } = body;
+  const parsedBody = colorSchema.parse(body);
+
+  const { name, hex } = parsedBody;
 
   if (!name) {
     return NextResponse.json(

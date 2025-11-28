@@ -58,7 +58,6 @@ export function UsersTable({ data, loading }: UsersTableProps) {
       success: () => {
         setConfirmModal(false);
         setIsPending(false);
-        router.push('/dashboard/users');
         return 'Successfully user deleted';
       },
       error: (error) => {

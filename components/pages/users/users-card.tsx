@@ -62,7 +62,6 @@ export function UsersCard({ data, loading }: UsersCardProps) {
       success: () => {
         setConfirmModal(false);
         setIsPending(false);
-        router.push('/dashboard/users');
         return 'Successfully user deleted';
       },
       error: (error) => {

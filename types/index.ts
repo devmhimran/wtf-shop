@@ -18,6 +18,8 @@ import {
   SubCategoryType,
 } from './categories.types';
 
+import { ColorType, CreateColorsType } from './colors.types';
+
 export type {
   SignInResponse,
   SignInRequest,
@@ -32,4 +34,6 @@ export type {
   CreateCategoryType,
   CreateSubCategoryType,
   SubCategoryType,
+  ColorType,
+  CreateColorsType,
 };

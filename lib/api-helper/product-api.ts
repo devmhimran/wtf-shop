@@ -1,6 +1,8 @@
 import {
   CategoryType,
+  ColorType,
   CreateCategoryType,
+  CreateColorsType,
   CreateSubCategoryType,
   Meta,
   Response,
@@ -45,6 +47,24 @@ export const productApi = {
     },
     deleteSubCategory: (slug: string) => {
       const url = `/protected/subcategories/${slug}`;
+      return axiosInstanceWithAuth.delete(url);
+    },
+  },
+  colors: {
+    getColors: (params?: string) => {
+      const url = '/protected/colors' + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<ColorType[], Meta>>(url);
+    },
+    createColor: (data: CreateColorsType) => {
+      const url = '/protected/colors';
+      return axiosInstanceWithAuth.post(url, data);
+    },
+    updateColor: (id: number, updateData: Partial<CreateColorsType>) => {
+      const url = `/protected/colors/${id}`;
+      return axiosInstanceWithAuth.put(url, updateData);
+    },
+    deleteColor: (id: number) => {
+      const url = `/protected/colors/${id}`;
       return axiosInstanceWithAuth.delete(url);
     },
   },
