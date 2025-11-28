@@ -19,7 +19,7 @@ import { Button } from '../ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { useGetAllCategories, useSubCategories } from '@/hooks';
 import { CategorySearchAndSelect } from '../pages/categories';
-import { CategoryType } from '@/types';
+import { CategoryType, SubCategoryType } from '@/types';
 
 const FormSchema = z.object({
   name: z
@@ -39,45 +39,52 @@ const FormSchema = z.object({
       id: z.number(),
       name: z.string(),
     })
-    .nullable(),
+    .optional(),
 });
 
-export function CreateSubCategoryForm({
+export function UpdateSubCategoryForm({
   setIsOpen,
+  data,
 }: {
   setIsOpen: (open: boolean) => void;
+  data: SubCategoryType | null;
 }) {
   const [isPending, setIsPending] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Pick<
     CategoryType,
     'id' | 'name'
-  > | null>(null);
+  > | null>(
+    data?.category ? { id: data.category.id, name: data.category.name } : null
+  );
   const [searchQuery, setSearchQuery] = useState('');
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: '',
-      slug: '',
+      name: data?.name || '',
+      slug: data?.slug || '',
     },
   });
 
-  const { createSubCategoryAsync } = useSubCategories();
+  const { updateSubCategoryAsync } = useSubCategories();
 
   const { fetchAllCategoriesMutationData } = useGetAllCategories(
     searchQuery ? `?search=${searchQuery}` : ''
   );
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(formData: z.infer<typeof FormSchema>) {
     if (!selectedCategory?.id) return;
-
+    if (!data?.slug) return;
     const payload = {
-      name: data.name,
-      categoryId: selectedCategory?.id,
       slug: data.slug,
+      data: {
+        name: formData.name,
+        categoryId: selectedCategory?.id,
+        slug: formData.slug,
+      },
     };
 
-    const response = createSubCategoryAsync(payload);
+    const response = updateSubCategoryAsync(payload);
 
     setIsPending(true);
     toast.promise(response, {
@@ -86,7 +93,7 @@ export function CreateSubCategoryForm({
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        return response.message || 'Successfully created sub-category!';
+        return response.message || 'Successfully updated sub-category!';
       },
 
       error: (error) => {

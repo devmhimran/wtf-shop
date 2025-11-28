@@ -38,7 +38,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
 
   const { deleteCategoryAsync } = useCategories();
 
-  const handleDeleUser = () => {
+  const handleDeleteCategory = () => {
     setIsPending(true);
     if (!categorySlug) return;
     toast.promise(deleteCategoryAsync(categorySlug), {
@@ -146,8 +146,8 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
         isOpen={confirmModal}
         setIsOpen={setConfirmModal}
         loading={isPending}
-        title='This action cannot be undone. This will permanently delete your user '
-        onClick={handleDeleUser}
+        title='This action cannot be undone. This will permanently delete your category'
+        onClick={handleDeleteCategory}
       />
 
       <AlertModal
