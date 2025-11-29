@@ -10,7 +10,11 @@ let failedQueue: {
 
 const processQueue = (error: AxiosError | null) => {
   failedQueue.forEach((prom) => {
-    error ? prom.reject(error) : prom.resolve();
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
   });
   failedQueue = [];
 };
