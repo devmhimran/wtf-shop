@@ -6,6 +6,7 @@ import { baseURL } from './lib/axios';
 const SUPER_ADMIN_PATHS = [
   '/dashboard/',
   '/dashboard/products',
+  '/dashboard/media-library',
   '/dashboard/custom-products',
   '/dashboard/orders',
   '/dashboard/customers',
@@ -51,12 +52,25 @@ export async function proxy(req: NextRequest) {
       const response = NextResponse.next();
 
       // Write new cookies back to browser
+      // Write new cookies back to browser safely
       if (setCookies) {
-        const cookies = setCookies.split(',');
-        cookies.forEach((c) => {
-          const parts = c.split(';')[0];
-          const [name, value] = parts.split('=');
-          response.cookies.set(name.trim(), value.trim(), { path: '/' });
+        const cookiesArray = setCookies.split(/,(?=[^ ;]+=)/); // safe multi-cookie split
+
+        cookiesArray.forEach((cookieStr) => {
+          const pairMatch = cookieStr.match(/([^=]+)=([^;]+)/); // only match "name=value"
+
+          if (!pairMatch) return; // skip invalid attributes
+
+          const [, rawName, rawValue] = pairMatch;
+
+          if (!rawName || !rawValue) return;
+
+          response.cookies.set(rawName.trim(), rawValue.trim(), {
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+          });
         });
       }
 

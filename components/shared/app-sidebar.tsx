@@ -8,6 +8,7 @@ import {
   Package,
   Palette,
   RulerDimensionLine,
+  Image,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -36,6 +37,11 @@ const superAdminMenuItems = [
     title: 'Dashboard',
     url: '/dashboard/',
     icon: LayoutDashboard,
+  },
+  {
+    title: 'Media Library',
+    url: '/dashboard/media-library',
+    icon: Image,
   },
   {
     title: 'Products',
