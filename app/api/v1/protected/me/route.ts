@@ -17,51 +17,6 @@ export async function GET(request: NextRequest) {
         email: true,
         name: true,
         role: true,
-        orders: {
-          select: {
-            id: true,
-            customNote: true,
-            createdAt: true,
-            updatedAt: true,
-            items: {
-              select: {
-                id: true,
-                quantity: true,
-                price: true,
-                total: true,
-                product: {
-                  select: {
-                    id: true,
-                    title: true,
-                    mainImage: true,
-                  },
-                },
-                variant: {
-                  select: {
-                    id: true,
-                    color: {
-                      select: {
-                        name: true,
-                        hex: true,
-                      },
-                    },
-                    size: {
-                      select: {
-                        name: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            customImages: {
-              select: {
-                id: true,
-                imageUrl: true,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -76,7 +31,7 @@ export async function GET(request: NextRequest) {
         email: user.email,
         name: user.name,
         role: user.role,
-        ...(user.role === 'CUSTOMER' && { orders: user.orders }),
+        // ...(user.role === 'CUSTOMER' && { orders: user.orders }),
       },
     };
 
