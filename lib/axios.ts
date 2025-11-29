@@ -10,16 +10,11 @@ let failedQueue: {
 
 const processQueue = (error: AxiosError | null) => {
   failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve();
-    }
+    error ? prom.reject(error) : prom.resolve();
   });
   failedQueue = [];
 };
 
-// Base instance
 export const axiosInstance = axios.create({
   baseURL,
   timeout: 50000,
@@ -27,7 +22,6 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Upload instance
 export const axiosUpload = axios.create({
   baseURL,
   timeout: 50000,
@@ -35,7 +29,6 @@ export const axiosUpload = axios.create({
   withCredentials: true,
 });
 
-// Auth instance with auto-refresh
 export const axiosInstanceWithAuth = axios.create({
   baseURL,
   timeout: 50000,
@@ -43,7 +36,6 @@ export const axiosInstanceWithAuth = axios.create({
   withCredentials: true,
 });
 
-// Response interceptor
 axiosInstanceWithAuth.interceptors.response.use(
   (res) => res,
   async (error: AxiosError) => {
@@ -51,9 +43,6 @@ axiosInstanceWithAuth.interceptors.response.use(
       _retry?: boolean;
     };
 
-    console.log('🚨 API Error:', error.response?.status, originalRequest?.url);
-
-    // Only refresh on 401 and not on refresh endpoint itself
     if (
       error.response?.status === 401 &&
       !originalRequest?._retry &&
@@ -62,34 +51,23 @@ axiosInstanceWithAuth.interceptors.response.use(
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        })
-          .then(() => {
-            console.log('🔄 Retrying original request after refresh');
-            return axiosInstanceWithAuth(originalRequest);
-          })
-          .catch((err) => {
-            console.error('❌ Refresh failed, redirecting to signin');
-            if (typeof window !== 'undefined') {
-              window.location.href = '/signin';
-            }
-            return Promise.reject(err);
-          });
+        }).then(() => {
+          return axiosInstanceWithAuth(originalRequest);
+        });
       }
 
       isRefreshing = true;
       originalRequest._retry = true;
 
       try {
-        console.log('🔄 Attempting to refresh token...');
-        // IMPORTANT: Don't pass data {} as it might interfere with credentials
-        await axiosInstance.post('/auth/refresh', null);
-        console.log('✅ Token refreshed successfully');
+        // IMPORTANT FIX: no null body
+        await axiosInstance.post('/auth/refresh');
+
         processQueue(null);
+
         return axiosInstanceWithAuth(originalRequest);
       } catch (refreshError) {
-        console.error('❌ Token refresh failed:', refreshError);
         processQueue(refreshError as AxiosError);
-        isRefreshing = false;
 
         if (typeof window !== 'undefined') {
           window.location.href = '/signin';

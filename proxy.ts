@@ -28,50 +28,77 @@ const COMMON_PATHS = ['/my-profile'];
 
 export async function proxy(req: NextRequest) {
   let accessToken = req.cookies.get('accessToken')?.value;
-  let payload = accessToken ? await verifyAccessToken(accessToken) : null;
+  let payload = accessToken
+    ? await verifyAccessToken(accessToken).catch(() => null)
+    : null;
 
+  // 🔥 If access token invalid => try refresh
   if (!payload) {
     const cookieHeader = req.headers.get('cookie') || '';
 
     const refreshRes = await fetch(`${baseURL}/auth/refresh`, {
       method: 'POST',
+      credentials: 'include', // IMPORTANT
       headers: {
-        'Content-Type': 'application/json',
-        cookie: cookieHeader,
-        credentials: 'include',
+        cookie: cookieHeader, // send cookies manually
       },
     });
 
+    // Refresh worked?
     if (refreshRes.ok) {
-      const setCookie = refreshRes.headers.get('set-cookie');
-      if (setCookie) {
-        const match = setCookie.match(/accessToken=([^;]+)/);
-        if (match) accessToken = match[1];
-      }
-      payload = accessToken ? await verifyAccessToken(accessToken) : null;
-    }
-  }
+      const setCookies = refreshRes.headers.get('set-cookie');
 
-  if (!payload) {
+      const response = NextResponse.next();
+
+      // Write new cookies back to browser
+      if (setCookies) {
+        const cookies = setCookies.split(',');
+        cookies.forEach((c) => {
+          const parts = c.split(';')[0];
+          const [name, value] = parts.split('=');
+          response.cookies.set(name.trim(), value.trim(), { path: '/' });
+        });
+      }
+
+      // Verify new access token
+      accessToken = refreshRes.headers
+        .get('set-cookie')
+        ?.match(/accessToken=([^;]+)/)?.[1];
+
+      payload = accessToken
+        ? await verifyAccessToken(accessToken).catch(() => null)
+        : null;
+
+      if (!payload) {
+        return NextResponse.redirect(new URL('/signin', req.url));
+      }
+
+      return response;
+    }
+
+    // refresh failed => force login
     return NextResponse.redirect(new URL('/signin', req.url));
   }
 
+  // 🔥 ROLE CHECKING
   const role = payload.role;
   const path = req.nextUrl.pathname;
 
-  if (COMMON_PATHS.some((commonPath) => path.startsWith(commonPath))) {
+  if (COMMON_PATHS.some((p) => path.startsWith(p))) {
     return NextResponse.next();
   }
 
+  // CUSTOMER
   if (role === 'CUSTOMER') {
-    if (SUPER_ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath))) {
+    if (SUPER_ADMIN_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
     }
-    const isAllowedPath = CUSTOMER_PATHS.some((p) => path.startsWith(p));
-    if (!isAllowedPath)
+    const allowed = CUSTOMER_PATHS.some((p) => path.startsWith(p));
+    if (!allowed)
       return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
   }
 
+  // ADMIN
   if (role === 'ADMIN') {
     if (CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/products', req.url));
@@ -82,11 +109,9 @@ export async function proxy(req: NextRequest) {
     ) {
       return NextResponse.redirect(new URL('/dashboard/products', req.url));
     }
-    const isAllowedPath = ADMIN_PATHS.some((p) => path.startsWith(p));
-    if (!isAllowedPath)
-      return NextResponse.redirect(new URL('/dashboard/products', req.url));
   }
 
+  // SUPER_ADMIN
   if (role === 'SUPER_ADMIN') {
     if (CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/', req.url));
