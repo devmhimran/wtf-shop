@@ -1,45 +1,36 @@
-import { NextRequest, NextResponse } from 'next/server';
-
+import { NextRequest } from 'next/server';
+import { prisma } from '@/prisma/prisma';
 import { comparePassword } from '@/lib/bcrypt';
 import {
-  ACCESS_TOKEN_EXPIRES,
   generateAccessToken,
   generateRefreshToken,
+  ACCESS_TOKEN_EXPIRES,
   REFRESH_TOKEN_EXPIRES,
 } from '@/lib/jwt';
-import { prisma } from '@/prisma/prisma';
+import { createResponse, setAuthCookies } from '@/lib/auth-reponse';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return createResponse({ error: 'Missing required fields' }, 400);
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user || !(await comparePassword(password, user.password))) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
+      return createResponse({ error: 'Invalid credentials' }, 401);
     }
 
     if (user.isDelete) {
-      return NextResponse.json(
-        { error: 'Your account has been deleted' },
-        { status: 403 }
-      );
+      return createResponse({ error: 'Your account has been deleted' }, 403);
     }
 
     if (!user.isActive) {
-      return NextResponse.json(
-        { error: 'Your account is not active. Please contact support' },
-        { status: 403 }
+      return createResponse(
+        { error: 'Your account is not active. Contact support.' },
+        403
       );
     }
 
@@ -51,36 +42,28 @@ export async function POST(request: NextRequest) {
       data: { refreshToken },
     });
 
-    const res = NextResponse.json({
-      message: 'Login successful',
-      user: {
-        id: user.id,
-        role: user.role,
+    const res = createResponse(
+      {
+        message: 'Login successful',
+        user: {
+          id: user.id,
+          role: user.role,
+        },
       },
-    });
+      200
+    );
 
-    res.cookies.set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: ACCESS_TOKEN_EXPIRES,
-    });
-
-    res.cookies.set('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: REFRESH_TOKEN_EXPIRES,
-    });
+    setAuthCookies(
+      res,
+      accessToken,
+      refreshToken,
+      ACCESS_TOKEN_EXPIRES,
+      REFRESH_TOKEN_EXPIRES
+    );
 
     return res;
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return createResponse({ error: 'Internal server error' }, 500);
   }
 }

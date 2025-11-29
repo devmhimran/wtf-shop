@@ -7,6 +7,7 @@ import {
   REFRESH_TOKEN_EXPIRES,
 } from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
+import { createResponse, setAuthCookies } from '@/lib/auth-reponse';
 
 const REFRESH_TOKEN_REUSE_WINDOW = 5 * 60 * 1000;
 
@@ -15,18 +16,12 @@ export async function POST(req: NextRequest) {
     const refreshToken = req.cookies.get('refreshToken')?.value;
 
     if (!refreshToken) {
-      return NextResponse.json(
-        { error: 'Refresh token required' },
-        { status: 400 }
-      );
+      return createResponse({ error: 'Refresh token required' }, 400);
     }
 
     const payload = await verifyRefreshToken(refreshToken);
     if (!payload) {
-      return NextResponse.json(
-        { error: 'Invalid refresh token' },
-        { status: 401 }
-      );
+      return createResponse({ error: 'Invalid refresh token' }, 401);
     }
 
     const user = await prisma.user.findUnique({
@@ -68,29 +63,24 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const res = NextResponse.json({
-      message: 'Token refreshed successfully',
-      user: {
-        id: user.id,
-        role: user.role,
+    const res = createResponse(
+      {
+        message: 'Token refreshed successfully',
+        user: {
+          id: user.id,
+          role: user.role,
+        },
       },
-    });
+      200
+    );
 
-    res.cookies.set('accessToken', newAccessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: ACCESS_TOKEN_EXPIRES,
-    });
-
-    res.cookies.set('refreshToken', newRefreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: REFRESH_TOKEN_EXPIRES,
-    });
+    setAuthCookies(
+      res,
+      newAccessToken,
+      newRefreshToken,
+      ACCESS_TOKEN_EXPIRES,
+      REFRESH_TOKEN_EXPIRES
+    );
 
     return res;
   } catch (err) {
