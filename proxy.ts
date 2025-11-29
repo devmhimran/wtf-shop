@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccessToken } from '@/lib/jwt';
-import { baseURL } from './lib/axios';
 
 const SUPER_ADMIN_PATHS = [
   '/dashboard/',
@@ -27,66 +26,66 @@ const CUSTOMER_PATHS = ['/c/my-orders'];
 const COMMON_PATHS = ['/my-profile'];
 
 export async function proxy(req: NextRequest) {
-  let accessToken = req.cookies.get('accessToken')?.value;
-  let payload = accessToken ? await verifyAccessToken(accessToken) : null;
+  const accessToken = req.cookies.get('accessToken')?.value || null;
 
-  if (!payload) {
-    const cookieHeader = req.headers.get('cookie') || '';
-
-    const refreshRes = await fetch(`${baseURL}/auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', cookie: cookieHeader },
-    });
-
-    if (refreshRes.ok) {
-      const setCookie = refreshRes.headers.get('set-cookie');
-      if (setCookie) {
-        const match = setCookie.match(/accessToken=([^;]+)/);
-        if (match) accessToken = match[1];
-      }
-      payload = accessToken ? await verifyAccessToken(accessToken) : null;
-    }
+  // ❌ If no access token → redirect
+  if (!accessToken) {
+    return NextResponse.redirect(new URL('/signin', req.url));
   }
 
+  // Verify token
+  const payload = await verifyAccessToken(accessToken);
+
+  // ❌ Expired/invalid access token → redirect
+  // Axios will refresh automatically after loading the page
   if (!payload) {
     return NextResponse.redirect(new URL('/signin', req.url));
   }
 
-  const role = payload.role;
+  const { role } = payload;
   const path = req.nextUrl.pathname;
 
-  if (COMMON_PATHS.some((commonPath) => path.startsWith(commonPath))) {
+  // Allow common paths
+  if (COMMON_PATHS.some((p) => path.startsWith(p))) {
     return NextResponse.next();
   }
 
+  /** CUSTOMER */
   if (role === 'CUSTOMER') {
-    if (SUPER_ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath))) {
+    if (SUPER_ADMIN_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
     }
-    const isAllowedPath = CUSTOMER_PATHS.some((p) => path.startsWith(p));
-    if (!isAllowedPath)
+
+    if (!CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
+    }
+
+    return NextResponse.next();
   }
 
+  /** ADMIN */
   if (role === 'ADMIN') {
     if (CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/products', req.url));
     }
+
     if (
       SUPER_ADMIN_PATHS.some((p) => path.startsWith(p)) &&
       !ADMIN_PATHS.some((p) => path.startsWith(p))
     ) {
       return NextResponse.redirect(new URL('/dashboard/products', req.url));
     }
-    const isAllowedPath = ADMIN_PATHS.some((p) => path.startsWith(p));
-    if (!isAllowedPath)
-      return NextResponse.redirect(new URL('/dashboard/products', req.url));
+
+    return NextResponse.next();
   }
 
+  /** SUPER ADMIN */
   if (role === 'SUPER_ADMIN') {
     if (CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/', req.url));
     }
+
+    return NextResponse.next();
   }
 
   return NextResponse.next();
