@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-
 import { verifyAccessToken } from '@/lib/jwt';
 import { baseURL } from './lib/axios';
 
@@ -29,90 +28,46 @@ const COMMON_PATHS = ['/my-profile'];
 
 export async function proxy(req: NextRequest) {
   let accessToken = req.cookies.get('accessToken')?.value;
-  let payload = accessToken
-    ? await verifyAccessToken(accessToken).catch(() => null)
-    : null;
+  let payload = accessToken ? await verifyAccessToken(accessToken) : null;
 
-  // 🔥 If access token invalid => try refresh
   if (!payload) {
     const cookieHeader = req.headers.get('cookie') || '';
 
     const refreshRes = await fetch(`${baseURL}/auth/refresh`, {
       method: 'POST',
-      credentials: 'include', // IMPORTANT
-      headers: {
-        cookie: cookieHeader, // send cookies manually
-      },
+      headers: { 'Content-Type': 'application/json', cookie: cookieHeader },
     });
 
-    // Refresh worked?
     if (refreshRes.ok) {
-      const setCookies = refreshRes.headers.get('set-cookie');
-
-      const response = NextResponse.next();
-
-      // Write new cookies back to browser
-      // Write new cookies back to browser safely
-      if (setCookies) {
-        const cookiesArray = setCookies.split(/,(?=[^ ;]+=)/); // safe multi-cookie split
-
-        cookiesArray.forEach((cookieStr) => {
-          const pairMatch = cookieStr.match(/([^=]+)=([^;]+)/); // only match "name=value"
-
-          if (!pairMatch) return; // skip invalid attributes
-
-          const [, rawName, rawValue] = pairMatch;
-
-          if (!rawName || !rawValue) return;
-
-          response.cookies.set(rawName.trim(), rawValue.trim(), {
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-          });
-        });
+      const setCookie = refreshRes.headers.get('set-cookie');
+      if (setCookie) {
+        const match = setCookie.match(/accessToken=([^;]+)/);
+        if (match) accessToken = match[1];
       }
-
-      // Verify new access token
-      accessToken = refreshRes.headers
-        .get('set-cookie')
-        ?.match(/accessToken=([^;]+)/)?.[1];
-
-      payload = accessToken
-        ? await verifyAccessToken(accessToken).catch(() => null)
-        : null;
-
-      if (!payload) {
-        return NextResponse.redirect(new URL('/signin', req.url));
-      }
-
-      return response;
+      payload = accessToken ? await verifyAccessToken(accessToken) : null;
     }
+  }
 
-    // refresh failed => force login
+  if (!payload) {
     return NextResponse.redirect(new URL('/signin', req.url));
   }
 
-  // 🔥 ROLE CHECKING
   const role = payload.role;
   const path = req.nextUrl.pathname;
 
-  if (COMMON_PATHS.some((p) => path.startsWith(p))) {
+  if (COMMON_PATHS.some((commonPath) => path.startsWith(commonPath))) {
     return NextResponse.next();
   }
 
-  // CUSTOMER
   if (role === 'CUSTOMER') {
-    if (SUPER_ADMIN_PATHS.some((p) => path.startsWith(p))) {
+    if (SUPER_ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath))) {
       return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
     }
-    const allowed = CUSTOMER_PATHS.some((p) => path.startsWith(p));
-    if (!allowed)
+    const isAllowedPath = CUSTOMER_PATHS.some((p) => path.startsWith(p));
+    if (!isAllowedPath)
       return NextResponse.redirect(new URL('/dashboard/my-orders', req.url));
   }
 
-  // ADMIN
   if (role === 'ADMIN') {
     if (CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/products', req.url));
@@ -123,9 +78,11 @@ export async function proxy(req: NextRequest) {
     ) {
       return NextResponse.redirect(new URL('/dashboard/products', req.url));
     }
+    const isAllowedPath = ADMIN_PATHS.some((p) => path.startsWith(p));
+    if (!isAllowedPath)
+      return NextResponse.redirect(new URL('/dashboard/products', req.url));
   }
 
-  // SUPER_ADMIN
   if (role === 'SUPER_ADMIN') {
     if (CUSTOMER_PATHS.some((p) => path.startsWith(p))) {
       return NextResponse.redirect(new URL('/dashboard/', req.url));
