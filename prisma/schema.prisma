@@ -16,6 +16,10 @@ enum UserRole {
   CUSTOMER
 }
 
+enum ShippingRegion {
+  INSIDE_AU
+  OUTSIDE_AU
+}
 
 // USER MODEL
 model User {
@@ -159,9 +163,7 @@ model QuantityDiscount {
 model ShippingCharge {
   id              Int       @id @default(autoincrement())
 
-  region        String
-  inside_au     Boolean?
-  outside_au    Boolean?
+  region        ShippingRegion @default(INSIDE_AU)
 
   minQty        Int
   maxQty        Int?

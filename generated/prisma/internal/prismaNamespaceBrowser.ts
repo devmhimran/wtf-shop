@@ -198,8 +198,6 @@ export type QuantityDiscountScalarFieldEnum = (typeof QuantityDiscountScalarFiel
 export const ShippingChargeScalarFieldEnum = {
   id: 'id',
   region: 'region',
-  inside_au: 'inside_au',
-  outside_au: 'outside_au',
   minQty: 'minQty',
   maxQty: 'maxQty',
   baseCharge: 'baseCharge',

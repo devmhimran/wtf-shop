@@ -44,9 +44,7 @@ export type ShippingChargeSumAggregateOutputType = {
 
 export type ShippingChargeMinAggregateOutputType = {
   id: number | null
-  region: string | null
-  inside_au: boolean | null
-  outside_au: boolean | null
+  region: $Enums.ShippingRegion | null
   minQty: number | null
   maxQty: number | null
   baseCharge: number | null
@@ -58,9 +56,7 @@ export type ShippingChargeMinAggregateOutputType = {
 
 export type ShippingChargeMaxAggregateOutputType = {
   id: number | null
-  region: string | null
-  inside_au: boolean | null
-  outside_au: boolean | null
+  region: $Enums.ShippingRegion | null
   minQty: number | null
   maxQty: number | null
   baseCharge: number | null
@@ -73,8 +69,6 @@ export type ShippingChargeMaxAggregateOutputType = {
 export type ShippingChargeCountAggregateOutputType = {
   id: number
   region: number
-  inside_au: number
-  outside_au: number
   minQty: number
   maxQty: number
   baseCharge: number
@@ -105,8 +99,6 @@ export type ShippingChargeSumAggregateInputType = {
 export type ShippingChargeMinAggregateInputType = {
   id?: true
   region?: true
-  inside_au?: true
-  outside_au?: true
   minQty?: true
   maxQty?: true
   baseCharge?: true
@@ -119,8 +111,6 @@ export type ShippingChargeMinAggregateInputType = {
 export type ShippingChargeMaxAggregateInputType = {
   id?: true
   region?: true
-  inside_au?: true
-  outside_au?: true
   minQty?: true
   maxQty?: true
   baseCharge?: true
@@ -133,8 +123,6 @@ export type ShippingChargeMaxAggregateInputType = {
 export type ShippingChargeCountAggregateInputType = {
   id?: true
   region?: true
-  inside_au?: true
-  outside_au?: true
   minQty?: true
   maxQty?: true
   baseCharge?: true
@@ -233,9 +221,7 @@ export type ShippingChargeGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type ShippingChargeGroupByOutputType = {
   id: number
-  region: string
-  inside_au: boolean | null
-  outside_au: boolean | null
+  region: $Enums.ShippingRegion
   minQty: number
   maxQty: number | null
   baseCharge: number
@@ -270,9 +256,7 @@ export type ShippingChargeWhereInput = {
   OR?: Prisma.ShippingChargeWhereInput[]
   NOT?: Prisma.ShippingChargeWhereInput | Prisma.ShippingChargeWhereInput[]
   id?: Prisma.IntFilter<"ShippingCharge"> | number
-  region?: Prisma.StringFilter<"ShippingCharge"> | string
-  inside_au?: Prisma.BoolNullableFilter<"ShippingCharge"> | boolean | null
-  outside_au?: Prisma.BoolNullableFilter<"ShippingCharge"> | boolean | null
+  region?: Prisma.EnumShippingRegionFilter<"ShippingCharge"> | $Enums.ShippingRegion
   minQty?: Prisma.IntFilter<"ShippingCharge"> | number
   maxQty?: Prisma.IntNullableFilter<"ShippingCharge"> | number | null
   baseCharge?: Prisma.FloatFilter<"ShippingCharge"> | number
@@ -285,8 +269,6 @@ export type ShippingChargeWhereInput = {
 export type ShippingChargeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   region?: Prisma.SortOrder
-  inside_au?: Prisma.SortOrderInput | Prisma.SortOrder
-  outside_au?: Prisma.SortOrderInput | Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrderInput | Prisma.SortOrder
   baseCharge?: Prisma.SortOrder
@@ -301,9 +283,7 @@ export type ShippingChargeWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ShippingChargeWhereInput | Prisma.ShippingChargeWhereInput[]
   OR?: Prisma.ShippingChargeWhereInput[]
   NOT?: Prisma.ShippingChargeWhereInput | Prisma.ShippingChargeWhereInput[]
-  region?: Prisma.StringFilter<"ShippingCharge"> | string
-  inside_au?: Prisma.BoolNullableFilter<"ShippingCharge"> | boolean | null
-  outside_au?: Prisma.BoolNullableFilter<"ShippingCharge"> | boolean | null
+  region?: Prisma.EnumShippingRegionFilter<"ShippingCharge"> | $Enums.ShippingRegion
   minQty?: Prisma.IntFilter<"ShippingCharge"> | number
   maxQty?: Prisma.IntNullableFilter<"ShippingCharge"> | number | null
   baseCharge?: Prisma.FloatFilter<"ShippingCharge"> | number
@@ -316,8 +296,6 @@ export type ShippingChargeWhereUniqueInput = Prisma.AtLeast<{
 export type ShippingChargeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   region?: Prisma.SortOrder
-  inside_au?: Prisma.SortOrderInput | Prisma.SortOrder
-  outside_au?: Prisma.SortOrderInput | Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrderInput | Prisma.SortOrder
   baseCharge?: Prisma.SortOrder
@@ -337,9 +315,7 @@ export type ShippingChargeScalarWhereWithAggregatesInput = {
   OR?: Prisma.ShippingChargeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ShippingChargeScalarWhereWithAggregatesInput | Prisma.ShippingChargeScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"ShippingCharge"> | number
-  region?: Prisma.StringWithAggregatesFilter<"ShippingCharge"> | string
-  inside_au?: Prisma.BoolNullableWithAggregatesFilter<"ShippingCharge"> | boolean | null
-  outside_au?: Prisma.BoolNullableWithAggregatesFilter<"ShippingCharge"> | boolean | null
+  region?: Prisma.EnumShippingRegionWithAggregatesFilter<"ShippingCharge"> | $Enums.ShippingRegion
   minQty?: Prisma.IntWithAggregatesFilter<"ShippingCharge"> | number
   maxQty?: Prisma.IntNullableWithAggregatesFilter<"ShippingCharge"> | number | null
   baseCharge?: Prisma.FloatWithAggregatesFilter<"ShippingCharge"> | number
@@ -350,9 +326,7 @@ export type ShippingChargeScalarWhereWithAggregatesInput = {
 }
 
 export type ShippingChargeCreateInput = {
-  region: string
-  inside_au?: boolean | null
-  outside_au?: boolean | null
+  region?: $Enums.ShippingRegion
   minQty: number
   maxQty?: number | null
   baseCharge: number
@@ -364,9 +338,7 @@ export type ShippingChargeCreateInput = {
 
 export type ShippingChargeUncheckedCreateInput = {
   id?: number
-  region: string
-  inside_au?: boolean | null
-  outside_au?: boolean | null
+  region?: $Enums.ShippingRegion
   minQty: number
   maxQty?: number | null
   baseCharge: number
@@ -377,9 +349,7 @@ export type ShippingChargeUncheckedCreateInput = {
 }
 
 export type ShippingChargeUpdateInput = {
-  region?: Prisma.StringFieldUpdateOperationsInput | string
-  inside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  outside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  region?: Prisma.EnumShippingRegionFieldUpdateOperationsInput | $Enums.ShippingRegion
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   baseCharge?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -391,9 +361,7 @@ export type ShippingChargeUpdateInput = {
 
 export type ShippingChargeUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  region?: Prisma.StringFieldUpdateOperationsInput | string
-  inside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  outside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  region?: Prisma.EnumShippingRegionFieldUpdateOperationsInput | $Enums.ShippingRegion
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   baseCharge?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -405,9 +373,7 @@ export type ShippingChargeUncheckedUpdateInput = {
 
 export type ShippingChargeCreateManyInput = {
   id?: number
-  region: string
-  inside_au?: boolean | null
-  outside_au?: boolean | null
+  region?: $Enums.ShippingRegion
   minQty: number
   maxQty?: number | null
   baseCharge: number
@@ -418,9 +384,7 @@ export type ShippingChargeCreateManyInput = {
 }
 
 export type ShippingChargeUpdateManyMutationInput = {
-  region?: Prisma.StringFieldUpdateOperationsInput | string
-  inside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  outside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  region?: Prisma.EnumShippingRegionFieldUpdateOperationsInput | $Enums.ShippingRegion
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   baseCharge?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -432,9 +396,7 @@ export type ShippingChargeUpdateManyMutationInput = {
 
 export type ShippingChargeUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  region?: Prisma.StringFieldUpdateOperationsInput | string
-  inside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  outside_au?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  region?: Prisma.EnumShippingRegionFieldUpdateOperationsInput | $Enums.ShippingRegion
   minQty?: Prisma.IntFieldUpdateOperationsInput | number
   maxQty?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   baseCharge?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -447,8 +409,6 @@ export type ShippingChargeUncheckedUpdateManyInput = {
 export type ShippingChargeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   region?: Prisma.SortOrder
-  inside_au?: Prisma.SortOrder
-  outside_au?: Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrder
   baseCharge?: Prisma.SortOrder
@@ -469,8 +429,6 @@ export type ShippingChargeAvgOrderByAggregateInput = {
 export type ShippingChargeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   region?: Prisma.SortOrder
-  inside_au?: Prisma.SortOrder
-  outside_au?: Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrder
   baseCharge?: Prisma.SortOrder
@@ -483,8 +441,6 @@ export type ShippingChargeMaxOrderByAggregateInput = {
 export type ShippingChargeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   region?: Prisma.SortOrder
-  inside_au?: Prisma.SortOrder
-  outside_au?: Prisma.SortOrder
   minQty?: Prisma.SortOrder
   maxQty?: Prisma.SortOrder
   baseCharge?: Prisma.SortOrder
@@ -502,8 +458,8 @@ export type ShippingChargeSumOrderByAggregateInput = {
   additionalChargePerItem?: Prisma.SortOrder
 }
 
-export type NullableBoolFieldUpdateOperationsInput = {
-  set?: boolean | null
+export type EnumShippingRegionFieldUpdateOperationsInput = {
+  set?: $Enums.ShippingRegion
 }
 
 
@@ -511,8 +467,6 @@ export type NullableBoolFieldUpdateOperationsInput = {
 export type ShippingChargeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   region?: boolean
-  inside_au?: boolean
-  outside_au?: boolean
   minQty?: boolean
   maxQty?: boolean
   baseCharge?: boolean
@@ -525,8 +479,6 @@ export type ShippingChargeSelect<ExtArgs extends runtime.Types.Extensions.Intern
 export type ShippingChargeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   region?: boolean
-  inside_au?: boolean
-  outside_au?: boolean
   minQty?: boolean
   maxQty?: boolean
   baseCharge?: boolean
@@ -539,8 +491,6 @@ export type ShippingChargeSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 export type ShippingChargeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   region?: boolean
-  inside_au?: boolean
-  outside_au?: boolean
   minQty?: boolean
   maxQty?: boolean
   baseCharge?: boolean
@@ -553,8 +503,6 @@ export type ShippingChargeSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 export type ShippingChargeSelectScalar = {
   id?: boolean
   region?: boolean
-  inside_au?: boolean
-  outside_au?: boolean
   minQty?: boolean
   maxQty?: boolean
   baseCharge?: boolean
@@ -564,16 +512,14 @@ export type ShippingChargeSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ShippingChargeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "region" | "inside_au" | "outside_au" | "minQty" | "maxQty" | "baseCharge" | "additionalChargePerItem" | "freeShipping" | "createdAt" | "updatedAt", ExtArgs["result"]["shippingCharge"]>
+export type ShippingChargeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "region" | "minQty" | "maxQty" | "baseCharge" | "additionalChargePerItem" | "freeShipping" | "createdAt" | "updatedAt", ExtArgs["result"]["shippingCharge"]>
 
 export type $ShippingChargePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ShippingCharge"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    region: string
-    inside_au: boolean | null
-    outside_au: boolean | null
+    region: $Enums.ShippingRegion
     minQty: number
     maxQty: number | null
     baseCharge: number
@@ -1005,9 +951,7 @@ export interface Prisma__ShippingChargeClient<T, Null = never, ExtArgs extends r
  */
 export interface ShippingChargeFieldRefs {
   readonly id: Prisma.FieldRef<"ShippingCharge", 'Int'>
-  readonly region: Prisma.FieldRef<"ShippingCharge", 'String'>
-  readonly inside_au: Prisma.FieldRef<"ShippingCharge", 'Boolean'>
-  readonly outside_au: Prisma.FieldRef<"ShippingCharge", 'Boolean'>
+  readonly region: Prisma.FieldRef<"ShippingCharge", 'ShippingRegion'>
   readonly minQty: Prisma.FieldRef<"ShippingCharge", 'Int'>
   readonly maxQty: Prisma.FieldRef<"ShippingCharge", 'Int'>
   readonly baseCharge: Prisma.FieldRef<"ShippingCharge", 'Float'>

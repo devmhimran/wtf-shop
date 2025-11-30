@@ -8,16 +8,20 @@ import { CreateColorsForm } from './create-colors-form';
 import { UpdateColorsForm } from './update-color-form';
 import { CreateSizesForm } from './create-sizes-form';
 import { UpdateSizesForm } from './update-sizes-form';
+import { CreateShippingChargeForm } from './create-shipping-charge-form';
+import { UpdateShippingChargeForm } from './update-shipping-charge-form';
 
 export {
   CreateUserForm,
-  UpdateUserForm,
   CreateCategoryForm,
-  UpdateCategoryForm,
+  CreateShippingChargeForm,
   CreateSubCategoryForm,
-  UpdateSubCategoryForm,
   CreateColorsForm,
-  UpdateColorsForm,
   CreateSizesForm,
+  UpdateUserForm,
+  UpdateCategoryForm,
+  UpdateSubCategoryForm,
+  UpdateColorsForm,
   UpdateSizesForm,
+  UpdateShippingChargeForm,
 };

@@ -16,3 +16,11 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const ShippingRegion = {
+  INSIDE_AU: 'INSIDE_AU',
+  OUTSIDE_AU: 'OUTSIDE_AU'
+} as const
+
+export type ShippingRegion = (typeof ShippingRegion)[keyof typeof ShippingRegion]

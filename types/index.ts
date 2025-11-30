@@ -18,6 +18,7 @@ import {
 } from './categories.types';
 import { ColorType, CreateColorsType } from './colors.types';
 import { SizeType, CreateSizesType } from './size.types';
+import { ShippingChargeType, CreateShippingChargeType } from './shipping.types';
 
 export type {
   SignInResponse,
@@ -37,4 +38,6 @@ export type {
   CreateColorsType,
   SizeType,
   CreateSizesType,
+  ShippingChargeType,
+  CreateShippingChargeType,
 };

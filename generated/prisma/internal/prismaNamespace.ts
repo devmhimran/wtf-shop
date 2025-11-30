@@ -1607,8 +1607,6 @@ export type QuantityDiscountScalarFieldEnum = (typeof QuantityDiscountScalarFiel
 export const ShippingChargeScalarFieldEnum = {
   id: 'id',
   region: 'region',
-  inside_au: 'inside_au',
-  outside_au: 'outside_au',
   minQty: 'minQty',
   maxQty: 'maxQty',
   baseCharge: 'baseCharge',
@@ -1772,6 +1770,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ShippingRegion'
+ */
+export type EnumShippingRegionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShippingRegion'>
+    
+
+
+/**
+ * Reference to a field of type 'ShippingRegion[]'
+ */
+export type ListEnumShippingRegionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShippingRegion[]'>
     
 
 /**

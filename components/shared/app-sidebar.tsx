@@ -9,6 +9,8 @@ import {
   Palette,
   RulerDimensionLine,
   Image,
+  TicketPercent,
+  Truck,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -72,6 +74,16 @@ const superAdminMenuItems = [
     title: 'Sizes',
     url: '/dashboard/sizes',
     icon: RulerDimensionLine,
+  },
+  {
+    title: 'Discount',
+    url: '/dashboard/discount',
+    icon: TicketPercent,
+  },
+  {
+    title: 'Shipping Charge',
+    url: '/dashboard/shipping-charge',
+    icon: Truck,
   },
   {
     title: 'Orders',

@@ -110,6 +110,16 @@ export const userStatusConvert = {
   INACTIVE: 'Inactive',
 };
 
+export const shippingRegionConvert = {
+  INSIDE_AU: 'Inside Australia',
+  OUTSIDE_AU: 'Outside Australia',
+};
+
+export const shippingFreeChargeConvert = {
+  FREE_SHIPPING: 'Free Shipping',
+  PAID_SHIPPING: 'Paid Shipping',
+};
+
 export const authLogout = async () => {
   await authApi.logout();
 

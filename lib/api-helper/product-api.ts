@@ -3,10 +3,12 @@ import {
   ColorType,
   CreateCategoryType,
   CreateColorsType,
+  CreateShippingChargeType,
   CreateSizesType,
   CreateSubCategoryType,
   Meta,
   Response,
+  ShippingChargeType,
   SizeType,
   SubCategoryType,
 } from '@/types';
@@ -86,6 +88,29 @@ export const productApi = {
     deleteSize: (id: number) => {
       const url = `/protected/sizes/${id}`;
       return axiosInstanceWithAuth.delete(url);
+    },
+  },
+  shippingCharge: {
+    getShippingCharges: (params?: string) => {
+      const url = '/protected/shipping-charge' + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<ShippingChargeType[], Meta>>(
+        url
+      );
+    },
+    createShippingCharge: (data: Partial<CreateShippingChargeType>) => {
+      const url = '/protected/shipping-charge';
+      return axiosInstanceWithAuth.post(url, data);
+    },
+    deleteShippingCharge: (id: number) => {
+      const url = `/protected/shipping-charge/${id}`;
+      return axiosInstanceWithAuth.delete(url);
+    },
+    updateShippingCharge: (
+      id: number,
+      updateData: Partial<CreateShippingChargeType>
+    ) => {
+      const url = `/protected/shipping-charge/${id}`;
+      return axiosInstanceWithAuth.put(url, updateData);
     },
   },
 };

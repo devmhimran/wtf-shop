@@ -273,17 +273,21 @@ export type FloatWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatFilter<$PrismaModel>
 }
 
-export type BoolNullableFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
-  not?: Prisma.NestedBoolNullableFilter<$PrismaModel> | boolean | null
+export type EnumShippingRegionFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShippingRegion | Prisma.EnumShippingRegionFieldRefInput<$PrismaModel>
+  in?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShippingRegionFilter<$PrismaModel> | $Enums.ShippingRegion
 }
 
-export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
-  not?: Prisma.NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
-  _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
-  _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+export type EnumShippingRegionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShippingRegion | Prisma.EnumShippingRegionFieldRefInput<$PrismaModel>
+  in?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShippingRegionWithAggregatesFilter<$PrismaModel> | $Enums.ShippingRegion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumShippingRegionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumShippingRegionFilter<$PrismaModel>
 }
 
 export type NestedIntFilter<$PrismaModel = never> = {
@@ -536,17 +540,21 @@ export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatFilter<$PrismaModel>
 }
 
-export type NestedBoolNullableFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
-  not?: Prisma.NestedBoolNullableFilter<$PrismaModel> | boolean | null
+export type NestedEnumShippingRegionFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShippingRegion | Prisma.EnumShippingRegionFieldRefInput<$PrismaModel>
+  in?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShippingRegionFilter<$PrismaModel> | $Enums.ShippingRegion
 }
 
-export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
-  not?: Prisma.NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
-  _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
-  _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+export type NestedEnumShippingRegionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShippingRegion | Prisma.EnumShippingRegionFieldRefInput<$PrismaModel>
+  in?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShippingRegion[] | Prisma.ListEnumShippingRegionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShippingRegionWithAggregatesFilter<$PrismaModel> | $Enums.ShippingRegion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumShippingRegionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumShippingRegionFilter<$PrismaModel>
 }
 
 
