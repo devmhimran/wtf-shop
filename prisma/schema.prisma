@@ -24,9 +24,10 @@ enum ShippingRegion {
 // USER MODEL
 model User {
   id              Int       @id @default(autoincrement())
+  userId          String?   @unique 
   name      String?
   email     String   @unique
-  password  String
+  password  String?
   role      UserRole @default(CUSTOMER)
   isDelete  Boolean  @default(false)
   isActive Boolean  @default(true)
