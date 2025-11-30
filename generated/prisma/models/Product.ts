@@ -52,6 +52,7 @@ export type ProductMinAggregateOutputType = {
   metaTitle: string | null
   metaDescription: string | null
   metaKeyword: string | null
+  productType: $Enums.ProductType | null
   twoSidePrice: number | null
   isNew: boolean | null
   isActive: boolean | null
@@ -76,6 +77,7 @@ export type ProductMaxAggregateOutputType = {
   metaTitle: string | null
   metaDescription: string | null
   metaKeyword: string | null
+  productType: $Enums.ProductType | null
   twoSidePrice: number | null
   isNew: boolean | null
   isActive: boolean | null
@@ -100,6 +102,7 @@ export type ProductCountAggregateOutputType = {
   metaTitle: number
   metaDescription: number
   metaKeyword: number
+  productType: number
   twoSidePrice: number
   isNew: number
   isActive: number
@@ -142,6 +145,7 @@ export type ProductMinAggregateInputType = {
   metaTitle?: true
   metaDescription?: true
   metaKeyword?: true
+  productType?: true
   twoSidePrice?: true
   isNew?: true
   isActive?: true
@@ -166,6 +170,7 @@ export type ProductMaxAggregateInputType = {
   metaTitle?: true
   metaDescription?: true
   metaKeyword?: true
+  productType?: true
   twoSidePrice?: true
   isNew?: true
   isActive?: true
@@ -190,6 +195,7 @@ export type ProductCountAggregateInputType = {
   metaTitle?: true
   metaDescription?: true
   metaKeyword?: true
+  productType?: true
   twoSidePrice?: true
   isNew?: true
   isActive?: true
@@ -301,6 +307,7 @@ export type ProductGroupByOutputType = {
   metaTitle: string | null
   metaDescription: string | null
   metaKeyword: string | null
+  productType: $Enums.ProductType | null
   twoSidePrice: number | null
   isNew: boolean
   isActive: boolean
@@ -348,6 +355,7 @@ export type ProductWhereInput = {
   metaTitle?: Prisma.StringNullableFilter<"Product"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   metaKeyword?: Prisma.StringNullableFilter<"Product"> | string | null
+  productType?: Prisma.EnumProductTypeNullableFilter<"Product"> | $Enums.ProductType | null
   twoSidePrice?: Prisma.FloatNullableFilter<"Product"> | number | null
   isNew?: Prisma.BoolFilter<"Product"> | boolean
   isActive?: Prisma.BoolFilter<"Product"> | boolean
@@ -379,6 +387,7 @@ export type ProductOrderByWithRelationInput = {
   metaTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   metaKeyword?: Prisma.SortOrderInput | Prisma.SortOrder
+  productType?: Prisma.SortOrderInput | Prisma.SortOrder
   twoSidePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   isNew?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -414,6 +423,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   metaTitle?: Prisma.StringNullableFilter<"Product"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   metaKeyword?: Prisma.StringNullableFilter<"Product"> | string | null
+  productType?: Prisma.EnumProductTypeNullableFilter<"Product"> | $Enums.ProductType | null
   twoSidePrice?: Prisma.FloatNullableFilter<"Product"> | number | null
   isNew?: Prisma.BoolFilter<"Product"> | boolean
   isActive?: Prisma.BoolFilter<"Product"> | boolean
@@ -444,6 +454,7 @@ export type ProductOrderByWithAggregationInput = {
   metaTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   metaKeyword?: Prisma.SortOrderInput | Prisma.SortOrder
+  productType?: Prisma.SortOrderInput | Prisma.SortOrder
   twoSidePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   isNew?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -476,6 +487,7 @@ export type ProductScalarWhereWithAggregatesInput = {
   metaTitle?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   metaDescription?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   metaKeyword?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
+  productType?: Prisma.EnumProductTypeNullableWithAggregatesFilter<"Product"> | $Enums.ProductType | null
   twoSidePrice?: Prisma.FloatNullableWithAggregatesFilter<"Product"> | number | null
   isNew?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
@@ -499,6 +511,7 @@ export type ProductCreateInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -527,6 +540,7 @@ export type ProductUncheckedCreateInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -554,6 +568,7 @@ export type ProductUpdateInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -582,6 +597,7 @@ export type ProductUncheckedUpdateInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -610,6 +626,7 @@ export type ProductCreateManyInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -633,6 +650,7 @@ export type ProductUpdateManyMutationInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -654,6 +672,7 @@ export type ProductUncheckedUpdateManyInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -688,6 +707,7 @@ export type ProductCountOrderByAggregateInput = {
   metaTitle?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   metaKeyword?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
   twoSidePrice?: Prisma.SortOrder
   isNew?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -720,6 +740,7 @@ export type ProductMaxOrderByAggregateInput = {
   metaTitle?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   metaKeyword?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
   twoSidePrice?: Prisma.SortOrder
   isNew?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -744,6 +765,7 @@ export type ProductMinOrderByAggregateInput = {
   metaTitle?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   metaKeyword?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
   twoSidePrice?: Prisma.SortOrder
   isNew?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -897,6 +919,10 @@ export type ProductUncheckedUpdateManyWithoutSubCategoryNestedInput = {
   deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
 }
 
+export type NullableEnumProductTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ProductType | null
+}
+
 export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -978,6 +1004,7 @@ export type ProductCreateWithoutCreatedByInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1005,6 +1032,7 @@ export type ProductUncheckedCreateWithoutCreatedByInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1061,6 +1089,7 @@ export type ProductScalarWhereInput = {
   metaTitle?: Prisma.StringNullableFilter<"Product"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   metaKeyword?: Prisma.StringNullableFilter<"Product"> | string | null
+  productType?: Prisma.EnumProductTypeNullableFilter<"Product"> | $Enums.ProductType | null
   twoSidePrice?: Prisma.FloatNullableFilter<"Product"> | number | null
   isNew?: Prisma.BoolFilter<"Product"> | boolean
   isActive?: Prisma.BoolFilter<"Product"> | boolean
@@ -1084,6 +1113,7 @@ export type ProductCreateWithoutCategoryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1111,6 +1141,7 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1163,6 +1194,7 @@ export type ProductCreateWithoutSubCategoryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1190,6 +1222,7 @@ export type ProductUncheckedCreateWithoutSubCategoryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1242,6 +1275,7 @@ export type ProductCreateWithoutGalleryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1269,6 +1303,7 @@ export type ProductUncheckedCreateWithoutGalleryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1311,6 +1346,7 @@ export type ProductUpdateWithoutGalleryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1338,6 +1374,7 @@ export type ProductUncheckedUpdateWithoutGalleryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1364,6 +1401,7 @@ export type ProductCreateWithoutVariantsInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1391,6 +1429,7 @@ export type ProductUncheckedCreateWithoutVariantsInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1433,6 +1472,7 @@ export type ProductUpdateWithoutVariantsInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1460,6 +1500,7 @@ export type ProductUncheckedUpdateWithoutVariantsInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1486,6 +1527,7 @@ export type ProductCreateWithoutQuantityDiscountsInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1513,6 +1555,7 @@ export type ProductUncheckedCreateWithoutQuantityDiscountsInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1555,6 +1598,7 @@ export type ProductUpdateWithoutQuantityDiscountsInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1582,6 +1626,7 @@ export type ProductUncheckedUpdateWithoutQuantityDiscountsInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1608,6 +1653,7 @@ export type ProductCreateWithoutOrderItemsInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1635,6 +1681,7 @@ export type ProductUncheckedCreateWithoutOrderItemsInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1677,6 +1724,7 @@ export type ProductUpdateWithoutOrderItemsInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1704,6 +1752,7 @@ export type ProductUncheckedUpdateWithoutOrderItemsInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1731,6 +1780,7 @@ export type ProductCreateManyCreatedByInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1753,6 +1803,7 @@ export type ProductUpdateWithoutCreatedByInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1780,6 +1831,7 @@ export type ProductUncheckedUpdateWithoutCreatedByInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1807,6 +1859,7 @@ export type ProductUncheckedUpdateManyWithoutCreatedByInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1830,6 +1883,7 @@ export type ProductCreateManyCategoryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1852,6 +1906,7 @@ export type ProductUpdateWithoutCategoryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1879,6 +1934,7 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1906,6 +1962,7 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1929,6 +1986,7 @@ export type ProductCreateManySubCategoryInput = {
   metaTitle?: string | null
   metaDescription?: string | null
   metaKeyword?: string | null
+  productType?: $Enums.ProductType | null
   twoSidePrice?: number | null
   isNew?: boolean
   isActive?: boolean
@@ -1951,6 +2009,7 @@ export type ProductUpdateWithoutSubCategoryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1978,6 +2037,7 @@ export type ProductUncheckedUpdateWithoutSubCategoryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2005,6 +2065,7 @@ export type ProductUncheckedUpdateManyWithoutSubCategoryInput = {
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaKeyword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productType?: Prisma.NullableEnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType | null
   twoSidePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2086,6 +2147,7 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   metaTitle?: boolean
   metaDescription?: boolean
   metaKeyword?: boolean
+  productType?: boolean
   twoSidePrice?: boolean
   isNew?: boolean
   isActive?: boolean
@@ -2118,6 +2180,7 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   metaTitle?: boolean
   metaDescription?: boolean
   metaKeyword?: boolean
+  productType?: boolean
   twoSidePrice?: boolean
   isNew?: boolean
   isActive?: boolean
@@ -2145,6 +2208,7 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   metaTitle?: boolean
   metaDescription?: boolean
   metaKeyword?: boolean
+  productType?: boolean
   twoSidePrice?: boolean
   isNew?: boolean
   isActive?: boolean
@@ -2172,6 +2236,7 @@ export type ProductSelectScalar = {
   metaTitle?: boolean
   metaDescription?: boolean
   metaKeyword?: boolean
+  productType?: boolean
   twoSidePrice?: boolean
   isNew?: boolean
   isActive?: boolean
@@ -2186,7 +2251,7 @@ export type ProductSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "catalogId" | "title" | "shortDescription" | "description" | "additionalDesc" | "metaTitle" | "metaDescription" | "metaKeyword" | "twoSidePrice" | "isNew" | "isActive" | "isDelete" | "slug" | "mainImage" | "alternativeImage" | "categoryId" | "subCategoryId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "catalogId" | "title" | "shortDescription" | "description" | "additionalDesc" | "metaTitle" | "metaDescription" | "metaKeyword" | "productType" | "twoSidePrice" | "isNew" | "isActive" | "isDelete" | "slug" | "mainImage" | "alternativeImage" | "categoryId" | "subCategoryId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gallery?: boolean | Prisma.Product$galleryArgs<ExtArgs>
   variants?: boolean | Prisma.Product$variantsArgs<ExtArgs>
@@ -2229,6 +2294,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     metaTitle: string | null
     metaDescription: string | null
     metaKeyword: string | null
+    productType: $Enums.ProductType | null
     twoSidePrice: number | null
     isNew: boolean
     isActive: boolean
@@ -2680,6 +2746,7 @@ export interface ProductFieldRefs {
   readonly metaTitle: Prisma.FieldRef<"Product", 'String'>
   readonly metaDescription: Prisma.FieldRef<"Product", 'String'>
   readonly metaKeyword: Prisma.FieldRef<"Product", 'String'>
+  readonly productType: Prisma.FieldRef<"Product", 'ProductType'>
   readonly twoSidePrice: Prisma.FieldRef<"Product", 'Float'>
   readonly isNew: Prisma.FieldRef<"Product", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"Product", 'Boolean'>

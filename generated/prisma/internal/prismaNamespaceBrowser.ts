@@ -147,6 +147,7 @@ export const ProductScalarFieldEnum = {
   metaTitle: 'metaTitle',
   metaDescription: 'metaDescription',
   metaKeyword: 'metaKeyword',
+  productType: 'productType',
   twoSidePrice: 'twoSidePrice',
   isNew: 'isNew',
   isActive: 'isActive',

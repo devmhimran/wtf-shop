@@ -21,6 +21,11 @@ enum ShippingRegion {
   OUTSIDE_AU
 }
 
+enum ProductType {
+  STANDARD
+  CUSTOM
+}
+
 // USER MODEL
 model User {
   id              Int       @id @default(autoincrement())
@@ -90,6 +95,7 @@ model Product {
   metaTitle          String?
   metaDescription    String?
   metaKeyword        String?
+  productType       ProductType?
 
   twoSidePrice       Float?           
 
@@ -179,7 +185,7 @@ model ShippingCharge {
 
 // PROMO CODE MODEL
 model PromoCode {
-  id              Int       @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   code        String   @unique
   title       String
   amount      Float

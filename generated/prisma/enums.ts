@@ -24,3 +24,11 @@ export const ShippingRegion = {
 } as const
 
 export type ShippingRegion = (typeof ShippingRegion)[keyof typeof ShippingRegion]
+
+
+export const ProductType = {
+  STANDARD: 'STANDARD',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type ProductType = (typeof ProductType)[keyof typeof ProductType]
