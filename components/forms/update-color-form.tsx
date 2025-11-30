@@ -88,11 +88,11 @@ export function UpdateColorsForm({ setIsOpen, data }: UpdateColorsFormProps) {
 
         <Button
           type='submit'
-          disabled={isPending}
+          disabled={isPending || !form.formState.isDirty}
           className='flex justify-start'
         >
           {isPending && <Loader2Icon className='animate-spin' />}
-          Create
+          Save Changes
         </Button>
       </form>
     </Form>

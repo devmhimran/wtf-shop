@@ -23,6 +23,7 @@ import { AlertModal, ConfirmModal } from '@/components/shared';
 import { useState } from 'react';
 import { usePromoCode } from '@/hooks/use-promo-code';
 import { toast } from 'sonner';
+import { UpdatePromoCodeForm } from '@/components/forms';
 
 export function PromoCodesCard({ data }: { data?: PromoCodeType[] }) {
   const [isPending, setIsPending] = useState(false);
@@ -205,9 +206,10 @@ export function PromoCodesCard({ data }: { data?: PromoCodeType[] }) {
         title='Edit Promo Code'
         description=' '
       >
-        <div className='text-muted-foreground text-sm'>
-          Update form coming soon
-        </div>
+        <UpdatePromoCodeForm
+          setIsOpen={setOpenUpdateModal}
+          data={promoCodeDetails}
+        />
       </AlertModal>
     </div>
   );

@@ -252,11 +252,11 @@ export function UpdateShippingChargeForm({
 
         <Button
           type='submit'
-          disabled={isPending}
+          disabled={isPending || !form.formState.isDirty}
           className='flex justify-start'
         >
           {isPending && <Loader2Icon className='animate-spin' />}
-          Update
+          Save Changes
         </Button>
       </form>
     </Form>

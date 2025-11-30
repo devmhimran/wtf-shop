@@ -133,6 +133,7 @@ export function CreateUserForm({
                 <Input
                   className='w-full'
                   placeholder='Enter user email'
+                  autoComplete='off'
                   {...field}
                 />
               </FormControl>
@@ -151,6 +152,7 @@ export function CreateUserForm({
                   className='w-full'
                   placeholder='Enter user password'
                   type='password'
+                  autoComplete='new-password'
                   {...field}
                 />
               </FormControl>
@@ -169,6 +171,7 @@ export function CreateUserForm({
                   className='w-full'
                   placeholder='Enter user confirm password'
                   type='password'
+                  autoComplete='new-password'
                   {...field}
                 />
               </FormControl>
