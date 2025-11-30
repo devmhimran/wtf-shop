@@ -3,7 +3,7 @@
 import { CreatePromoCodeForm } from '@/components/forms';
 import { PromoCodesCard } from '@/components/pages/promo-code';
 import { AlertModal } from '@/components/shared';
-import { SizesSkeleton } from '@/components/skeletons';
+import { PromoCodeSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -97,7 +97,7 @@ export default function SizesPage() {
         </CardHeader>
         <CardContent>
           {fetchAllPromoCodesMutation.isLoading ? (
-            <SizesSkeleton />
+            <PromoCodeSkeleton />
           ) : (
             // <SizesCard data={fetchAllPromoCodesMutationData?.data || []} />
             <PromoCodesCard data={fetchAllPromoCodesMutationData?.data || []} />

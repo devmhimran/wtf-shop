@@ -103,9 +103,9 @@ export function PromoCodesCard({ data }: { data?: PromoCodeType[] }) {
         return (
           <Card
             key={promoCode.id}
-            className='hover:shadow-md transition-shadow'
+            className='hover:shadow-md transition-shadow p-4'
           >
-            <CardHeader className='flex flex-row items-start justify-between space-y-0 pb-3'>
+            <CardHeader className='flex flex-row items-start justify-between space-y-0 p-0 mb-2'>
               <div className='space-y-2 flex-1'>
                 <CardTitle className='text-lg font-semibold'>
                   {promoCode.title}
@@ -142,8 +142,8 @@ export function PromoCodesCard({ data }: { data?: PromoCodeType[] }) {
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardHeader>
-            <CardContent className='space-y-3'>
-              <div className='flex items-center gap-2 p-3 bg-muted rounded-lg border'>
+            <CardContent className='space-y-3 p-0'>
+              <div className='flex items-center gap-2 p-3 bg-muted rounded-lg border mb-4'>
                 <span className='text-sm text-muted-foreground'>Code:</span>
                 <code className='text-base font-mono font-semibold flex-1'>
                   {promoCode.code}
