@@ -76,8 +76,8 @@ const superAdminMenuItems = [
     icon: RulerDimensionLine,
   },
   {
-    title: 'Discount',
-    url: '/dashboard/discount',
+    title: 'Promo Code',
+    url: '/dashboard/promo-code',
     icon: TicketPercent,
   },
   {

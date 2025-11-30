@@ -5,6 +5,7 @@ const SUPER_ADMIN_PATHS = [
   '/dashboard/',
   '/dashboard/products',
   '/dashboard/media-library',
+  '/dashboard/promo-code',
   '/dashboard/custom-products',
   '/dashboard/orders',
   '/dashboard/customers',

@@ -132,7 +132,7 @@ export const PUT = catchAsyncNext(
         message: 'Shipping charge updated successfully',
         data: shippingCharge,
       },
-      { status: 201 }
+      { status: 200 }
     );
   }
 );

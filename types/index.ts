@@ -19,6 +19,7 @@ import {
 import { ColorType, CreateColorsType } from './colors.types';
 import { SizeType, CreateSizesType } from './size.types';
 import { ShippingChargeType, CreateShippingChargeType } from './shipping.types';
+import { PromoCodeType, CreatePromoCodeType } from './promo-code.types';
 
 export type {
   SignInResponse,
@@ -40,4 +41,6 @@ export type {
   CreateSizesType,
   ShippingChargeType,
   CreateShippingChargeType,
+  PromoCodeType,
+  CreatePromoCodeType,
 };
