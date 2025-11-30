@@ -3,6 +3,7 @@ import { UsersTableSkeleton } from './users-table-skeleton';
 import { CategoriesSkeleton } from './categories-skeleton';
 import { ColorsSkeleton } from './colors-skeleton';
 import { SizesSkeleton } from './sizes-skeleton';
+import { ShippingChargeSkeleton } from './shipping-charge-skeleton';
 
 export {
   UserNavSkeleton,
@@ -10,4 +11,5 @@ export {
   CategoriesSkeleton,
   ColorsSkeleton,
   SizesSkeleton,
+  ShippingChargeSkeleton,
 };

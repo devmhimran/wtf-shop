@@ -3,6 +3,7 @@
 import { CreateShippingChargeForm } from '@/components/forms';
 import { ShippingChargeCard } from '@/components/pages/shipping-charges';
 import { AlertModal } from '@/components/shared';
+import { ShippingChargeSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -167,8 +168,7 @@ export default function ShippingChargePage() {
         </CardHeader>
         <CardContent>
           {fetchAllShippingChargeMutation.isLoading ? (
-            // <SizesSkeleton />
-            <div>Loading...</div>
+            <ShippingChargeSkeleton />
           ) : (
             <ShippingChargeCard
               data={fetchAllShippingChargeMutationData?.data || []}

@@ -2,7 +2,6 @@
 
 import { toast } from 'sonner';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Mail,
   Shield,
@@ -14,13 +13,6 @@ import {
 } from 'lucide-react';
 
 import { UsersType } from '@/types';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UsersTableSkeleton } from '@/components/skeletons/users-table-skeleton';
 import {
@@ -36,6 +28,7 @@ import { useAdminUsersMutation } from '@/hooks/use-admin-users';
 import { AlertModal, ConfirmModal } from '@/components/shared';
 import { UserDetails } from './user-details';
 import { UpdateUserForm } from '@/components/forms';
+import { Card, CardContent } from '@/components/ui/card';
 
 type UsersCardProps = {
   data?: UsersType[];
@@ -44,7 +37,6 @@ type UsersCardProps = {
 
 export function UsersCard({ data, loading }: UsersCardProps) {
   const { fetchMe } = useUser();
-  const router = useRouter();
   const [userId, setUserId] = useState<number | null>(null);
   const [userDetails, setUserDetails] = useState<UsersType | null>(null);
   const [openUserDetails, setOpenUserDetails] = useState(false);
@@ -102,16 +94,15 @@ export function UsersCard({ data, loading }: UsersCardProps) {
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
       {data.map((user) => {
         return (
-          <Card key={user.id} className='hover:shadow-md transition-shadow'>
-            <CardHeader className='flex flex-row items-start gap-4'>
-              <div className='flex-1 space-y-1'>
-                <CardTitle className='text-lg'>{user.name}</CardTitle>
-                <CardDescription className='flex items-center gap-1'>
-                  <Mail className='h-3 w-3' />
-                  {user.email}
-                </CardDescription>
+          <div
+            key={user.id}
+            className='rounded-lg border bg-card text-card-foreground shadow-sm p-4'
+          >
+            <div className='flex justify-between gap-4 p-0'>
+              <div className='text-sm'>
+                <div className='text-lg text-wrap font-medium'>{user.name}</div>
               </div>
-              <div>
+              <div className='self-start pl-1'>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <EllipsisVertical className='w-5 h-5 text-gray-700' />
@@ -142,8 +133,12 @@ export function UsersCard({ data, loading }: UsersCardProps) {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-            </CardHeader>
-            <CardContent className='space-y-3'>
+            </div>
+            <div className='flex items-center gap-1 text-gray-600 text-sm mt-2'>
+              <Mail className='h-3 w-3 self-start mt-1 shrink-0' />
+              <div className='break-all text-wrap'>{user.email}</div>
+            </div>
+            <div className='space-y-3 p-0 mt-4'>
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2 text-sm text-muted-foreground'>
                   <Shield className='h-4 w-4' />
@@ -178,8 +173,8 @@ export function UsersCard({ data, loading }: UsersCardProps) {
                   })}
                 </span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         );
       })}
 
