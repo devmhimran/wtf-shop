@@ -65,6 +65,11 @@ export type Color = Prisma.ColorModel
  */
 export type Size = Prisma.SizeModel
 /**
+ * Model MediaLibrary
+ * 
+ */
+export type MediaLibrary = Prisma.MediaLibraryModel
+/**
  * Model Product
  * 
  */

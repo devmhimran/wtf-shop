@@ -56,6 +56,7 @@ export const ModelName = {
   SubCategory: 'SubCategory',
   Color: 'Color',
   Size: 'Size',
+  MediaLibrary: 'MediaLibrary',
   Product: 'Product',
   ProductGallery: 'ProductGallery',
   ProductVariant: 'ProductVariant',
@@ -137,6 +138,22 @@ export const SizeScalarFieldEnum = {
 export type SizeScalarFieldEnum = (typeof SizeScalarFieldEnum)[keyof typeof SizeScalarFieldEnum]
 
 
+export const MediaLibraryScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  alt: 'alt',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  fileSize: 'fileSize',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaLibraryScalarFieldEnum = (typeof MediaLibraryScalarFieldEnum)[keyof typeof MediaLibraryScalarFieldEnum]
+
+
 export const ProductScalarFieldEnum = {
   id: 'id',
   catalogId: 'catalogId',
@@ -153,8 +170,8 @@ export const ProductScalarFieldEnum = {
   isActive: 'isActive',
   isDelete: 'isDelete',
   slug: 'slug',
-  mainImage: 'mainImage',
-  alternativeImage: 'alternativeImage',
+  mainImageId: 'mainImageId',
+  alternativeImageId: 'alternativeImageId',
   categoryId: 'categoryId',
   subCategoryId: 'subCategoryId',
   createdById: 'createdById',
@@ -167,7 +184,7 @@ export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeo
 
 export const ProductGalleryScalarFieldEnum = {
   id: 'id',
-  imageUrl: 'imageUrl',
+  mediaId: 'mediaId',
   productId: 'productId'
 } as const
 

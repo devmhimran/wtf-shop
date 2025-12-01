@@ -389,6 +389,7 @@ export const ModelName = {
   SubCategory: 'SubCategory',
   Color: 'Color',
   Size: 'Size',
+  MediaLibrary: 'MediaLibrary',
   Product: 'Product',
   ProductGallery: 'ProductGallery',
   ProductVariant: 'ProductVariant',
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "category" | "subCategory" | "color" | "size" | "product" | "productGallery" | "productVariant" | "quantityDiscount" | "shippingCharge" | "promoCode" | "order" | "orderItem" | "customOrderImage"
+    modelProps: "user" | "category" | "subCategory" | "color" | "size" | "mediaLibrary" | "product" | "productGallery" | "productVariant" | "quantityDiscount" | "shippingCharge" | "promoCode" | "order" | "orderItem" | "customOrderImage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -784,6 +785,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SizeCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SizeCountAggregateOutputType> | number
+        }
+      }
+    }
+    MediaLibrary: {
+      payload: Prisma.$MediaLibraryPayload<ExtArgs>
+      fields: Prisma.MediaLibraryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MediaLibraryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MediaLibraryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>
+        }
+        findFirst: {
+          args: Prisma.MediaLibraryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MediaLibraryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>
+        }
+        findMany: {
+          args: Prisma.MediaLibraryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>[]
+        }
+        create: {
+          args: Prisma.MediaLibraryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>
+        }
+        createMany: {
+          args: Prisma.MediaLibraryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MediaLibraryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>[]
+        }
+        delete: {
+          args: Prisma.MediaLibraryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>
+        }
+        update: {
+          args: Prisma.MediaLibraryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>
+        }
+        deleteMany: {
+          args: Prisma.MediaLibraryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MediaLibraryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MediaLibraryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>[]
+        }
+        upsert: {
+          args: Prisma.MediaLibraryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaLibraryPayload>
+        }
+        aggregate: {
+          args: Prisma.MediaLibraryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMediaLibrary>
+        }
+        groupBy: {
+          args: Prisma.MediaLibraryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaLibraryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MediaLibraryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaLibraryCountAggregateOutputType> | number
         }
       }
     }
@@ -1546,6 +1621,22 @@ export const SizeScalarFieldEnum = {
 export type SizeScalarFieldEnum = (typeof SizeScalarFieldEnum)[keyof typeof SizeScalarFieldEnum]
 
 
+export const MediaLibraryScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  alt: 'alt',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  fileSize: 'fileSize',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaLibraryScalarFieldEnum = (typeof MediaLibraryScalarFieldEnum)[keyof typeof MediaLibraryScalarFieldEnum]
+
+
 export const ProductScalarFieldEnum = {
   id: 'id',
   catalogId: 'catalogId',
@@ -1562,8 +1653,8 @@ export const ProductScalarFieldEnum = {
   isActive: 'isActive',
   isDelete: 'isDelete',
   slug: 'slug',
-  mainImage: 'mainImage',
-  alternativeImage: 'alternativeImage',
+  mainImageId: 'mainImageId',
+  alternativeImageId: 'alternativeImageId',
   categoryId: 'categoryId',
   subCategoryId: 'subCategoryId',
   createdById: 'createdById',
@@ -1576,7 +1667,7 @@ export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeo
 
 export const ProductGalleryScalarFieldEnum = {
   id: 'id',
-  imageUrl: 'imageUrl',
+  mediaId: 'mediaId',
   productId: 'productId'
 } as const
 
@@ -1886,6 +1977,7 @@ export type GlobalOmitConfig = {
   subCategory?: Prisma.SubCategoryOmit
   color?: Prisma.ColorOmit
   size?: Prisma.SizeOmit
+  mediaLibrary?: Prisma.MediaLibraryOmit
   product?: Prisma.ProductOmit
   productGallery?: Prisma.ProductGalleryOmit
   productVariant?: Prisma.ProductVariantOmit

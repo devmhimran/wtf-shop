@@ -274,6 +274,7 @@ export type UserWhereInput = {
   refreshTokenUpdatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   orders?: Prisma.OrderListRelationFilter
   createdProducts?: Prisma.ProductListRelationFilter
+  mediaLibrary?: Prisma.MediaLibraryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -291,6 +292,7 @@ export type UserOrderByWithRelationInput = {
   refreshTokenUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
   createdProducts?: Prisma.ProductOrderByRelationAggregateInput
+  mediaLibrary?: Prisma.MediaLibraryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -311,6 +313,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   refreshTokenUpdatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   orders?: Prisma.OrderListRelationFilter
   createdProducts?: Prisma.ProductListRelationFilter
+  mediaLibrary?: Prisma.MediaLibraryListRelationFilter
 }, "id" | "userId" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -365,6 +368,7 @@ export type UserCreateInput = {
   refreshTokenUpdatedAt?: Date | string | null
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   createdProducts?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
+  mediaLibrary?: Prisma.MediaLibraryCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -382,6 +386,7 @@ export type UserUncheckedCreateInput = {
   refreshTokenUpdatedAt?: Date | string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   createdProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
+  mediaLibrary?: Prisma.MediaLibraryUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -398,6 +403,7 @@ export type UserUpdateInput = {
   refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   createdProducts?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
+  mediaLibrary?: Prisma.MediaLibraryUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -415,6 +421,7 @@ export type UserUncheckedUpdateInput = {
   refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   createdProducts?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+  mediaLibrary?: Prisma.MediaLibraryUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -514,6 +521,11 @@ export type UserSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
@@ -551,6 +563,22 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type UserCreateNestedOneWithoutMediaLibraryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMediaLibraryInput, Prisma.UserUncheckedCreateWithoutMediaLibraryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMediaLibraryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutMediaLibraryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMediaLibraryInput, Prisma.UserUncheckedCreateWithoutMediaLibraryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMediaLibraryInput
+  upsert?: Prisma.UserUpsertWithoutMediaLibraryInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMediaLibraryInput, Prisma.UserUpdateWithoutMediaLibraryInput>, Prisma.UserUncheckedUpdateWithoutMediaLibraryInput>
+}
+
 export type UserCreateNestedOneWithoutCreatedProductsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedProductsInput, Prisma.UserUncheckedCreateWithoutCreatedProductsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedProductsInput
@@ -579,6 +607,88 @@ export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
 }
 
+export type UserCreateWithoutMediaLibraryInput = {
+  userId?: string | null
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  isDelete?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshToken?: string | null
+  refreshTokenUpdatedAt?: Date | string | null
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  createdProducts?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutMediaLibraryInput = {
+  id?: number
+  userId?: string | null
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  isDelete?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshToken?: string | null
+  refreshTokenUpdatedAt?: Date | string | null
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  createdProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutMediaLibraryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMediaLibraryInput, Prisma.UserUncheckedCreateWithoutMediaLibraryInput>
+}
+
+export type UserUpsertWithoutMediaLibraryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMediaLibraryInput, Prisma.UserUncheckedUpdateWithoutMediaLibraryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMediaLibraryInput, Prisma.UserUncheckedCreateWithoutMediaLibraryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMediaLibraryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMediaLibraryInput, Prisma.UserUncheckedUpdateWithoutMediaLibraryInput>
+}
+
+export type UserUpdateWithoutMediaLibraryInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  createdProducts?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMediaLibraryInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  createdProducts?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
 export type UserCreateWithoutCreatedProductsInput = {
   userId?: string | null
   name?: string | null
@@ -592,6 +702,7 @@ export type UserCreateWithoutCreatedProductsInput = {
   refreshToken?: string | null
   refreshTokenUpdatedAt?: Date | string | null
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  mediaLibrary?: Prisma.MediaLibraryCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedProductsInput = {
@@ -608,6 +719,7 @@ export type UserUncheckedCreateWithoutCreatedProductsInput = {
   refreshToken?: string | null
   refreshTokenUpdatedAt?: Date | string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  mediaLibrary?: Prisma.MediaLibraryUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedProductsInput = {
@@ -639,6 +751,7 @@ export type UserUpdateWithoutCreatedProductsInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  mediaLibrary?: Prisma.MediaLibraryUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedProductsInput = {
@@ -655,6 +768,7 @@ export type UserUncheckedUpdateWithoutCreatedProductsInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  mediaLibrary?: Prisma.MediaLibraryUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -670,6 +784,7 @@ export type UserCreateWithoutOrdersInput = {
   refreshToken?: string | null
   refreshTokenUpdatedAt?: Date | string | null
   createdProducts?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
+  mediaLibrary?: Prisma.MediaLibraryCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -686,6 +801,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   refreshToken?: string | null
   refreshTokenUpdatedAt?: Date | string | null
   createdProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
+  mediaLibrary?: Prisma.MediaLibraryUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -717,6 +833,7 @@ export type UserUpdateWithoutOrdersInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdProducts?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
+  mediaLibrary?: Prisma.MediaLibraryUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -733,6 +850,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refreshTokenUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdProducts?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+  mediaLibrary?: Prisma.MediaLibraryUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -743,11 +861,13 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
 export type UserCountOutputType = {
   orders: number
   createdProducts: number
+  mediaLibrary: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
   createdProducts?: boolean | UserCountOutputTypeCountCreatedProductsArgs
+  mediaLibrary?: boolean | UserCountOutputTypeCountMediaLibraryArgs
 }
 
 /**
@@ -774,6 +894,13 @@ export type UserCountOutputTypeCountCreatedProductsArgs<ExtArgs extends runtime.
   where?: Prisma.ProductWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMediaLibraryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MediaLibraryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -790,6 +917,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   refreshTokenUpdatedAt?: boolean
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   createdProducts?: boolean | Prisma.User$createdProductsArgs<ExtArgs>
+  mediaLibrary?: boolean | Prisma.User$mediaLibraryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -842,6 +970,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   createdProducts?: boolean | Prisma.User$createdProductsArgs<ExtArgs>
+  mediaLibrary?: boolean | Prisma.User$mediaLibraryArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -852,6 +981,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     orders: Prisma.$OrderPayload<ExtArgs>[]
     createdProducts: Prisma.$ProductPayload<ExtArgs>[]
+    mediaLibrary: Prisma.$MediaLibraryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1262,6 +1392,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdProducts<T extends Prisma.User$createdProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mediaLibrary<T extends Prisma.User$mediaLibraryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mediaLibraryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaLibraryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1736,6 +1867,30 @@ export type User$createdProductsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
+}
+
+/**
+ * User.mediaLibrary
+ */
+export type User$mediaLibraryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MediaLibrary
+   */
+  select?: Prisma.MediaLibrarySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MediaLibrary
+   */
+  omit?: Prisma.MediaLibraryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MediaLibraryInclude<ExtArgs> | null
+  where?: Prisma.MediaLibraryWhereInput
+  orderBy?: Prisma.MediaLibraryOrderByWithRelationInput | Prisma.MediaLibraryOrderByWithRelationInput[]
+  cursor?: Prisma.MediaLibraryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MediaLibraryScalarFieldEnum | Prisma.MediaLibraryScalarFieldEnum[]
 }
 
 /**
