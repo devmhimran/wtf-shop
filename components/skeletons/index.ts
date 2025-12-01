@@ -5,6 +5,8 @@ import { ColorsSkeleton } from './colors-skeleton';
 import { SizesSkeleton } from './sizes-skeleton';
 import { ShippingChargeSkeleton } from './shipping-charge-skeleton';
 import { PromoCodeSkeleton } from './promo-code-skeleton';
+import { MediaViewSkeleton } from './media-view-skeleton';
+import { MediaCardSkeleton } from './media-card-skeleton';
 
 export {
   UserNavSkeleton,
@@ -14,4 +16,6 @@ export {
   SizesSkeleton,
   ShippingChargeSkeleton,
   PromoCodeSkeleton,
+  MediaViewSkeleton,
+  MediaCardSkeleton,
 };

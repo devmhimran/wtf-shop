@@ -39,7 +39,7 @@ export function Modal({
         aria-describedby={undefined}
       >
         <DialogHeader>
-          {title && <DialogTitle>{title}</DialogTitle>}
+          {title && <DialogTitle className='text-start'>{title}</DialogTitle>}
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         <div className='max-h-[80vh] overflow-y-auto p-2'>{children}</div>

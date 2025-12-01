@@ -20,6 +20,7 @@ import { ColorType, CreateColorsType } from './colors.types';
 import { SizeType, CreateSizesType } from './size.types';
 import { ShippingChargeType, CreateShippingChargeType } from './shipping.types';
 import { PromoCodeType, CreatePromoCodeType } from './promo-code.types';
+import { MediaType, CreateMediaType } from './media.types';
 
 export type {
   SignInResponse,
@@ -43,4 +44,6 @@ export type {
   CreateShippingChargeType,
   PromoCodeType,
   CreatePromoCodeType,
+  MediaType,
+  CreateMediaType,
 };

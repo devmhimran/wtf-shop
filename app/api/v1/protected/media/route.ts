@@ -37,7 +37,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const [media, totalCount] = await Promise.all([
     prisma.mediaLibrary.findMany({
       where,
-      orderBy: { id: 'desc' },
+      orderBy: { createdAt: 'desc' },
       skip,
       take: limit,
       include: {
@@ -98,12 +98,14 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
 
   const fileExtension = path.extname(file.name);
   const fileNameWithoutExt = path.basename(file.name, fileExtension);
+  let existingFileTitle = fileNameWithoutExt;
   let fileName = `${fileNameWithoutExt}${fileExtension}`;
   let filePath = path.join(uploadDir, fileName);
   let counter = 1;
 
   while (fs.existsSync(filePath)) {
     fileName = `${fileNameWithoutExt}-${counter}${fileExtension}`;
+    existingFileTitle = `${fileNameWithoutExt}-${counter}`;
     filePath = path.join(uploadDir, fileName);
     counter++;
   }
@@ -117,7 +119,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   // Save to MediaLibrary
   const media = await prisma.mediaLibrary.create({
     data: {
-      title: title || fileNameWithoutExt || null,
+      title: title || existingFileTitle || null,
       alt: alt || null,
       fileUrl,
       fileName,
