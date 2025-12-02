@@ -48,7 +48,7 @@ export function UsersTable({ data, loading }: UsersTableProps) {
 
   const { deleteUserAsync } = useAdminUsersMutation();
 
-  const handleDeleUser = () => {
+  const handleDeleteUser = () => {
     setIsPending(true);
     if (!userId) return;
     toast.promise(deleteUserAsync(userId), {
@@ -171,7 +171,7 @@ export function UsersTable({ data, loading }: UsersTableProps) {
         setIsOpen={setConfirmModal}
         loading={isPending}
         title='This action cannot be undone. This will permanently delete your user '
-        onClick={handleDeleUser}
+        onClick={handleDeleteUser}
       />
     </Table>
   );

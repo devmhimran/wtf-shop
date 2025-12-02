@@ -46,7 +46,7 @@ export function UsersCard({ data, loading }: UsersCardProps) {
 
   const { deleteUserAsync } = useAdminUsersMutation();
 
-  const handleDeleUser = () => {
+  const handleDeleteUser = () => {
     setIsPending(true);
     if (!userId) return;
     toast.promise(deleteUserAsync(userId), {
@@ -183,7 +183,7 @@ export function UsersCard({ data, loading }: UsersCardProps) {
         setIsOpen={setConfirmModal}
         loading={isPending}
         title='This action cannot be undone. This will permanently delete your user '
-        onClick={handleDeleUser}
+        onClick={handleDeleteUser}
       />
 
       <AlertModal
