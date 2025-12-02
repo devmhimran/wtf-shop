@@ -7,6 +7,7 @@ import {
   useGetAllShippingCharge,
   useShippingCharge,
 } from './use-shipping-charge';
+import { useMedia, useGetAllMedia } from './use-media';
 
 export {
   useUser,
@@ -20,4 +21,6 @@ export {
   useGetAllCategories,
   useGetAllShippingCharge,
   useShippingCharge,
+  useMedia,
+  useGetAllMedia,
 };

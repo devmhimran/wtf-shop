@@ -20,9 +20,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Image from 'next/image';
-import { Modal } from '@/components/shared';
+import { ConfirmModal, Modal } from '@/components/shared';
 import { useState } from 'react';
 import { MediaDetails } from './media-details';
+import { useMedia } from '@/hooks';
+import { toast } from 'sonner';
 
 const getFileIcon = (fileType: string) => {
   if (fileType.startsWith('image/')) {
@@ -71,6 +73,9 @@ const formatFileSize = (bytes: number) => {
 };
 
 export function MediaCard({ data }: { data: MediaType }) {
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [imageId, setImageId] = useState<number | null>(null);
   const [viewMediaOpen, setViewMediaOpen] = useState(false);
   const [mediaDetails, setMediaDetails] = useState<MediaType | null>(null);
 
@@ -85,6 +90,29 @@ export function MediaCard({ data }: { data: MediaType }) {
   const renderFileIcon = () => {
     const Icon = getFileIcon(data.fileType);
     return <Icon className='w-20 h-20 text-muted-foreground' />;
+  };
+
+  const { deleteMediaAsync } = useMedia();
+
+  const handleDeleteMedia = () => {
+    setIsPending(true);
+    if (!imageId) return;
+    toast.promise(deleteMediaAsync(imageId), {
+      loading: 'Deleting media...',
+      success: () => {
+        setConfirmModal(false);
+        setIsPending(false);
+        return 'Successfully media deleted';
+      },
+      error: (error) => {
+        setIsPending(false);
+        return (
+          error?.response?.data?.error ||
+          error.message ||
+          'Failed to delete media'
+        );
+      },
+    });
   };
 
   return (
@@ -116,7 +144,13 @@ export function MediaCard({ data }: { data: MediaType }) {
                 <Eye className='mr-1 h-4 w-4' />
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem className='text-red-600 gap-1'>
+              <DropdownMenuItem
+                className='text-red-600 gap-1'
+                onClick={() => {
+                  setConfirmModal(true);
+                  setImageId(data.id);
+                }}
+              >
                 <Trash2 className='mr-1 h-4 w-4' />
                 Delete
               </DropdownMenuItem>
@@ -143,6 +177,14 @@ export function MediaCard({ data }: { data: MediaType }) {
       >
         <MediaDetails data={mediaDetails} />
       </Modal>
+
+      <ConfirmModal
+        isOpen={confirmModal}
+        setIsOpen={setConfirmModal}
+        loading={isPending}
+        title='This action cannot be undone. This will permanently delete your media file.'
+        onClick={handleDeleteMedia}
+      />
     </div>
   );
 }

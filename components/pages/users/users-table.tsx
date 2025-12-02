@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { Edit, EllipsisVertical, Eye, UserX } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 
 import { UsersTableSkeleton } from '@/components/skeletons';
 import {
@@ -40,7 +39,6 @@ type UsersTableProps = {
 
 export function UsersTable({ data, loading }: UsersTableProps) {
   const { fetchMe } = useUser();
-  const router = useRouter();
   const [userId, setUserId] = useState<number | null>(null);
   const [userDetails, setUserDetails] = useState<UsersType | null>(null);
   const [openUserDetails, setOpenUserDetails] = useState(false);

@@ -13,4 +13,6 @@ export type MediaType = {
 
 export type CreateMediaType = {
   file: File;
+  title?: string;
+  alt?: string;
 };

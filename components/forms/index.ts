@@ -12,6 +12,7 @@ import { CreateShippingChargeForm } from './create-shipping-charge-form';
 import { UpdateShippingChargeForm } from './update-shipping-charge-form';
 import { CreatePromoCodeForm } from './create-promo-code-form';
 import { UpdatePromoCodeForm } from './update-promo-code-form';
+import { CreateMediaForm } from './create-media-form';
 
 export {
   CreateUserForm,
@@ -28,4 +29,5 @@ export {
   UpdateShippingChargeForm,
   CreatePromoCodeForm,
   UpdatePromoCodeForm,
+  CreateMediaForm,
 };

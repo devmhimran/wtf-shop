@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { useGetAllMedia } from '@/hooks/use-media';
 import { generateQueryString } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 
@@ -12,6 +11,10 @@ import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { MediaCards } from './media-cards';
 import { MediaCardSkeleton } from '@/components/skeletons';
+import { AlertModal } from '@/components/shared';
+import { CreateMediaForm } from '@/components/forms';
+import { useGetAllMedia } from '@/hooks';
+import { MediaEmpty } from './media-empty';
 
 export function MediaViewerContainer() {
   const searchParams = useSearchParams();
@@ -49,7 +52,7 @@ export function MediaViewerContainer() {
     <div className='space-y-6 bg-white p-5 rounded-md shadow-sm'>
       <div className='flex md:flex-row flex-col gap-4 justify-between'>
         <div>
-          <Button>Add Media</Button>
+          <Button onClick={() => setAddMediaOpen(true)}>Upload Media</Button>
         </div>
         <div className='relative flex-1 justify-end max-w-sm'>
           <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground' />
@@ -79,10 +82,12 @@ export function MediaViewerContainer() {
       </div>
       <Separator />
 
-      {!fetchAllMediaMutation.isLoading ? (
-        <MediaCards data={fetchAllMediaMutationData?.data || []} />
-      ) : (
+      {fetchAllMediaMutation.isLoading ? (
         <MediaCardSkeleton />
+      ) : !fetchAllMediaMutationData?.meta.count ? (
+        <MediaEmpty />
+      ) : (
+        <MediaCards data={fetchAllMediaMutationData?.data || []} />
       )}
 
       {fetchAllMediaMutationData &&
@@ -124,6 +129,15 @@ export function MediaViewerContainer() {
             </div>
           </div>
         )}
+
+      <AlertModal
+        isOpen={addMediaOpen}
+        setIsOpen={setAddMediaOpen}
+        title='Upload new media'
+        description=' '
+      >
+        <CreateMediaForm setIsOpen={setAddMediaOpen} />
+      </AlertModal>
     </div>
   );
 }

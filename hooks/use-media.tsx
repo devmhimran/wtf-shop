@@ -1,16 +1,24 @@
 import { mediaApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
-import { MediaType, Meta, Response } from '@/types';
+import { CreateMediaType, MediaType, Meta, Response } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
 export const useMedia = () => {
+  const createMediaMutation = useMutation({
+    mutationFn: async (formData: CreateMediaType) =>
+      await mediaApi.createMedia(formData).then(({ data }) => data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['media'] });
+    },
+  });
+
   const deleteMediaMutation = useMutation({
     mutationFn: async (id: number) =>
       await mediaApi.deleteMedia(id).then(({ data }) => data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sizes'] });
+      queryClient.invalidateQueries({ queryKey: ['media'] });
     },
   });
 
@@ -18,6 +26,10 @@ export const useMedia = () => {
     deleteMediaMutation,
     deleteMedia: deleteMediaMutation.mutate,
     deleteMediaAsync: deleteMediaMutation.mutateAsync,
+
+    createMediaMutation,
+    createMedia: createMediaMutation.mutate,
+    createMediaAsync: createMediaMutation.mutateAsync,
   };
 };
 
