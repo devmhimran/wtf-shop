@@ -548,14 +548,6 @@ export type MediaLibraryUncheckedUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.MediaLibraryScalarWhereInput | Prisma.MediaLibraryScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type MediaLibraryCreateNestedOneWithoutMainImageProductsInput = {
   create?: Prisma.XOR<Prisma.MediaLibraryCreateWithoutMainImageProductsInput, Prisma.MediaLibraryUncheckedCreateWithoutMainImageProductsInput>
   connectOrCreate?: Prisma.MediaLibraryCreateOrConnectWithoutMainImageProductsInput

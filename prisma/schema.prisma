@@ -69,8 +69,8 @@ model SubCategory {
   name          String
   slug          String   @unique
 
-  category     Category   @relation(fields: [categoryId], references: [id])
-  categoryId   Int
+  category     Category?   @relation(fields: [categoryId], references: [id])
+  categoryId   Int?
 
   products     Product[]
 }

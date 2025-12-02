@@ -39,7 +39,8 @@ const FormSchema = z.object({
       id: z.number(),
       name: z.string(),
     })
-    .nullable(),
+    .nullable()
+    .optional(),
 });
 
 export function CreateSubCategoryForm({
@@ -59,6 +60,7 @@ export function CreateSubCategoryForm({
     defaultValues: {
       name: '',
       slug: '',
+      category: null,
     },
   });
 
@@ -69,7 +71,7 @@ export function CreateSubCategoryForm({
   );
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!selectedCategory?.id) return;
+    // if (!selectedCategory?.id) return;
 
     const payload = {
       name: data.name,
@@ -81,7 +83,7 @@ export function CreateSubCategoryForm({
 
     setIsPending(true);
     toast.promise(response, {
-      loading: 'Creating  sub-category...',
+      loading: 'Creating sub-category...',
       success: (response) => {
         form.reset();
         setIsPending(false);

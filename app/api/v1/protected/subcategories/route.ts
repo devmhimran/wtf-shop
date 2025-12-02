@@ -96,9 +96,9 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   const body = await req.json();
   const { name, slug, categoryId } = body;
 
-  if (!name || !slug || !categoryId) {
+  if (!name || !slug) {
     return NextResponse.json(
-      { error: 'Subcategory name, slug, and categoryId are required' },
+      { error: 'Subcategory name, slug are required' },
       { status: 400 }
     );
   }

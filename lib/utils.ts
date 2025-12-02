@@ -31,10 +31,12 @@ export const getErrorMessage = (error: unknown) => {
 
 export const getErrorResponse = (error: unknown) => {
   const apiError = error as CommonApiResponseError;
+
   const backendErrors: ErrorItem[] = apiError?.response?.data?.error ?? [];
-  if (backendErrors.length > 0) {
-    // Join all messages into a single string
+  if (backendErrors.length > 0 && Array.isArray(backendErrors)) {
     return backendErrors.map((e) => e.message).join(', ');
+  } else if (backendErrors.length > 0 && typeof backendErrors === 'string') {
+    return backendErrors;
   }
 
   // fallback

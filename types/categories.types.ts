@@ -16,7 +16,7 @@ export type CreateCategoryType = {
 export type CreateSubCategoryType = {
   name?: string;
   slug?: string;
-  categoryId: number;
+  categoryId?: number;
 };
 
 export type SubCategoryType = {

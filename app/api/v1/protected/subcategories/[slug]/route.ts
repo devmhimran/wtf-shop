@@ -85,9 +85,9 @@ export const PUT = catchAsyncNext(
     const subcategory = await prisma.subCategory.update({
       where: { slug: slugValue },
       data: {
-        ...(name && { name }),
-        ...(slug && { slug }),
-        ...(categoryId && { categoryId: Number(categoryId) }),
+        name: name ?? '',
+        slug: slug ?? '',
+        categoryId: categoryId ? Number(categoryId) : null,
       },
       include: {
         category: {
