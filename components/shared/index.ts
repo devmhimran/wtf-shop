@@ -6,6 +6,7 @@ import { AlertModal } from './alert-modal';
 import { Modal } from './modal';
 import { ConfirmModal } from './confirm-modal';
 import { DetailItems } from './detail-items';
+import { ReactAsyncSelect } from './react-async-select';
 
 export {
   AppSidebar,
@@ -16,4 +17,5 @@ export {
   Modal,
   ConfirmModal,
   DetailItems,
+  ReactAsyncSelect,
 };

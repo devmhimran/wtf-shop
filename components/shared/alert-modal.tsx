@@ -75,7 +75,7 @@ export function AlertModal({
             )}
           </div>
           <AlertDialogDescription>{description}</AlertDialogDescription>
-          <div className='max-h-[80vh] overflow-y-auto px-1'>{children}</div>
+          <div className='px-1'>{children}</div>
         </AlertDialogHeader>
       </AlertDialogContent>
     </AlertDialog>

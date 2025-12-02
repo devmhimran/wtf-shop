@@ -16,7 +16,7 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { Loader2Icon } from 'lucide-react';
+import { Loader2Icon, X } from 'lucide-react';
 import { useGetAllCategories, useSubCategories } from '@/hooks';
 import { CategorySearchAndSelect } from '../pages/categories';
 import { CategoryType } from '@/types';
@@ -155,7 +155,21 @@ export function CreateSubCategoryForm({
 
               {selectedCategory && (
                 <div className='text-sm shadow-sm p-3 mt-2 rounded-md space-y-2'>
-                  <div>Category Name</div>
+                  <div className='flex justify-between'>
+                    <div>Category Name</div>
+                    <div className='self-start'>
+                      <div
+                        className='bg-secondary p-1  cursor-pointer rounded-full'
+                        onClick={() => {
+                          setSearchQuery('');
+                          setSelectedCategory(null);
+                        }}
+                      >
+                        <X className='w-3 h-3 ' />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className='font-semibold'>{selectedCategory.name}</div>
                 </div>
               )}

@@ -84,12 +84,12 @@ export const CategorySearchAndSelect = ({
         onBlur={handleInputBlur}
       />
       {isOpen && (
-        <Card className='mt-2 p-2 absolute z-10 w-full shadow-lg min-300px:max-h-160px overflow-y-auto font-inter text-sm flex flex-col gap-2'>
+        <Card className='mt-2 p-2 absolute max-h-60 w-full translate-x-1 translate-y-1 shadow-lg min-300px:max-h-160px overflow-y-auto font-inter text-sm flex flex-col gap-2'>
           {options.length > 0 ? (
             options.map((option) => (
               <div
                 key={option.value}
-                className='p-2 hover:bg-primary hover:text-primary-foreground cursor-pointer rounded-md'
+                className='p-2 hover:bg-secondary  cursor-pointer rounded-md'
                 onClick={() => handleOptionSelect(option)}
               >
                 {option.label}
