@@ -129,6 +129,7 @@ model Product {
   shortDescription  String?
   description       String?
   additionalDesc    String?
+  discountNote    String?
 
   metaTitle         String?
   metaDescription   String?

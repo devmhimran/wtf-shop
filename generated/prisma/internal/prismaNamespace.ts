@@ -1644,6 +1644,7 @@ export const ProductScalarFieldEnum = {
   shortDescription: 'shortDescription',
   description: 'description',
   additionalDesc: 'additionalDesc',
+  discountNote: 'discountNote',
   metaTitle: 'metaTitle',
   metaDescription: 'metaDescription',
   metaKeyword: 'metaKeyword',
