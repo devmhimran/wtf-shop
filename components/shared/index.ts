@@ -7,6 +7,8 @@ import { Modal } from './modal';
 import { ConfirmModal } from './confirm-modal';
 import { DetailItems } from './detail-items';
 import { ReactAsyncSelect } from './react-async-select';
+import { SearchAndSelect } from './search-and-select';
+import { MultiSelect } from './multi-select';
 
 export {
   AppSidebar,
@@ -18,4 +20,6 @@ export {
   ConfirmModal,
   DetailItems,
   ReactAsyncSelect,
+  SearchAndSelect,
+  MultiSelect,
 };

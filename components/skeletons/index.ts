@@ -7,6 +7,7 @@ import { ShippingChargeSkeleton } from './shipping-charge-skeleton';
 import { PromoCodeSkeleton } from './promo-code-skeleton';
 import { MediaViewSkeleton } from './media-view-skeleton';
 import { MediaCardSkeleton } from './media-card-skeleton';
+import { FeaturedProductImageChooseSkeleton } from './featured-product-image-choose-skeleton';
 
 export {
   UserNavSkeleton,
@@ -18,4 +19,5 @@ export {
   PromoCodeSkeleton,
   MediaViewSkeleton,
   MediaCardSkeleton,
+  FeaturedProductImageChooseSkeleton,
 };

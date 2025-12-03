@@ -16,6 +16,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const search = searchParams.get('search') || '';
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '20');
+  const fileType = searchParams.get('file_type') || '';
   const skip = (page - 1) * limit;
 
   const whereConditions: Prisma.MediaLibraryWhereInput[] = [];
@@ -28,6 +29,29 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
         { alt: { contains: search, mode: 'insensitive' } },
       ],
     });
+  }
+
+  if (fileType) {
+    if (fileType === 'image') {
+      whereConditions.push({
+        fileType: { startsWith: 'image/' },
+      });
+    } else if (fileType === 'pdf') {
+      whereConditions.push({
+        fileType: { startsWith: 'application/pdf' },
+      });
+    } else if (fileType === 'csv') {
+      whereConditions.push({
+        fileType: { startsWith: 'text/csv' },
+      });
+    } else if (fileType === 'xlsx') {
+      whereConditions.push({
+        fileType: {
+          startsWith:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+      });
+    }
   }
 
   const where: Prisma.MediaLibraryWhereInput = whereConditions.length

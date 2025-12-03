@@ -25,6 +25,7 @@ import { useState } from 'react';
 import { MediaDetails } from './media-details';
 import { useMedia } from '@/hooks';
 import { toast } from 'sonner';
+import { formatFileSize } from '@/lib/utils';
 
 const getFileIcon = (fileType: string) => {
   if (fileType.startsWith('image/')) {
@@ -62,14 +63,6 @@ const getFileTypeLabel = (fileType: string) => {
     return 'XLSX';
   }
   return 'FILE';
-};
-
-const formatFileSize = (bytes: number) => {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 };
 
 export function MediaCard({ data }: { data: MediaType }) {

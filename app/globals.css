@@ -124,5 +124,7 @@
 }
 
 .ql-editor {
-  min-height: 200px;
+  min-height: 300px;
+  max-height: 300px; /* Set your desired maximum height */
+  overflow-y: scroll;
 }

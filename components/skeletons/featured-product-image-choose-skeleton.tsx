@@ -1,9 +1,9 @@
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '../ui/skeleton';
 
-export function MediaCardSkeleton() {
+export function FeaturedProductImageChooseSkeleton() {
   return (
-    <div className='grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8 gap-5'>
-      {Array.from({ length: 16 }).map((_, index) => (
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+      {Array.from({ length: 8 }).map((_, index) => (
         <div
           key={index}
           className='overflow-hidden hover:shadow-lg transition-shadow group p-0'
