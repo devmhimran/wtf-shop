@@ -21,6 +21,12 @@ import { SizeType, CreateSizesType } from './size.types';
 import { ShippingChargeType, CreateShippingChargeType } from './shipping.types';
 import { PromoCodeType, CreatePromoCodeType } from './promo-code.types';
 import { MediaType, CreateMediaType } from './media.types';
+import {
+  ProductVariantType,
+  GalleryType,
+  ProductType,
+  CreateProductType,
+} from './product.types';
 
 export type {
   SignInResponse,
@@ -46,4 +52,8 @@ export type {
   CreatePromoCodeType,
   MediaType,
   CreateMediaType,
+  ProductVariantType,
+  GalleryType,
+  ProductType,
+  CreateProductType,
 };

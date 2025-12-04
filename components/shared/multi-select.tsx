@@ -1,9 +1,10 @@
 'use client';
 
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 interface Option {
-  value: number;
+  value: number | string;
   label: string;
 }
 
@@ -15,6 +16,7 @@ interface MultiSelectProps {
   label?: string;
   name?: string;
   isLoading?: boolean;
+  isCreatable?: boolean;
 }
 
 export function MultiSelect({
@@ -25,7 +27,10 @@ export function MultiSelect({
   label,
   name,
   isLoading = false,
+  isCreatable = false,
 }: MultiSelectProps) {
+  const SelectComponent = isCreatable ? CreatableSelect : Select;
+
   return (
     <div className='flex flex-col gap-1.5 w-full'>
       {label && (
@@ -33,7 +38,7 @@ export function MultiSelect({
           {label}
         </label>
       )}
-      <Select
+      <SelectComponent
         id={name}
         name={name}
         isMulti

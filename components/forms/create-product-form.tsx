@@ -11,9 +11,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { generateSlug } from '@/lib/utils';
+import { generateSlug, getErrorResponse } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Save, X, Plus, Trash2, FileImage } from 'lucide-react';
+import { Save, X, Plus, Trash2, FileImage, Loader2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -25,12 +25,14 @@ import {
   useGetAllColors,
   useGetAllSizes,
   useGetAllSubCategories,
+  useProducts,
 } from '@/hooks';
 import { SearchAndSelect, MultiSelect, Modal } from '../shared';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ProductFeaturedImage, ProductGalleryImage } from '../pages/products';
 import { Textarea } from '../ui/textarea';
+import { toast } from 'sonner';
 
 const TextEditor = dynamic(
   () => import('@/components/shared/text-editor').then((mod) => mod.TextEditor),
@@ -67,7 +69,17 @@ const formSchema = z
     slug: z.string({ message: 'Slug is required.' }).min(2, {
       message: 'Slug must be at least 2 characters.',
     }),
+    catalogId: z
+      .string({ message: 'Catalog ID is required.' })
+      .min(2, {
+        message: 'Catalog ID must be at least 2 characters.',
+      })
+      .optional(),
     discountNote: z.string().optional(),
+    metaTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
+    metaKeyword: z.array(z.string()).optional(),
+    isNew: z.boolean().optional(),
     category: z
       .object({
         id: z.number(),
@@ -83,10 +95,7 @@ const formSchema = z
         name: z.string(),
       })
       .nullable()
-      .refine((val) => val !== null && val !== undefined, {
-        message: 'SubCategory is required.',
-      }),
-    variantMode: z.enum(['bulk', 'individual']),
+      .optional(),
     variants: z
       .array(
         z.object({
@@ -99,6 +108,16 @@ const formSchema = z
         })
       )
       .min(1, { message: 'At least one variant is required.' }),
+    quantityDiscounts: z
+      .array(
+        z.object({
+          minQty: z.number().int().min(1),
+          maxQty: z.number().int().min(1),
+          amount: z.number().min(0),
+          note: z.string().optional(),
+        })
+      )
+      .optional(),
     featuredImage: z
       .object({
         id: z.number(),
@@ -151,19 +170,35 @@ export function CreateProductForm() {
   >([]);
   const [bulkQuantity, setBulkQuantity] = useState<number>(0);
   const [bulkPrice, setBulkPrice] = useState<number>(0);
+  const [metaKeywords, setMetaKeywords] = useState<
+    Array<{ value: string; label: string }>
+  >([]);
+  const [variantMode, setVariantMode] = useState<'bulk' | 'individual'>('bulk');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
-      variantMode: 'bulk',
+      description: '',
+      shortDescription: '',
+      additionalDesc: '',
+      slug: '',
+      discountNote: '',
+      metaTitle: '',
+      metaDescription: '',
+      metaKeyword: [],
+      isNew: false,
+      category: null,
+      subCategory: null,
       variants: [],
+      quantityDiscounts: [],
       featuredImage: null,
       alternativeImage: null,
       galleryImages: [],
     },
   });
 
+  const [isPending, setIsPending] = useState(false);
   const [openFeaturedImage, setOpenFeaturedImage] = useState(false);
   const [openAlternativeImage, setOpenAlternativeImage] = useState(false);
   const [openGalleryImages, setOpenGalleryImages] = useState(false);
@@ -184,8 +219,7 @@ export function CreateProductForm() {
 
   const { fetchAllSizesMutationData } = useGetAllSizes('');
   const { fetchAllColorsMutationData } = useGetAllColors('');
-
-  const variantMode = form.watch('variantMode');
+  const { createProductAsync } = useProducts();
 
   const handleGenerateBulkVariants = () => {
     const variants = [];
@@ -224,6 +258,27 @@ export function CreateProductForm() {
     form.setValue(
       'variants',
       currentVariants.filter((_, i) => i !== index)
+    );
+  };
+
+  const handleAddQuantityDiscount = () => {
+    const currentDiscounts = form.getValues('quantityDiscounts') || [];
+    form.setValue('quantityDiscounts', [
+      ...currentDiscounts,
+      {
+        minQty: 1,
+        maxQty: 1,
+        amount: 0,
+        note: '',
+      },
+    ]);
+  };
+
+  const handleRemoveQuantityDiscount = (index: number) => {
+    const currentDiscounts = form.getValues('quantityDiscounts') || [];
+    form.setValue(
+      'quantityDiscounts',
+      currentDiscounts.filter((_, i) => i !== index)
     );
   };
 
@@ -270,7 +325,33 @@ export function CreateProductForm() {
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const response = createProductAsync(values);
+
+    setIsPending(true);
+    toast.promise(response, {
+      loading: 'Creating product...',
+      success: (response) => {
+        form.reset();
+        setIsPending(false);
+        setFeaturedImage(null);
+        setAlternativeImage(null);
+        setGalleryImages([]);
+        setMetaKeywords([]);
+        setSelectedColors([]);
+        setSelectedSizes([]);
+        setBulkQuantity(1);
+        setBulkPrice(0);
+        setSelectedCategory(null);
+        setSelectedSubCategory(null);
+        return response.message || 'Successfully created Product!';
+      },
+
+      error: (error) => {
+        setIsPending(false);
+        const errorResponse = getErrorResponse(error);
+        return errorResponse;
+      },
+    });
   }
 
   return (
@@ -279,8 +360,13 @@ export function CreateProductForm() {
         <div className='flex items-center justify-between'>
           <h1 className='text-xl md:text-3xl font-bold'>Products</h1>
 
-          <Button type='submit'>
+          <Button
+            type='submit'
+            disabled={isPending}
+            className='flex justify-start'
+          >
             <Save className='mr-2 h-4 w-4' />
+            {isPending && <Loader2Icon className='animate-spin' />}
             Save Changes
           </Button>
         </div>
@@ -386,6 +472,7 @@ export function CreateProductForm() {
                             onClick={() => {
                               setSearchCategory('');
                               setSelectedCategory(null);
+                              field.onChange(null);
                             }}
                           >
                             <X className='w-3 h-3 ' />
@@ -442,6 +529,7 @@ export function CreateProductForm() {
                             onClick={() => {
                               setSearchSubCategory('');
                               setSelectedSubCategory(null);
+                              field.onChange(null);
                             }}
                           >
                             <X className='w-3 h-3 ' />
@@ -463,36 +551,29 @@ export function CreateProductForm() {
         {/* Variant Mode Selection */}
         <Card>
           <CardContent className='space-y-6'>
-            <FormField
-              control={form.control}
-              name='variantMode'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Variant Entry Mode</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className='flex gap-4'
-                    >
-                      <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='bulk' id='bulk' />
-                        <Label htmlFor='bulk'>
-                          Bulk (Same price & quantity for all)
-                        </Label>
-                      </div>
-                      <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='individual' id='individual' />
-                        <Label htmlFor='individual'>
-                          Individual (Different price & quantity)
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className='space-y-2'>
+              <Label>Variant Entry Mode</Label>
+              <RadioGroup
+                onValueChange={(value) =>
+                  setVariantMode(value as 'bulk' | 'individual')
+                }
+                value={variantMode}
+                className='flex gap-4'
+              >
+                <div className='flex items-center space-x-2'>
+                  <RadioGroupItem value='bulk' id='bulk' />
+                  <Label htmlFor='bulk'>
+                    Bulk (Same price & quantity for all)
+                  </Label>
+                </div>
+                <div className='flex items-center space-x-2'>
+                  <RadioGroupItem value='individual' id='individual' />
+                  <Label htmlFor='individual'>
+                    Individual (Different price & quantity)
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
           </CardContent>
         </Card>
 
@@ -505,7 +586,11 @@ export function CreateProductForm() {
                   <Label>Colors</Label>
                   <MultiSelect
                     value={selectedColors}
-                    onChange={setSelectedColors}
+                    onChange={(selected) =>
+                      setSelectedColors(
+                        selected as Array<{ value: number; label: string }>
+                      )
+                    }
                     options={
                       fetchAllColorsMutationData?.data?.map((color) => ({
                         value: color.id,
@@ -519,7 +604,11 @@ export function CreateProductForm() {
                   <Label>Sizes</Label>
                   <MultiSelect
                     value={selectedSizes}
-                    onChange={setSelectedSizes}
+                    onChange={(selected) =>
+                      setSelectedSizes(
+                        selected as Array<{ value: number; label: string }>
+                      )
+                    }
                     options={
                       fetchAllSizesMutationData?.data?.map((size) => ({
                         value: size.id,
@@ -724,7 +813,7 @@ export function CreateProductForm() {
                         Qty: {variant.quantity}
                       </span>
                       <span className='text-muted-foreground'>
-                        Price: ${variant.price}
+                        Price: AU${variant.price}
                       </span>
                     </div>
                   </div>
@@ -733,6 +822,120 @@ export function CreateProductForm() {
             </CardContent>
           </Card>
         )}
+
+        {form.formState.errors.variants && (
+          <div className='text-sm text-red-500 font-medium'>
+            {form.formState.errors.variants.message}
+          </div>
+        )}
+
+        {/* Quantity Discounts */}
+        <Card>
+          <CardContent className='space-y-6'>
+            <div className='flex justify-between items-center'>
+              <h3 className='text-lg font-semibold'>
+                Quantity Discounts (Optional)
+              </h3>
+              <Button
+                type='button'
+                onClick={handleAddQuantityDiscount}
+                size='sm'
+              >
+                <Plus className='w-4 h-4 mr-2' />
+                Add Discount
+              </Button>
+            </div>
+
+            <div className='space-y-4'>
+              {form.watch('quantityDiscounts')?.map((discount, index) => (
+                <div
+                  key={index}
+                  className='grid lg:grid-cols-5 grid-cols-1 gap-4 p-4 border rounded-lg'
+                >
+                  <div className='space-y-2'>
+                    <Label>Min Quantity</Label>
+                    <Input
+                      type='number'
+                      placeholder='Min Qty'
+                      value={discount.minQty}
+                      onChange={(e) => {
+                        const discounts =
+                          form.getValues('quantityDiscounts') || [];
+                        discounts[index].minQty = parseInt(e.target.value) || 1;
+                        form.setValue('quantityDiscounts', discounts);
+                      }}
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <Label>Max Quantity</Label>
+                    <Input
+                      type='number'
+                      placeholder='Max Qty'
+                      value={discount.maxQty}
+                      onChange={(e) => {
+                        const discounts =
+                          form.getValues('quantityDiscounts') || [];
+                        discounts[index].maxQty = parseInt(e.target.value) || 1;
+                        form.setValue('quantityDiscounts', discounts);
+                      }}
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <Label>Discount Amount</Label>
+                    <Input
+                      type='number'
+                      placeholder='Amount'
+                      value={discount.amount}
+                      onChange={(e) => {
+                        const discounts =
+                          form.getValues('quantityDiscounts') || [];
+                        discounts[index].amount =
+                          parseFloat(e.target.value) || 0;
+                        form.setValue('quantityDiscounts', discounts);
+                      }}
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <Label>Note (Optional)</Label>
+                    <Input
+                      type='text'
+                      placeholder='Note'
+                      value={discount.note || ''}
+                      onChange={(e) => {
+                        const discounts =
+                          form.getValues('quantityDiscounts') || [];
+                        discounts[index].note = e.target.value;
+                        form.setValue('quantityDiscounts', discounts);
+                      }}
+                    />
+                  </div>
+
+                  <div className='flex items-end'>
+                    <Button
+                      type='button'
+                      variant='destructive'
+                      size='sm'
+                      onClick={() => handleRemoveQuantityDiscount(index)}
+                    >
+                      <Trash2 className='w-4 h-4' />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              {(!form.watch('quantityDiscounts') ||
+                form.watch('quantityDiscounts')?.length === 0) && (
+                <div className='text-center text-muted-foreground py-8'>
+                  No quantity discounts added. Click &quot;Add Discount&quot; to
+                  start.
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardContent className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -767,33 +970,132 @@ export function CreateProductForm() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent>
-            <FormField
-              control={form.control}
-              name='title'
-              render={({ field }) => (
-                <FormItem className='lg:col-span-3'>
-                  <FormLabel>Discount Note</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder='Enter discount note here'
-                      className='resize-none'
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        const slug = generateSlug(e.target.value);
-                        form.setValue('slug', slug);
-                      }}
-                    />
-                  </FormControl>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <Card>
+            <CardContent className='space-y-6'>
+              <FormField
+                control={form.control}
+                name='discountNote'
+                render={({ field }) => (
+                  <FormItem className='lg:col-span-3'>
+                    <FormLabel>Discount Note</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder='Enter discount note here'
+                        className='resize-none'
+                        {...field}
+                      />
+                    </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-        </Card>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='catalogId'
+                render={({ field }) => (
+                  <FormItem className='lg:col-span-3'>
+                    <FormLabel>Catalog ID</FormLabel>
+                    <FormControl>
+                      <Input placeholder='catalog ID' {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='isNew'
+                render={({ field }) => (
+                  <FormItem className='inline-block'>
+                    <div className=' flex gap-6 items-center justify-between rounded-lg border p-4'>
+                      <div className='space-y-0.5'>
+                        <FormLabel className='text-base'>New Product</FormLabel>
+                        <div className='text-sm text-muted-foreground'>
+                          Mark this product as new
+                        </div>
+                      </div>
+                      <FormControl>
+                        <input
+                          type='checkbox'
+                          checked={field.value || false}
+                          onChange={field.onChange}
+                          className='h-4 w-4 cursor-pointer'
+                        />
+                      </FormControl>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className='space-y-6'>
+              <FormField
+                control={form.control}
+                name='metaTitle'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta Title (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Enter meta title' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='metaDescription'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta Description (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder='Enter meta description'
+                        className='resize-none'
+                        rows={4}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='metaKeyword'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta Keywords (Optional)</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        value={metaKeywords}
+                        onChange={(selected) => {
+                          const keywords = selected as Array<{
+                            value: string;
+                            label: string;
+                          }>;
+                          setMetaKeywords(keywords);
+                          field.onChange(keywords.map((item) => item.value));
+                        }}
+                        options={metaKeywords}
+                        placeholder='Type and press enter to add keywords...'
+                        isCreatable={true}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+        </div>
 
         <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-5  w-full'>
           <Card className='cursor-pointer'>

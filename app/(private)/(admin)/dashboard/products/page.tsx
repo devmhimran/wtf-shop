@@ -15,18 +15,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  generateQueryString,
-  roleConvert,
-  userStatusConvert,
-} from '@/lib/utils';
+import { generateQueryString } from '@/lib/utils';
 
-import { UsersCard, UsersTable } from '@/components/pages/users';
-import { useAdminUsers } from '@/hooks/use-admin-users';
-import { UsersTableSkeleton } from '@/components/skeletons';
-import { AlertModal } from '@/components/shared';
-import { CreateUserForm } from '@/components/forms';
 import Link from 'next/link';
+import { useGetAllProducts } from '@/hooks';
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
@@ -39,8 +31,6 @@ export default function ProductsPage() {
   const [params, setParams] = useState({
     search: searchParams.get('search') || '',
     page: searchParams.get('page') || '1',
-    status: searchParams.get('status') || '',
-    role: searchParams.get('role') || '',
   });
 
   const [searchQuery, setSearchQuery] = useState(
@@ -48,6 +38,7 @@ export default function ProductsPage() {
   );
 
   const queryString = generateQueryString(params);
+  const { fetchAllProductsMutationData } = useGetAllProducts();
 
   const debounced = useDebouncedCallback((value) => {
     setParams((prevParams) => ({
@@ -122,27 +113,6 @@ export default function ProductsPage() {
                       search: '',
                     }));
                     setSearchQuery('');
-                  }}
-                >
-                  <X className='w-4 h-4 cursor-pointer' />
-                </span>
-              </div>
-            )}
-            {params.status && (
-              <div className='pl-3 pr-2 py-1 border flex gap-2 items-center rounded-full text-sm capitalize'>
-                Status:{' '}
-                {
-                  userStatusConvert[
-                    params.status as keyof typeof userStatusConvert
-                  ]
-                }
-                <span
-                  onClick={() => {
-                    setParams((prev) => ({
-                      ...prev,
-                      status: '',
-                    }));
-                    setStatusFilter('all');
                   }}
                 >
                   <X className='w-4 h-4 cursor-pointer' />

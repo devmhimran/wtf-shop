@@ -8,6 +8,7 @@ import {
   useShippingCharge,
 } from './use-shipping-charge';
 import { useMedia, useGetAllMedia } from './use-media';
+import { useGetAllProducts, useProducts } from './use-products';
 
 export {
   useUser,
@@ -23,4 +24,6 @@ export {
   useShippingCharge,
   useMedia,
   useGetAllMedia,
+  useGetAllProducts,
+  useProducts,
 };

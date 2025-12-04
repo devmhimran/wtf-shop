@@ -3,11 +3,13 @@ import {
   ColorType,
   CreateCategoryType,
   CreateColorsType,
+  CreateProductType,
   CreatePromoCodeType,
   CreateShippingChargeType,
   CreateSizesType,
   CreateSubCategoryType,
   Meta,
+  ProductType,
   PromoCodeType,
   Response,
   ShippingChargeType,
@@ -131,6 +133,16 @@ export const productApi = {
     updatePromoCode: (id: number, updateData: Partial<CreatePromoCodeType>) => {
       const url = `/protected/promo-code/${id}`;
       return axiosInstanceWithAuth.put(url, updateData);
+    },
+  },
+  products: {
+    getAllProducts: (params?: string) => {
+      const url = '/protected/products' + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<ProductType[], Meta>>(url);
+    },
+    createProduct: (data: CreateProductType) => {
+      const url = '/protected/products';
+      return axiosInstanceWithAuth.post(url, data);
     },
   },
 };
