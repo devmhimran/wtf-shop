@@ -32,6 +32,7 @@ export type ProductVariantAvgAggregateOutputType = {
   colorId: number | null
   sizeId: number | null
   price: number | null
+  quantity: number | null
 }
 
 export type ProductVariantSumAggregateOutputType = {
@@ -40,6 +41,7 @@ export type ProductVariantSumAggregateOutputType = {
   colorId: number | null
   sizeId: number | null
   price: number | null
+  quantity: number | null
 }
 
 export type ProductVariantMinAggregateOutputType = {
@@ -48,6 +50,7 @@ export type ProductVariantMinAggregateOutputType = {
   colorId: number | null
   sizeId: number | null
   price: number | null
+  quantity: number | null
 }
 
 export type ProductVariantMaxAggregateOutputType = {
@@ -56,6 +59,7 @@ export type ProductVariantMaxAggregateOutputType = {
   colorId: number | null
   sizeId: number | null
   price: number | null
+  quantity: number | null
 }
 
 export type ProductVariantCountAggregateOutputType = {
@@ -64,6 +68,7 @@ export type ProductVariantCountAggregateOutputType = {
   colorId: number
   sizeId: number
   price: number
+  quantity: number
   _all: number
 }
 
@@ -74,6 +79,7 @@ export type ProductVariantAvgAggregateInputType = {
   colorId?: true
   sizeId?: true
   price?: true
+  quantity?: true
 }
 
 export type ProductVariantSumAggregateInputType = {
@@ -82,6 +88,7 @@ export type ProductVariantSumAggregateInputType = {
   colorId?: true
   sizeId?: true
   price?: true
+  quantity?: true
 }
 
 export type ProductVariantMinAggregateInputType = {
@@ -90,6 +97,7 @@ export type ProductVariantMinAggregateInputType = {
   colorId?: true
   sizeId?: true
   price?: true
+  quantity?: true
 }
 
 export type ProductVariantMaxAggregateInputType = {
@@ -98,6 +106,7 @@ export type ProductVariantMaxAggregateInputType = {
   colorId?: true
   sizeId?: true
   price?: true
+  quantity?: true
 }
 
 export type ProductVariantCountAggregateInputType = {
@@ -106,6 +115,7 @@ export type ProductVariantCountAggregateInputType = {
   colorId?: true
   sizeId?: true
   price?: true
+  quantity?: true
   _all?: true
 }
 
@@ -201,6 +211,7 @@ export type ProductVariantGroupByOutputType = {
   colorId: number
   sizeId: number
   price: number
+  quantity: number
   _count: ProductVariantCountAggregateOutputType | null
   _avg: ProductVariantAvgAggregateOutputType | null
   _sum: ProductVariantSumAggregateOutputType | null
@@ -232,6 +243,7 @@ export type ProductVariantWhereInput = {
   colorId?: Prisma.IntFilter<"ProductVariant"> | number
   sizeId?: Prisma.IntFilter<"ProductVariant"> | number
   price?: Prisma.FloatFilter<"ProductVariant"> | number
+  quantity?: Prisma.IntFilter<"ProductVariant"> | number
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   color?: Prisma.XOR<Prisma.ColorScalarRelationFilter, Prisma.ColorWhereInput>
   size?: Prisma.XOR<Prisma.SizeScalarRelationFilter, Prisma.SizeWhereInput>
@@ -244,6 +256,7 @@ export type ProductVariantOrderByWithRelationInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   product?: Prisma.ProductOrderByWithRelationInput
   color?: Prisma.ColorOrderByWithRelationInput
   size?: Prisma.SizeOrderByWithRelationInput
@@ -260,6 +273,7 @@ export type ProductVariantWhereUniqueInput = Prisma.AtLeast<{
   colorId?: Prisma.IntFilter<"ProductVariant"> | number
   sizeId?: Prisma.IntFilter<"ProductVariant"> | number
   price?: Prisma.FloatFilter<"ProductVariant"> | number
+  quantity?: Prisma.IntFilter<"ProductVariant"> | number
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   color?: Prisma.XOR<Prisma.ColorScalarRelationFilter, Prisma.ColorWhereInput>
   size?: Prisma.XOR<Prisma.SizeScalarRelationFilter, Prisma.SizeWhereInput>
@@ -272,6 +286,7 @@ export type ProductVariantOrderByWithAggregationInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   _count?: Prisma.ProductVariantCountOrderByAggregateInput
   _avg?: Prisma.ProductVariantAvgOrderByAggregateInput
   _max?: Prisma.ProductVariantMaxOrderByAggregateInput
@@ -288,10 +303,12 @@ export type ProductVariantScalarWhereWithAggregatesInput = {
   colorId?: Prisma.IntWithAggregatesFilter<"ProductVariant"> | number
   sizeId?: Prisma.IntWithAggregatesFilter<"ProductVariant"> | number
   price?: Prisma.FloatWithAggregatesFilter<"ProductVariant"> | number
+  quantity?: Prisma.IntWithAggregatesFilter<"ProductVariant"> | number
 }
 
 export type ProductVariantCreateInput = {
   price: number
+  quantity?: number
   product: Prisma.ProductCreateNestedOneWithoutVariantsInput
   color: Prisma.ColorCreateNestedOneWithoutVariantsInput
   size: Prisma.SizeCreateNestedOneWithoutVariantsInput
@@ -304,11 +321,13 @@ export type ProductVariantUncheckedCreateInput = {
   colorId: number
   sizeId: number
   price: number
+  quantity?: number
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutVariantInput
 }
 
 export type ProductVariantUpdateInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   product?: Prisma.ProductUpdateOneRequiredWithoutVariantsNestedInput
   color?: Prisma.ColorUpdateOneRequiredWithoutVariantsNestedInput
   size?: Prisma.SizeUpdateOneRequiredWithoutVariantsNestedInput
@@ -321,6 +340,7 @@ export type ProductVariantUncheckedUpdateInput = {
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutVariantNestedInput
 }
 
@@ -330,10 +350,12 @@ export type ProductVariantCreateManyInput = {
   colorId: number
   sizeId: number
   price: number
+  quantity?: number
 }
 
 export type ProductVariantUpdateManyMutationInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductVariantUncheckedUpdateManyInput = {
@@ -342,6 +364,7 @@ export type ProductVariantUncheckedUpdateManyInput = {
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductVariantListRelationFilter = {
@@ -366,6 +389,7 @@ export type ProductVariantCountOrderByAggregateInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ProductVariantAvgOrderByAggregateInput = {
@@ -374,6 +398,7 @@ export type ProductVariantAvgOrderByAggregateInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ProductVariantMaxOrderByAggregateInput = {
@@ -382,6 +407,7 @@ export type ProductVariantMaxOrderByAggregateInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ProductVariantMinOrderByAggregateInput = {
@@ -390,6 +416,7 @@ export type ProductVariantMinOrderByAggregateInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ProductVariantSumOrderByAggregateInput = {
@@ -398,6 +425,7 @@ export type ProductVariantSumOrderByAggregateInput = {
   colorId?: Prisma.SortOrder
   sizeId?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ProductVariantNullableScalarRelationFilter = {
@@ -557,6 +585,7 @@ export type ProductVariantUpdateOneWithoutOrderItemsNestedInput = {
 
 export type ProductVariantCreateWithoutColorInput = {
   price: number
+  quantity?: number
   product: Prisma.ProductCreateNestedOneWithoutVariantsInput
   size: Prisma.SizeCreateNestedOneWithoutVariantsInput
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutVariantInput
@@ -567,6 +596,7 @@ export type ProductVariantUncheckedCreateWithoutColorInput = {
   productId: number
   sizeId: number
   price: number
+  quantity?: number
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutVariantInput
 }
 
@@ -605,10 +635,12 @@ export type ProductVariantScalarWhereInput = {
   colorId?: Prisma.IntFilter<"ProductVariant"> | number
   sizeId?: Prisma.IntFilter<"ProductVariant"> | number
   price?: Prisma.FloatFilter<"ProductVariant"> | number
+  quantity?: Prisma.IntFilter<"ProductVariant"> | number
 }
 
 export type ProductVariantCreateWithoutSizeInput = {
   price: number
+  quantity?: number
   product: Prisma.ProductCreateNestedOneWithoutVariantsInput
   color: Prisma.ColorCreateNestedOneWithoutVariantsInput
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutVariantInput
@@ -619,6 +651,7 @@ export type ProductVariantUncheckedCreateWithoutSizeInput = {
   productId: number
   colorId: number
   price: number
+  quantity?: number
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutVariantInput
 }
 
@@ -650,6 +683,7 @@ export type ProductVariantUpdateManyWithWhereWithoutSizeInput = {
 
 export type ProductVariantCreateWithoutProductInput = {
   price: number
+  quantity?: number
   color: Prisma.ColorCreateNestedOneWithoutVariantsInput
   size: Prisma.SizeCreateNestedOneWithoutVariantsInput
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutVariantInput
@@ -660,6 +694,7 @@ export type ProductVariantUncheckedCreateWithoutProductInput = {
   colorId: number
   sizeId: number
   price: number
+  quantity?: number
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutVariantInput
 }
 
@@ -691,6 +726,7 @@ export type ProductVariantUpdateManyWithWhereWithoutProductInput = {
 
 export type ProductVariantCreateWithoutOrderItemsInput = {
   price: number
+  quantity?: number
   product: Prisma.ProductCreateNestedOneWithoutVariantsInput
   color: Prisma.ColorCreateNestedOneWithoutVariantsInput
   size: Prisma.SizeCreateNestedOneWithoutVariantsInput
@@ -702,6 +738,7 @@ export type ProductVariantUncheckedCreateWithoutOrderItemsInput = {
   colorId: number
   sizeId: number
   price: number
+  quantity?: number
 }
 
 export type ProductVariantCreateOrConnectWithoutOrderItemsInput = {
@@ -722,6 +759,7 @@ export type ProductVariantUpdateToOneWithWhereWithoutOrderItemsInput = {
 
 export type ProductVariantUpdateWithoutOrderItemsInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   product?: Prisma.ProductUpdateOneRequiredWithoutVariantsNestedInput
   color?: Prisma.ColorUpdateOneRequiredWithoutVariantsNestedInput
   size?: Prisma.SizeUpdateOneRequiredWithoutVariantsNestedInput
@@ -733,6 +771,7 @@ export type ProductVariantUncheckedUpdateWithoutOrderItemsInput = {
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductVariantCreateManyColorInput = {
@@ -740,10 +779,12 @@ export type ProductVariantCreateManyColorInput = {
   productId: number
   sizeId: number
   price: number
+  quantity?: number
 }
 
 export type ProductVariantUpdateWithoutColorInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   product?: Prisma.ProductUpdateOneRequiredWithoutVariantsNestedInput
   size?: Prisma.SizeUpdateOneRequiredWithoutVariantsNestedInput
   orderItems?: Prisma.OrderItemUpdateManyWithoutVariantNestedInput
@@ -754,6 +795,7 @@ export type ProductVariantUncheckedUpdateWithoutColorInput = {
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutVariantNestedInput
 }
 
@@ -762,6 +804,7 @@ export type ProductVariantUncheckedUpdateManyWithoutColorInput = {
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductVariantCreateManySizeInput = {
@@ -769,10 +812,12 @@ export type ProductVariantCreateManySizeInput = {
   productId: number
   colorId: number
   price: number
+  quantity?: number
 }
 
 export type ProductVariantUpdateWithoutSizeInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   product?: Prisma.ProductUpdateOneRequiredWithoutVariantsNestedInput
   color?: Prisma.ColorUpdateOneRequiredWithoutVariantsNestedInput
   orderItems?: Prisma.OrderItemUpdateManyWithoutVariantNestedInput
@@ -783,6 +828,7 @@ export type ProductVariantUncheckedUpdateWithoutSizeInput = {
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutVariantNestedInput
 }
 
@@ -791,6 +837,7 @@ export type ProductVariantUncheckedUpdateManyWithoutSizeInput = {
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProductVariantCreateManyProductInput = {
@@ -798,10 +845,12 @@ export type ProductVariantCreateManyProductInput = {
   colorId: number
   sizeId: number
   price: number
+  quantity?: number
 }
 
 export type ProductVariantUpdateWithoutProductInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.ColorUpdateOneRequiredWithoutVariantsNestedInput
   size?: Prisma.SizeUpdateOneRequiredWithoutVariantsNestedInput
   orderItems?: Prisma.OrderItemUpdateManyWithoutVariantNestedInput
@@ -812,6 +861,7 @@ export type ProductVariantUncheckedUpdateWithoutProductInput = {
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutVariantNestedInput
 }
 
@@ -820,6 +870,7 @@ export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
   colorId?: Prisma.IntFieldUpdateOperationsInput | number
   sizeId?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -859,6 +910,7 @@ export type ProductVariantSelect<ExtArgs extends runtime.Types.Extensions.Intern
   colorId?: boolean
   sizeId?: boolean
   price?: boolean
+  quantity?: boolean
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   color?: boolean | Prisma.ColorDefaultArgs<ExtArgs>
   size?: boolean | Prisma.SizeDefaultArgs<ExtArgs>
@@ -872,6 +924,7 @@ export type ProductVariantSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   colorId?: boolean
   sizeId?: boolean
   price?: boolean
+  quantity?: boolean
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   color?: boolean | Prisma.ColorDefaultArgs<ExtArgs>
   size?: boolean | Prisma.SizeDefaultArgs<ExtArgs>
@@ -883,6 +936,7 @@ export type ProductVariantSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   colorId?: boolean
   sizeId?: boolean
   price?: boolean
+  quantity?: boolean
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   color?: boolean | Prisma.ColorDefaultArgs<ExtArgs>
   size?: boolean | Prisma.SizeDefaultArgs<ExtArgs>
@@ -894,9 +948,10 @@ export type ProductVariantSelectScalar = {
   colorId?: boolean
   sizeId?: boolean
   price?: boolean
+  quantity?: boolean
 }
 
-export type ProductVariantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productId" | "colorId" | "sizeId" | "price", ExtArgs["result"]["productVariant"]>
+export type ProductVariantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productId" | "colorId" | "sizeId" | "price" | "quantity", ExtArgs["result"]["productVariant"]>
 export type ProductVariantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   color?: boolean | Prisma.ColorDefaultArgs<ExtArgs>
@@ -929,6 +984,7 @@ export type $ProductVariantPayload<ExtArgs extends runtime.Types.Extensions.Inte
     colorId: number
     sizeId: number
     price: number
+    quantity: number
   }, ExtArgs["result"]["productVariant"]>
   composites: {}
 }
@@ -1361,6 +1417,7 @@ export interface ProductVariantFieldRefs {
   readonly colorId: Prisma.FieldRef<"ProductVariant", 'Int'>
   readonly sizeId: Prisma.FieldRef<"ProductVariant", 'Int'>
   readonly price: Prisma.FieldRef<"ProductVariant", 'Float'>
+  readonly quantity: Prisma.FieldRef<"ProductVariant", 'Int'>
 }
     
 

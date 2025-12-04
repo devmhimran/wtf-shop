@@ -10,6 +10,8 @@ export type ProductVariantType = {
   sizeId: number;
   color: ColorType;
   size: SizeType;
+  quantity: number;
+  price: number;
 };
 
 export type GalleryType = {
@@ -59,6 +61,10 @@ export type ProductType = {
   createdAt: string;
   updatedAt: string;
   quantityDiscounts: QuantityDiscountType[];
+  minPrice: number;
+  maxPrice: number;
+  quantity: number;
+  inStock: boolean;
 };
 
 export type CreateProductType = {

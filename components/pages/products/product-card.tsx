@@ -1,0 +1,199 @@
+import { ProductType } from '@/types';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Edit, Trash2, Eye, MoreHorizontalIcon } from 'lucide-react';
+import Image from 'next/image';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+type ProductCardProps = {
+  data: ProductType;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
+  onView?: (id: number) => void;
+};
+
+export function ProductCard({
+  data,
+  onEdit,
+  onDelete,
+  onView,
+}: ProductCardProps) {
+  const { minPrice, maxPrice, quantity: totalQuantity, inStock } = data;
+
+  return (
+    <Card className='group overflow-hidden hover:shadow-sm transition-all duration-300 border hover:border-primary/30 bg-card p-0'>
+      <CardContent className='p-0'>
+        <div className='flex gap-5 p-5'>
+          {/* Image Section */}
+          <div className='relative w-32 h-32 shrink-0 rounded-xl overflow-hidden bg-muted shadow-sm'>
+            {data.mainImage ? (
+              <Image
+                src={data.mainImage.fileUrl}
+                alt={data.title}
+                fill
+                className='object-cover group-hover:scale-105 transition-transform duration-500'
+              />
+            ) : (
+              <div className='w-full h-full flex items-center justify-center bg-muted'>
+                <span className='text-muted-foreground text-sm'>No Image</span>
+              </div>
+            )}
+            {data.isNew && (
+              <Badge className='absolute top-2 left-2 text-xs px-2 py-0.5 h-6 bg-green-500 hover:bg-green-600 shadow-md'>
+                New
+              </Badge>
+            )}
+            <Badge
+              className={`absolute bottom-2 left-2 text-xs px-2 py-0.5 h-6 shadow-md ${
+                inStock
+                  ? 'bg-emerald-500 hover:bg-emerald-600'
+                  : 'bg-rose-500 hover:bg-rose-600'
+              }`}
+            >
+              {inStock ? 'In Stock' : 'Out of Stock'}
+            </Badge>
+          </div>
+
+          {/* Content Section */}
+          <div className='flex-1 min-w-0 space-y-3'>
+            {/* Title and Status */}
+            <div className='flex items-start justify-between gap-3'>
+              <div className='flex-1 min-w-0'>
+                <h3 className='font-bold text-base line-clamp-1 group-hover:text-primary transition-colors mb-1'>
+                  {data.title}
+                </h3>
+                <p className='text-sm text-muted-foreground line-clamp-1'>
+                  {data.catalogId || 'No Catalog ID'}
+                </p>
+              </div>
+              {/* <Badge
+                variant={data.isActive ? 'default' : 'secondary'}
+                className='text-xs px-3 py-1 h-6 flex-shrink-0'
+              >
+                {data.isActive ? 'Active' : 'Inactive'}
+              </Badge> */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline' size='icon-sm'>
+                    <MoreHorizontalIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuLabel>Options</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem className='text-red-500'>
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* Product Type and Variants */}
+            <div className='flex items-center gap-4 text-sm'>
+              <div className='flex items-center gap-2'>
+                <span className='text-muted-foreground font-medium'>Type:</span>
+                <Badge variant='outline' className='text-xs px-2 py-0.5 h-6'>
+                  {data.productType}
+                </Badge>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span className='text-muted-foreground font-medium'>
+                  Variants:
+                </span>
+                <span className='font-semibold text-foreground'>
+                  {data.variants?.length || 0}
+                </span>
+              </div>
+            </div>
+
+            {/* Price and Quantity */}
+            <div className='flex items-center gap-4 text-sm'>
+              <div className='flex items-center gap-2'>
+                <span className='text-muted-foreground font-medium'>
+                  Price:
+                </span>
+                <span className='font-bold text-foreground text-base'>
+                  {minPrice === maxPrice
+                    ? `AU$${minPrice.toFixed(2)}`
+                    : `AU$${minPrice.toFixed(2)} - AU$${maxPrice.toFixed(2)}`}
+                </span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span className='text-muted-foreground font-medium'>Qty:</span>
+                <span
+                  className={`font-bold text-base ${
+                    totalQuantity === 0 ? 'text-rose-500' : 'text-emerald-600'
+                  }`}
+                >
+                  {totalQuantity}
+                </span>
+              </div>
+            </div>
+
+            {/* Category Info */}
+            <div className='flex items-center gap-2'>
+              <Badge
+                variant='secondary'
+                className='text-xs px-2.5 py-1 h-6 font-medium'
+              >
+                {data.category?.name}
+              </Badge>
+              {data.subCategory && (
+                <Badge variant='outline' className='text-xs px-2.5 py-1 h-6'>
+                  {data.subCategory?.name}
+                </Badge>
+              )}
+            </div>
+
+            {/* Actions */}
+            <div className='flex items-center gap-2 pt-2'>
+              {onView && (
+                <Button
+                  size='sm'
+                  variant='outline'
+                  className='h-8 px-3 text-sm'
+                  onClick={() => onView(data.id)}
+                >
+                  <Eye className='w-4 h-4 mr-1.5' />
+                  View
+                </Button>
+              )}
+              {onEdit && (
+                <Button
+                  size='sm'
+                  variant='default'
+                  className='h-8 px-3 text-sm'
+                  onClick={() => onEdit(data.id)}
+                >
+                  <Edit className='w-4 h-4 mr-1.5' />
+                  Edit
+                </Button>
+              )}
+              {onDelete && (
+                <Button
+                  size='sm'
+                  variant='destructive'
+                  className='h-8 px-3 text-sm'
+                  onClick={() => onDelete(data.id)}
+                >
+                  <Trash2 className='w-4 h-4 mr-1.5' />
+                  Delete
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

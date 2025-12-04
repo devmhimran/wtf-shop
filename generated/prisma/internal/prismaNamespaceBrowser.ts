@@ -197,7 +197,8 @@ export const ProductVariantScalarFieldEnum = {
   productId: 'productId',
   colorId: 'colorId',
   sizeId: 'sizeId',
-  price: 'price'
+  price: 'price',
+  quantity: 'quantity'
 } as const
 
 export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]

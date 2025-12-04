@@ -19,11 +19,12 @@ import { generateQueryString } from '@/lib/utils';
 
 import Link from 'next/link';
 import { useGetAllProducts } from '@/hooks';
+import { ProductCards } from '@/components/pages/products';
+import { ProductCardSkeleton } from '@/components/skeletons';
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [addUserOpen, setAddUserOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState(
     searchParams.get('status') || 'all'
   );
@@ -38,7 +39,8 @@ export default function ProductsPage() {
   );
 
   const queryString = generateQueryString(params);
-  const { fetchAllProductsMutationData } = useGetAllProducts();
+  const { fetchAllProductsMutationData, fetchAllProductsMutation } =
+    useGetAllProducts(queryString + `&limit=12`);
 
   const debounced = useDebouncedCallback((value) => {
     setParams((prevParams) => ({
@@ -127,7 +129,52 @@ export default function ProductsPage() {
         <CardHeader>
           <CardTitle>Products List</CardTitle>
         </CardHeader>
-        <CardContent></CardContent>
+        <CardContent>
+          {fetchAllProductsMutation.isLoading ? (
+            <ProductCardSkeleton />
+          ) : (
+            <ProductCards data={fetchAllProductsMutationData?.data || []} />
+          )}
+          {fetchAllProductsMutationData &&
+            fetchAllProductsMutationData.meta.count > 0 && (
+              <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
+                <div className='flex items-center space-x-2'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() =>
+                      setParams((prev) => ({
+                        ...prev,
+                        page: (+params.page - 1).toString(),
+                      }))
+                    }
+                    disabled={+params.page === 1}
+                  >
+                    <ChevronLeft className='h-4 w-4' />
+                    Previous
+                  </Button>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() =>
+                      setParams((prev) => ({
+                        ...prev,
+                        page: (+params.page + 1).toString(),
+                      }))
+                    }
+                    disabled={
+                      +params.page ===
+                      (fetchAllProductsMutationData &&
+                        fetchAllProductsMutationData.meta.totalPages)
+                    }
+                  >
+                    Next
+                    <ChevronRight className='h-4 w-4' />
+                  </Button>
+                </div>
+              </div>
+            )}
+        </CardContent>
       </Card>
     </div>
   );

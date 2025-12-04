@@ -8,6 +8,7 @@ import { PromoCodeSkeleton } from './promo-code-skeleton';
 import { MediaViewSkeleton } from './media-view-skeleton';
 import { MediaCardSkeleton } from './media-card-skeleton';
 import { FeaturedProductImageChooseSkeleton } from './featured-product-image-choose-skeleton';
+import { ProductCardSkeleton } from './product-card-skeleton';
 
 export {
   UserNavSkeleton,
@@ -20,4 +21,5 @@ export {
   MediaViewSkeleton,
   MediaCardSkeleton,
   FeaturedProductImageChooseSkeleton,
+  ProductCardSkeleton,
 };

@@ -197,6 +197,7 @@ model ProductVariant {
   sizeId    Int
 
   price     Float
+  quantity  Int      @default(0)
 
   orderItems OrderItem[]
 

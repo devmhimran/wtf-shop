@@ -159,14 +159,19 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
         mainImage: true,
         alternativeImage: true,
         variants: {
-          include: {
-            color: true,
-            size: true,
-          },
-        },
-        gallery: {
-          include: {
-            media: true,
+          select: {
+            price: true,
+            quantity: true,
+            color: {
+              select: {
+                name: true,
+              },
+            },
+            size: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -174,13 +179,38 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
     prisma.product.count({ where }),
   ]);
 
+  // Add aggregated fields using database aggregation for each product
+  const productsWithAggregations = await Promise.all(
+    products.map(async (product) => {
+      const aggregation = await prisma.productVariant.aggregate({
+        where: { productId: product.id },
+        _min: { price: true },
+        _max: { price: true },
+        _sum: { quantity: true },
+      });
+
+      const minPrice = aggregation._min.price ?? 0;
+      const maxPrice = aggregation._max.price ?? 0;
+      const quantity = aggregation._sum.quantity ?? 0;
+      const inStock = quantity > 0;
+
+      return {
+        ...product,
+        minPrice,
+        maxPrice,
+        quantity,
+        inStock,
+      };
+    })
+  );
+
   return NextResponse.json({
     message: 'Products fetched successfully',
-    data: products,
-    pagination: {
+    data: productsWithAggregations,
+    meta: {
       page,
       limit,
-      total,
+      count: total,
       totalPages: Math.ceil(total / limit),
     },
   });
@@ -229,11 +259,13 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       mainImageId: validatedData.featuredImage.id,
       alternativeImageId: validatedData.alternativeImage?.id || null,
       createdById: payload.userId,
+      productType: 'STANDARD',
       variants: {
         create: validatedData.variants.map((variant) => ({
           colorId: variant.colorId,
           sizeId: variant.sizeId,
           price: variant.price,
+          quantity: variant.quantity,
         })),
       },
       quantityDiscounts: {
