@@ -1,3 +1,5 @@
+'use client';
+
 import { ProductType } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +14,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ConfirmModal } from '@/components/shared';
+import { useState } from 'react';
+import { useProducts } from '@/hooks';
+import { toast } from 'sonner';
 
 type ProductCardProps = {
   data: ProductType;
@@ -26,7 +32,32 @@ export function ProductCard({
   onDelete,
   onView,
 }: ProductCardProps) {
+  const [isPending, setIsPending] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
   const { minPrice, maxPrice, quantity: totalQuantity, inStock } = data;
+  const { deleteProductAsync } = useProducts();
+
+  const handleDeleteProduct = () => {
+    setIsPending(true);
+    if (!data.id) return;
+
+    toast.promise(deleteProductAsync(data.id), {
+      loading: 'Deleting product...',
+      success: () => {
+        setConfirmModal(false);
+        setIsPending(false);
+        return 'Successfully product deleted';
+      },
+      error: (error) => {
+        setIsPending(false);
+        return (
+          error?.response?.data?.error ||
+          error.message ||
+          'Failed to delete product'
+        );
+      },
+    });
+  };
 
   return (
     <Card className='group overflow-hidden hover:shadow-sm transition-all duration-300 border hover:border-primary/30 bg-card p-0'>
@@ -91,7 +122,10 @@ export function ProductCard({
                   <DropdownMenuLabel>Options</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem className='text-red-500'>
+                  <DropdownMenuItem
+                    className='text-red-500'
+                    onClick={() => setConfirmModal(true)}
+                  >
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -194,6 +228,13 @@ export function ProductCard({
           </div>
         </div>
       </CardContent>
+      <ConfirmModal
+        isOpen={confirmModal}
+        setIsOpen={setConfirmModal}
+        loading={isPending}
+        title='This action cannot be undone. This will permanently delete your product'
+        onClick={handleDeleteProduct}
+      />
     </Card>
   );
 }

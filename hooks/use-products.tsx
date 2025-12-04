@@ -14,10 +14,22 @@ export function useProducts() {
     },
   });
 
+  const deleteProductMutation = useMutation({
+    mutationFn: async (id: number) =>
+      await productApi.products.deleteProduct(id).then(({ data }) => data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
   return {
     createProductMutation,
     createProduct: createProductMutation.mutate,
     createProductAsync: createProductMutation.mutateAsync,
+
+    deleteProductMutation,
+    deleteProduct: deleteProductMutation.mutate,
+    deleteProductAsync: deleteProductMutation.mutateAsync,
   };
 }
 

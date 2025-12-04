@@ -144,5 +144,13 @@ export const productApi = {
       const url = '/protected/products';
       return axiosInstanceWithAuth.post(url, data);
     },
+    deleteProduct: (id: number) => {
+      const url = `/protected/products/${id}`;
+      return axiosInstanceWithAuth.delete(url);
+    },
+    updateProduct: (id: number, updateData: Partial<CreateProductType>) => {
+      const url = `/protected/products/${id}`;
+      return axiosInstanceWithAuth.put(url, updateData);
+    },
   },
 };
