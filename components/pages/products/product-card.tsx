@@ -33,6 +33,7 @@ export function ProductCard({
   onView,
 }: ProductCardProps) {
   const [isPending, setIsPending] = useState(false);
+
   const [confirmModal, setConfirmModal] = useState(false);
   const { minPrice, maxPrice, quantity: totalQuantity, inStock } = data;
   const { deleteProductAsync } = useProducts();

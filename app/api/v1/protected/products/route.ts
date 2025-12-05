@@ -174,6 +174,19 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
             },
           },
         },
+        // gallery: {
+        //   select: {
+        //     media: {
+        //       select: {
+        //         title: true,
+        //         alt: true,
+        //         fileUrl: true,
+        //         fileName: true,
+        //         createdById: true,
+        //       },
+        //     },
+        //   },
+        // },
       },
     }),
     prisma.product.count({ where }),

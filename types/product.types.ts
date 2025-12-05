@@ -31,9 +31,17 @@ export type QuantityDiscountType = {
 };
 
 export type ImageType = {
-  id: number;
   fileUrl: string;
   fileName: string;
+};
+
+export type GalleryImageType = {
+  media: {
+    title: string;
+    alt: string;
+    fileUrl: string;
+    fileName: string;
+  };
 };
 
 export type ProductType = {
@@ -57,7 +65,7 @@ export type ProductType = {
   category: CategoryType;
   subCategory: SubCategoryType;
   variants: ProductVariantType[];
-  gallery: MediaType[];
+  // gallery: GalleryImageType[];
   createdAt: string;
   updatedAt: string;
   quantityDiscounts: QuantityDiscountType[];
