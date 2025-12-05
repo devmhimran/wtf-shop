@@ -57,12 +57,13 @@ const updateProductSchema = z
           'Slug must contain only lowercase letters, numbers, and hyphens',
       })
       .optional(),
+
     catalogId: z
       .string()
-      .min(3, { message: 'Catalog ID must be at least 3 characters long' })
-      .max(100, { message: 'Catalog ID must not exceed 100 characters' })
       .optional()
-      .nullable(),
+      .refine((val) => !val || val.length >= 2, {
+        message: 'Catalog ID must be at least 2 characters if provided.',
+      }),
     discountNote: z.string().optional().nullable(),
     metaTitle: z.string().optional().nullable(),
     metaDescription: z.string().optional().nullable(),
@@ -135,6 +136,108 @@ const updateProductSchema = z
 type RouteParams = {
   id: string;
 };
+
+export const GET = catchAsyncNext(
+  async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
+    if (!context?.params) throw new Error('Missing params');
+    const { id: productId } = await context.params;
+
+    const { error } = await authenticateRequest(req);
+    if (error) return error;
+
+    const id = Number(productId);
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { error: 'Invalid product ID' },
+        { status: 400 }
+      );
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { id, isDelete: false },
+      include: {
+        category: true,
+        subCategory: true,
+        mainImage: true,
+        alternativeImage: true,
+        variants: {
+          select: {
+            id: true,
+            price: true,
+            quantity: true,
+            color: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            size: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        quantityDiscounts: true,
+        gallery: {
+          select: {
+            media: {
+              select: {
+                id: true,
+                title: true,
+                alt: true,
+                fileUrl: true,
+                fileName: true,
+                createdById: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    // Calculate aggregated fields
+    const aggregation = await prisma.productVariant.aggregate({
+      where: { productId: id },
+      _min: { price: true },
+      _max: { price: true },
+      _sum: { quantity: true },
+    });
+
+    const minPrice = aggregation._min.price ?? 0;
+    const maxPrice = aggregation._max.price ?? 0;
+    const quantity = aggregation._sum.quantity ?? 0;
+    const inStock = quantity > 0;
+
+    // Flatten gallery structure
+    // const gallery =
+    //   (product.gallery as Omit<MediaType, ''>[])?.map((g) => ({
+    //     id: g.media.id,
+    //     title: g.media.title,
+    //     alt: g.media.alt,
+    //     fileUrl: g.media.fileUrl,
+    //     fileName: g.media.fileName,
+    //   })) || [];
+
+    return NextResponse.json({
+      success: true,
+      message: 'Product fetched successfully',
+      data: {
+        ...product,
+        gallery: product.gallery,
+        minPrice,
+        maxPrice,
+        quantity,
+        inStock,
+      },
+    });
+  }
+);
 
 export const DELETE = catchAsyncNext(
   async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
@@ -310,7 +413,7 @@ export const PUT = catchAsyncNext(
               minQty: discount.minQty,
               maxQty: discount.maxQty,
               amount: discount.amount,
-              note: discount.note || null,
+              note: discount.note || '',
             })),
           });
         }
@@ -374,14 +477,6 @@ export const PUT = catchAsyncNext(
       success: true,
       message: 'Product updated successfully',
       data: productWithRelations,
-    });
-  }
-);
-
-export const GET = catchAsyncNext(
-  async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
-    return NextResponse.json({
-      message: 'GET product by ID not implemented yet',
     });
   }
 );

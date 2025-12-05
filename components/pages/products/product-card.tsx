@@ -4,7 +4,7 @@ import { ProductType } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, Eye, MoreHorizontalIcon } from 'lucide-react';
+import { MoreHorizontalIcon } from 'lucide-react';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -18,20 +18,15 @@ import { ConfirmModal } from '@/components/shared';
 import { useState } from 'react';
 import { useProducts } from '@/hooks';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 type ProductCardProps = {
   data: ProductType;
-  onEdit?: (id: number) => void;
   onDelete?: (id: number) => void;
-  onView?: (id: number) => void;
 };
 
-export function ProductCard({
-  data,
-  onEdit,
-  onDelete,
-  onView,
-}: ProductCardProps) {
+export function ProductCard({ data }: ProductCardProps) {
+  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 
   const [confirmModal, setConfirmModal] = useState(false);
@@ -122,7 +117,15 @@ export function ProductCard({
                 <DropdownMenuContent align='end'>
                   <DropdownMenuLabel>Options</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/products/update-product/${data.id}`
+                      )
+                    }
+                  >
+                    Edit
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     className='text-red-500'
                     onClick={() => setConfirmModal(true)}
@@ -187,43 +190,6 @@ export function ProductCard({
                 <Badge variant='outline' className='text-xs px-2.5 py-1 h-6'>
                   {data.subCategory?.name}
                 </Badge>
-              )}
-            </div>
-
-            {/* Actions */}
-            <div className='flex items-center gap-2 pt-2'>
-              {onView && (
-                <Button
-                  size='sm'
-                  variant='outline'
-                  className='h-8 px-3 text-sm'
-                  onClick={() => onView(data.id)}
-                >
-                  <Eye className='w-4 h-4 mr-1.5' />
-                  View
-                </Button>
-              )}
-              {onEdit && (
-                <Button
-                  size='sm'
-                  variant='default'
-                  className='h-8 px-3 text-sm'
-                  onClick={() => onEdit(data.id)}
-                >
-                  <Edit className='w-4 h-4 mr-1.5' />
-                  Edit
-                </Button>
-              )}
-              {onDelete && (
-                <Button
-                  size='sm'
-                  variant='destructive'
-                  className='h-8 px-3 text-sm'
-                  onClick={() => onDelete(data.id)}
-                >
-                  <Trash2 className='w-4 h-4 mr-1.5' />
-                  Delete
-                </Button>
               )}
             </div>
           </div>

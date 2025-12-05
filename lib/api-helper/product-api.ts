@@ -8,6 +8,7 @@ import {
   CreateShippingChargeType,
   CreateSizesType,
   CreateSubCategoryType,
+  DetailsResponse,
   Meta,
   ProductType,
   PromoCodeType,
@@ -151,6 +152,10 @@ export const productApi = {
     updateProduct: (id: number, updateData: Partial<CreateProductType>) => {
       const url = `/protected/products/${id}`;
       return axiosInstanceWithAuth.put(url, updateData);
+    },
+    getSingleProduct: (id: number) => {
+      const url = `/protected/products/${id}`;
+      return axiosInstanceWithAuth.get<DetailsResponse<ProductType>>(url);
     },
   },
 };

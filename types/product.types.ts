@@ -35,15 +35,6 @@ export type ImageType = {
   fileName: string;
 };
 
-export type GalleryImageType = {
-  media: {
-    title: string;
-    alt: string;
-    fileUrl: string;
-    fileName: string;
-  };
-};
-
 export type ProductType = {
   id: number;
   title: string;
@@ -65,7 +56,9 @@ export type ProductType = {
   category: CategoryType;
   subCategory: SubCategoryType;
   variants: ProductVariantType[];
-  // gallery: GalleryImageType[];
+  gallery: {
+    media: MediaType;
+  }[];
   createdAt: string;
   updatedAt: string;
   quantityDiscounts: QuantityDiscountType[];
@@ -108,6 +101,6 @@ export type CreateProductType = {
     minQty: number;
     maxQty: number;
     amount: number;
-    note?: string;
+    note?: string | null;
   }[];
 };

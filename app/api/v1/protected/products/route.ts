@@ -174,19 +174,11 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
             },
           },
         },
-        // gallery: {
-        //   select: {
-        //     media: {
-        //       select: {
-        //         title: true,
-        //         alt: true,
-        //         fileUrl: true,
-        //         fileName: true,
-        //         createdById: true,
-        //       },
-        //     },
-        //   },
-        // },
+        gallery: {
+          select: {
+            media: true,
+          },
+        },
       },
     }),
     prisma.product.count({ where }),
@@ -262,11 +254,11 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       shortDescription: validatedData.shortDescription,
       additionalDesc: validatedData.additionalDesc,
       slug: validatedData.slug,
-      metaTitle: validatedData.metaTitle || null,
-      metaDescription: validatedData.metaDescription || null,
-      metaKeyword: validatedData.metaKeyword?.join(', ') || null,
+      metaTitle: validatedData.metaTitle || '',
+      metaDescription: validatedData.metaDescription || '',
+      metaKeyword: validatedData.metaKeyword?.join(', ') || '',
       isNew: validatedData.isNew || false,
-      catalogId: validatedData.catalogId || null,
+      catalogId: validatedData.catalogId || '',
       categoryId: validatedData.category.id,
       subCategoryId: validatedData.subCategory?.id || null,
       mainImageId: validatedData.featuredImage.id,
@@ -287,7 +279,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
             minQty: discount.minQty,
             maxQty: discount.maxQty,
             amount: discount.amount,
-            note: discount.note || null,
+            note: discount.note || '',
           })) || [],
       },
       ...(validatedData.galleryImages &&

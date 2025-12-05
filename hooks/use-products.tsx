@@ -1,6 +1,12 @@
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
-import { CreateProductType, Meta, ProductType, Response } from '@/types';
+import {
+  CreateProductType,
+  DetailsResponse,
+  Meta,
+  ProductType,
+  Response,
+} from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
@@ -11,6 +17,22 @@ export function useProducts() {
       await productApi.products.createProduct(data).then(({ data }) => data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sizes'] });
+    },
+  });
+
+  const updateProductMutation = useMutation({
+    mutationFn: async ({
+      id,
+      updateData,
+    }: {
+      id: number;
+      updateData: Partial<CreateProductType>;
+    }) =>
+      await productApi.products
+        .updateProduct(id, updateData)
+        .then(({ data }) => data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 
@@ -26,6 +48,10 @@ export function useProducts() {
     createProductMutation,
     createProduct: createProductMutation.mutate,
     createProductAsync: createProductMutation.mutateAsync,
+
+    updateProductMutation,
+    updateProduct: updateProductMutation.mutate,
+    updateProductAsync: updateProductMutation.mutateAsync,
 
     deleteProductMutation,
     deleteProduct: deleteProductMutation.mutate,
@@ -46,5 +72,21 @@ export function useGetAllProducts(options?: string) {
   return {
     fetchAllProductsMutation,
     fetchAllProductsMutationData: fetchAllProductsMutation.data,
+  };
+}
+
+export function useGetSingleProduct(id: number) {
+  const fetchSingleProductMutation = useQuery<DetailsResponse<ProductType>>({
+    queryKey: ['product', id],
+    queryFn: async () => {
+      const res = await productApi.products
+        .getSingleProduct(id)
+        .then((response) => response.data);
+      return res;
+    },
+  });
+  return {
+    fetchSingleProductMutation,
+    fetchSingleProductMutationData: fetchSingleProductMutation.data,
   };
 }

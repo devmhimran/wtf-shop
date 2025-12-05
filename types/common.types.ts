@@ -5,6 +5,12 @@ export type Response<X, Y> = {
   meta: Y;
 };
 
+export type DetailsResponse<X> = {
+  success?: boolean;
+  message: string;
+  data: X;
+};
+
 export type Meta = {
   count: number;
   limit: number;
