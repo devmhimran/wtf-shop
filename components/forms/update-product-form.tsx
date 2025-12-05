@@ -19,13 +19,12 @@ import { z } from 'zod';
 
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { CategoryType, MediaType } from '@/types';
+import { CategoryType, MediaType, ProductType } from '@/types';
 import {
   useGetAllCategories,
   useGetAllColors,
   useGetAllSizes,
   useGetAllSubCategories,
-  useGetSingleProduct,
   useProducts,
 } from '@/hooks';
 import { SearchAndSelect, MultiSelect, Modal, Loading } from '../shared';
@@ -35,6 +34,13 @@ import { ProductFeaturedImage, ProductGalleryImage } from '../pages/products';
 import { Textarea } from '../ui/textarea';
 import { toast } from 'sonner';
 import { useParams, useRouter } from 'next/navigation';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 const TextEditor = dynamic(
   () => import('@/components/shared/text-editor').then((mod) => mod.TextEditor),
@@ -42,6 +48,10 @@ const TextEditor = dynamic(
     ssr: false,
   }
 );
+
+type UpdateProductFormProps = {
+  data?: ProductType;
+};
 
 const formSchema = z
   .object({
@@ -83,6 +93,7 @@ const formSchema = z
     metaDescription: z.string().optional(),
     metaKeyword: z.array(z.string()).optional(),
     isNew: z.boolean().optional(),
+    productType: z.enum(['STANDARD', 'CUSTOM']),
     category: z
       .object({
         id: z.number(),
@@ -153,13 +164,10 @@ const formSchema = z
   })
   .strict();
 
-export function UpdateProductForm() {
+export function UpdateProductForm({ data }: UpdateProductFormProps) {
   const { id } = useParams();
   const router = useRouter();
   const productId = Number(id);
-
-  const { fetchSingleProductMutation, fetchSingleProductMutationData } =
-    useGetSingleProduct(productId);
 
   const [selectedCategory, setSelectedCategory] = useState<Pick<
     CategoryType,
@@ -191,16 +199,17 @@ export function UpdateProductForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      shortDescription: '',
-      additionalDesc: '',
-      slug: '',
-      discountNote: '',
-      metaTitle: '',
-      metaDescription: '',
+      title: data?.title || '',
+      description: data?.description || '',
+      shortDescription: data?.shortDescription || '',
+      additionalDesc: data?.additionalDesc || '',
+      slug: data?.slug || '',
+      discountNote: data?.discountNote || '',
+      metaTitle: data?.metaTitle || '',
+      metaDescription: data?.metaDescription || '',
+      productType: data?.productType || 'STANDARD',
       metaKeyword: [],
-      isNew: false,
+      isNew: data?.isNew || false,
       category: null,
       subCategory: null,
       variants: [],
@@ -236,8 +245,8 @@ export function UpdateProductForm() {
 
   // Populate form with existing product data
   useEffect(() => {
-    if (fetchSingleProductMutationData?.data && !isDataLoaded) {
-      const product = fetchSingleProductMutationData.data;
+    if (data && !isDataLoaded) {
+      const product = data;
 
       // Set category
       if (product.category) {
@@ -336,21 +345,9 @@ export function UpdateProductForm() {
         form.setValue('quantityDiscounts', product.quantityDiscounts);
       }
 
-      // Set basic fields
-      form.setValue('title', product.title);
-      form.setValue('description', product.description);
-      form.setValue('shortDescription', product.shortDescription);
-      form.setValue('additionalDesc', product.additionalDesc);
-      form.setValue('slug', product.slug);
-      form.setValue('catalogId', product.catalogId || '');
-      form.setValue('discountNote', product.discountNote || '');
-      form.setValue('metaTitle', product.metaTitle || '');
-      form.setValue('metaDescription', product.metaDescription || '');
-      form.setValue('isNew', product.isNew || false);
-
       setIsDataLoaded(true);
     }
-  }, [fetchSingleProductMutationData, form, isDataLoaded]);
+  }, [data, form, isDataLoaded]);
 
   const handleGenerateBulkVariants = () => {
     const variants = [];
@@ -475,14 +472,6 @@ export function UpdateProductForm() {
     });
   }
 
-  if (fetchSingleProductMutation.isLoading) {
-    return <Loading />;
-  }
-
-  if (fetchSingleProductMutation.isError) {
-    return <div>Error loading product</div>;
-  }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -494,13 +483,15 @@ export function UpdateProductForm() {
             disabled={isPending}
             className='flex justify-start'
           >
-            <Save className='mr-2 h-4 w-4' />
-            {isPending && <Loader2Icon className='animate-spin' />}
+            {isPending ? (
+              <Loader2Icon className='animate-spin' />
+            ) : (
+              <Save className='mr-2 h-4 w-4' />
+            )}
             Update Product
           </Button>
         </div>
 
-        {/* Rest of the form - same as create form */}
         <Card>
           <CardContent className='space-y-6'>
             <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 w-full'>
@@ -673,6 +664,28 @@ export function UpdateProductForm() {
                       </div>
                     </div>
                   )}
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='productType'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Type</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select status' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className='z-9999'>
+                      <SelectItem value='STANDARD'>Standard</SelectItem>
+                      <SelectItem value='CUSTOM'>Custom</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -3,6 +3,8 @@ import { ColorType } from './colors.types';
 import { MediaType } from './media.types';
 import { SizeType } from './size.types';
 
+export type ProductTypeTypes = 'STANDARD' | 'CUSTOM';
+
 export type ProductVariantType = {
   id: number;
   productId: number;
@@ -46,12 +48,12 @@ export type ProductType = {
   metaTitle?: string;
   metaDescription?: string;
   metaKeyword?: string;
-  productType: string;
   twoSidePrice: number | null;
   isNew: boolean;
   isActive: boolean;
   slug: string;
   mainImage: MediaType;
+  productType: ProductTypeTypes;
   alternativeImage?: MediaType | null;
   category: CategoryType;
   subCategory: SubCategoryType;

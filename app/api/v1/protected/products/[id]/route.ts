@@ -69,6 +69,7 @@ const updateProductSchema = z
     metaDescription: z.string().optional().nullable(),
     metaKeyword: z.array(z.string()).optional(),
     isNew: z.boolean().optional(),
+    productType: z.enum(['STANDARD', 'CUSTOM']).optional(),
     category: z
       .object({
         id: z.number(),
@@ -375,6 +376,9 @@ export const PUT = catchAsyncNext(
           }),
           ...(validatedData.alternativeImage !== undefined && {
             alternativeImageId: validatedData.alternativeImage?.id || null,
+          }),
+          ...(validatedData.productType && {
+            productType: validatedData.productType,
           }),
         },
       });

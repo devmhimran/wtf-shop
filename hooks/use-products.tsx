@@ -77,7 +77,7 @@ export function useGetAllProducts(options?: string) {
 
 export function useGetSingleProduct(id: number) {
   const fetchSingleProductMutation = useQuery<DetailsResponse<ProductType>>({
-    queryKey: ['product', id],
+    queryKey: ['products', id],
     queryFn: async () => {
       const res = await productApi.products
         .getSingleProduct(id)

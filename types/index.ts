@@ -26,6 +26,7 @@ import {
   GalleryType,
   ProductType,
   CreateProductType,
+  ProductTypeTypes,
 } from './product.types';
 
 export type {
@@ -57,4 +58,5 @@ export type {
   ProductType,
   CreateProductType,
   DetailsResponse,
+  ProductTypeTypes,
 };

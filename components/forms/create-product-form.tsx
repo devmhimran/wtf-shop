@@ -33,6 +33,14 @@ import { Label } from '@/components/ui/label';
 import { ProductFeaturedImage, ProductGalleryImage } from '../pages/products';
 import { Textarea } from '../ui/textarea';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 const TextEditor = dynamic(
   () => import('@/components/shared/text-editor').then((mod) => mod.TextEditor),
@@ -80,6 +88,7 @@ const formSchema = z
     metaDescription: z.string().optional(),
     metaKeyword: z.array(z.string()).optional(),
     isNew: z.boolean().optional(),
+    productType: z.enum(['STANDARD', 'CUSTOM']),
     category: z
       .object({
         id: z.number(),
@@ -149,6 +158,7 @@ const formSchema = z
   .strict();
 
 export function CreateProductForm() {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<Pick<
     CategoryType,
     'id' | 'name'
@@ -186,6 +196,7 @@ export function CreateProductForm() {
       discountNote: '',
       metaTitle: '',
       metaDescription: '',
+      productType: 'STANDARD',
       metaKeyword: [],
       isNew: false,
       category: null,
@@ -343,6 +354,7 @@ export function CreateProductForm() {
         setBulkPrice(0);
         setSelectedCategory(null);
         setSelectedSubCategory(null);
+        router.push('/dashboard/products');
         return response.message || 'Successfully created Product!';
       },
 
@@ -365,8 +377,11 @@ export function CreateProductForm() {
             disabled={isPending}
             className='flex justify-start'
           >
-            <Save className='mr-2 h-4 w-4' />
-            {isPending && <Loader2Icon className='animate-spin' />}
+            {isPending ? (
+              <Loader2Icon className='animate-spin' />
+            ) : (
+              <Save className='mr-2 h-4 w-4' />
+            )}
             Save Changes
           </Button>
         </div>
@@ -542,6 +557,30 @@ export function CreateProductForm() {
                       </div>
                     </div>
                   )}
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='productType'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select status' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className='z-9999'>
+                      <SelectItem value='STANDARD'>Standard</SelectItem>
+                      <SelectItem value='CUSTOM'>Custom</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -63,6 +63,7 @@ const productSchema = z
     metaDescription: z.string().optional(),
     metaKeyword: z.array(z.string()).optional(),
     isNew: z.boolean().optional(),
+    productType: z.enum(['STANDARD', 'CUSTOM']),
     category: z.object({
       id: z.number(),
       name: z.string(),
@@ -264,7 +265,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       mainImageId: validatedData.featuredImage.id,
       alternativeImageId: validatedData.alternativeImage?.id || null,
       createdById: payload.userId,
-      productType: 'STANDARD',
+      productType: validatedData.productType,
       variants: {
         create: validatedData.variants.map((variant) => ({
           colorId: variant.colorId,

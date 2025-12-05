@@ -9,6 +9,11 @@ import { ZodError } from 'zod';
 
 export const USER_COUNT_PER_PAGE = 10;
 
+export const productTypeTypes = {
+  STANDARD: 'Standard',
+  CUSTOM: 'Custom',
+};
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
