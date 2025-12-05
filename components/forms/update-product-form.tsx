@@ -1256,7 +1256,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                         className='cursor-pointer border-2 border-dashed rounded-lg p-6 hover:border-gray-400 transition-colors'
                       >
                         {featuredImage ? (
-                          <div className='flex items-center gap-4'>
+                          <div className='flex items-start gap-3'>
                             <div className='relative w-20 h-20 rounded-lg overflow-hidden border'>
                               <img
                                 src={featuredImage.fileUrl}
@@ -1265,7 +1265,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                               />
                             </div>
                             <div className='flex-1'>
-                              <p className='font-medium text-sm'>
+                              <p className='font-medium text-sm break-all'>
                                 {featuredImage.fileName}
                               </p>
                               <p className='text-xs text-muted-foreground mt-1'>
@@ -1317,7 +1317,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                         className='cursor-pointer border-2 border-dashed rounded-lg p-6 hover:border-gray-400 transition-colors'
                       >
                         {alternativeImage ? (
-                          <div className='flex items-center gap-4'>
+                          <div className='flex items-start gap-3'>
                             <div className='relative w-20 h-20 rounded-lg overflow-hidden border'>
                               <img
                                 src={alternativeImage.fileUrl}
@@ -1326,7 +1326,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                               />
                             </div>
                             <div className='flex-1'>
-                              <p className='font-medium text-sm'>
+                              <p className='font-medium text-sm break-all'>
                                 {alternativeImage.fileName}
                               </p>
                               <p className='text-xs text-muted-foreground mt-1'>

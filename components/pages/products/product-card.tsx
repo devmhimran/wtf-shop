@@ -57,7 +57,10 @@ export function ProductCard({ data }: ProductCardProps) {
   };
 
   return (
-    <Card className='group overflow-hidden hover:shadow-sm transition-all duration-300 border hover:border-primary/30 bg-card p-0'>
+    <Card
+      className='group overflow-hidden hover:shadow-md transition-all duration-300 
+    border hover:border-primary/20 bg-card p-0'
+    >
       <CardContent className='p-0'>
         <div className='flex gap-5 p-5'>
           {/* Image Section */}
@@ -102,12 +105,6 @@ export function ProductCard({ data }: ProductCardProps) {
                   {data.catalogId || 'No Catalog ID'}
                 </p>
               </div>
-              {/* <Badge
-                variant={data.isActive ? 'default' : 'secondary'}
-                className='text-xs px-3 py-1 h-6 flex-shrink-0'
-              >
-                {data.isActive ? 'Active' : 'Inactive'}
-              </Badge> */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant='outline' size='icon-sm'>

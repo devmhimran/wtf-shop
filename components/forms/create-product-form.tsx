@@ -1151,7 +1151,7 @@ export function CreateProductForm() {
                         className='cursor-pointer border-2 border-dashed rounded-lg p-6 hover:border-gray-400 transition-colors'
                       >
                         {featuredImage ? (
-                          <div className='flex items-center gap-4'>
+                          <div className='flex items-start gap-3'>
                             <div className='relative w-20 h-20 rounded-lg overflow-hidden border'>
                               <img
                                 src={featuredImage.fileUrl}
@@ -1160,7 +1160,7 @@ export function CreateProductForm() {
                               />
                             </div>
                             <div className='flex-1'>
-                              <p className='font-medium text-sm'>
+                              <p className='font-medium text-sm break-all'>
                                 {featuredImage.fileName}
                               </p>
                               <p className='text-xs text-muted-foreground mt-1'>
@@ -1212,7 +1212,7 @@ export function CreateProductForm() {
                         className='cursor-pointer border-2 border-dashed rounded-lg p-6 hover:border-gray-400 transition-colors'
                       >
                         {alternativeImage ? (
-                          <div className='flex items-center gap-4'>
+                          <div className='flex items-start gap-3'>
                             <div className='relative w-20 h-20 rounded-lg overflow-hidden border'>
                               <img
                                 src={alternativeImage.fileUrl}
@@ -1221,7 +1221,7 @@ export function CreateProductForm() {
                               />
                             </div>
                             <div className='flex-1'>
-                              <p className='font-medium text-sm'>
+                              <p className='font-medium text-sm break-all'>
                                 {alternativeImage.fileName}
                               </p>
                               <p className='text-xs text-muted-foreground mt-1'>
@@ -1277,7 +1277,8 @@ export function CreateProductForm() {
                         className='w-full h-full object-cover'
                       />
                       <div
-                        className='absolute top-1 right-1 p-1 bg-white rounded-full border-muted-foreground cursor-pointer hover:bg-red-500 hover:text-white transition-colors'
+                        className='absolute top-1 right-1 p-1 bg-white rounded-full border-muted-foreground cursor-pointer 
+                        hover:bg-red-500 hover:text-white transition-colors'
                         onClick={() =>
                           handleGalleryImagesChange(
                             galleryImages.filter((img) => img.id !== image.id)

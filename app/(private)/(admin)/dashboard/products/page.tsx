@@ -1,37 +1,41 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, Search, X } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Funnel,
+  Plus,
+  Search,
+  X,
+} from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { generateQueryString } from '@/lib/utils';
 
 import Link from 'next/link';
 import { useGetAllProducts } from '@/hooks';
-import { ProductCards } from '@/components/pages/products';
+import { ProductCards, ProductFilter } from '@/components/pages/products';
 import { ProductCardSkeleton } from '@/components/skeletons';
+import { Modal } from '@/components/shared';
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [statusFilter, setStatusFilter] = useState(
-    searchParams.get('status') || 'all'
-  );
+  const [openFilter, setOpenFilter] = useState(false);
 
   const [params, setParams] = useState({
     search: searchParams.get('search') || '',
     page: searchParams.get('page') || '1',
+    stock: searchParams.get('stock') || '',
+    is_new: searchParams.get('is_new') || '',
+    price: searchParams.get('price') || '',
+    category: searchParams.get('category') || '',
+    subCategory: searchParams.get('subCategory') || '',
   });
 
   const [searchQuery, setSearchQuery] = useState(
@@ -84,25 +88,11 @@ export default function ProductsPage() {
                 className='pl-8'
               />
             </div>
-            <Select
-              value={statusFilter}
-              onValueChange={(value) => {
-                setParams((prev) => ({
-                  ...prev,
-                  status: value === 'all' ? '' : value,
-                }));
-                setStatusFilter(value);
-              }}
-            >
-              <SelectTrigger className='w-full md:w-[180px]'>
-                <SelectValue placeholder='Filter by status' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='all'>All Status</SelectItem>
-                <SelectItem value='ACTIVE'>Active</SelectItem>
-                <SelectItem value='INACTIVE'>Inactive</SelectItem>
-              </SelectContent>
-            </Select>
+
+            <Button onClick={() => setOpenFilter(true)}>
+              <Funnel />
+              Filters
+            </Button>
           </div>
           <div className='flex flex-wrap gap-2'>
             {params.search && (
@@ -176,6 +166,15 @@ export default function ProductsPage() {
             )}
         </CardContent>
       </Card>
+
+      <Modal
+        isOpen={openFilter}
+        setIsOpen={setOpenFilter}
+        title='Select Featured Image'
+        description='Choose from media library or upload new'
+      >
+        <ProductFilter setParams={setParams} params={params} />
+      </Modal>
     </div>
   );
 }

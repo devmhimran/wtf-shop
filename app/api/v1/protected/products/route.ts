@@ -130,8 +130,11 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
   const search = searchParams.get('search') || '';
-  const categoryId = searchParams.get('categoryId');
-  const subCategoryId = searchParams.get('subCategoryId');
+  const category = searchParams.get('category');
+  const subCategory = searchParams.get('subCategory');
+  const isNew = searchParams.get('is_new');
+  const stock = searchParams.get('stock');
+  const priceOrder = searchParams.get('price');
 
   const skip = (page - 1) * limit;
 
@@ -144,16 +147,28 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
         { catalogId: { contains: search, mode: 'insensitive' } },
       ],
     }),
-    ...(categoryId && { categoryId: parseInt(categoryId) }),
-    ...(subCategoryId && { subCategoryId: parseInt(subCategoryId) }),
+    ...(category && category !== 'all' && { categoryId: parseInt(category) }),
+    ...(subCategory &&
+      subCategory !== 'all' && { subCategoryId: parseInt(subCategory) }),
+    ...(isNew && isNew !== 'all' && { isNew: isNew === 'true' }),
+    // Stock filter - check if product has variants with quantity > 0 or quantity === 0
+    ...(stock &&
+      stock !== 'all' && {
+        variants:
+          stock === 'IN_STOCK'
+            ? { some: { quantity: { gt: 0 } } }
+            : { every: { quantity: { lte: 0 } } },
+      }),
   };
+
+  const orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({
       where,
       skip,
       take: limit,
-      orderBy: { createdAt: 'desc' },
+      orderBy,
       include: {
         category: true,
         subCategory: true,
@@ -209,6 +224,14 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       };
     })
   );
+
+  if (priceOrder && priceOrder !== 'all') {
+    if (priceOrder === 'LOW_TO_HIGH') {
+      productsWithAggregations.sort((a, b) => a.minPrice - b.minPrice);
+    } else if (priceOrder === 'HIGH_TO_LOW') {
+      productsWithAggregations.sort((a, b) => b.maxPrice - a.maxPrice);
+    }
+  }
 
   return NextResponse.json({
     message: 'Products fetched successfully',
