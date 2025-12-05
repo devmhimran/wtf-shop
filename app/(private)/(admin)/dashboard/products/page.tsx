@@ -170,8 +170,8 @@ export default function ProductsPage() {
       <Modal
         isOpen={openFilter}
         setIsOpen={setOpenFilter}
-        title='Select Featured Image'
-        description='Choose from media library or upload new'
+        title='Filter Products'
+        description='Customize your product search results by applying various filters.'
       >
         <ProductFilter setParams={setParams} params={params} />
       </Modal>
