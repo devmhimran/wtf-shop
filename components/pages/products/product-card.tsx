@@ -185,7 +185,7 @@ export function ProductCard({ data }: ProductCardProps) {
                 variant='secondary'
                 className='text-xs px-2.5 py-1 h-6 font-medium'
               >
-                {data.category?.name}
+                {data.category?.name || 'Uncategorized'}
               </Badge>
               {data.subCategory && (
                 <Badge variant='outline' className='text-xs px-2.5 py-1 h-6'>

@@ -804,7 +804,7 @@ export function CreateProductForm() {
                       />
                     </div>
 
-                    <div className='flex items-end'>
+                    <div className='flex items-center'>
                       <Button
                         type='button'
                         variant='destructive'

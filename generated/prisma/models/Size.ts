@@ -287,9 +287,9 @@ export type SizeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
-export type SizeScalarRelationFilter = {
-  is?: Prisma.SizeWhereInput
-  isNot?: Prisma.SizeWhereInput
+export type SizeNullableScalarRelationFilter = {
+  is?: Prisma.SizeWhereInput | null
+  isNot?: Prisma.SizeWhereInput | null
 }
 
 export type SizeCreateNestedOneWithoutVariantsInput = {
@@ -298,10 +298,12 @@ export type SizeCreateNestedOneWithoutVariantsInput = {
   connect?: Prisma.SizeWhereUniqueInput
 }
 
-export type SizeUpdateOneRequiredWithoutVariantsNestedInput = {
+export type SizeUpdateOneWithoutVariantsNestedInput = {
   create?: Prisma.XOR<Prisma.SizeCreateWithoutVariantsInput, Prisma.SizeUncheckedCreateWithoutVariantsInput>
   connectOrCreate?: Prisma.SizeCreateOrConnectWithoutVariantsInput
   upsert?: Prisma.SizeUpsertWithoutVariantsInput
+  disconnect?: Prisma.SizeWhereInput | boolean
+  delete?: Prisma.SizeWhereInput | boolean
   connect?: Prisma.SizeWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SizeUpdateToOneWithWhereWithoutVariantsInput, Prisma.SizeUpdateWithoutVariantsInput>, Prisma.SizeUncheckedUpdateWithoutVariantsInput>
 }

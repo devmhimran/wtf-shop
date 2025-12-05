@@ -103,7 +103,7 @@ export function ProductGalleryImageChoose({
       ) : !fetchAllMediaMutationData?.meta.count ? (
         <MediaEmpty />
       ) : (
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 max-h-95 overflow-y-auto'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 p-2 max-h-95 overflow-y-auto'>
           {fetchAllMediaMutationData?.data.map((media) => {
             const isSelected = isImageSelected(media.id);
             return (

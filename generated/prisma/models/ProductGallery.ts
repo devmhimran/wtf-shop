@@ -178,7 +178,7 @@ export type ProductGalleryGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type ProductGalleryGroupByOutputType = {
   id: number
   mediaId: number | null
-  productId: number
+  productId: number | null
   _count: ProductGalleryCountAggregateOutputType | null
   _avg: ProductGalleryAvgAggregateOutputType | null
   _sum: ProductGallerySumAggregateOutputType | null
@@ -207,15 +207,15 @@ export type ProductGalleryWhereInput = {
   NOT?: Prisma.ProductGalleryWhereInput | Prisma.ProductGalleryWhereInput[]
   id?: Prisma.IntFilter<"ProductGallery"> | number
   mediaId?: Prisma.IntNullableFilter<"ProductGallery"> | number | null
-  productId?: Prisma.IntFilter<"ProductGallery"> | number
+  productId?: Prisma.IntNullableFilter<"ProductGallery"> | number | null
   media?: Prisma.XOR<Prisma.MediaLibraryNullableScalarRelationFilter, Prisma.MediaLibraryWhereInput> | null
-  product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
 }
 
 export type ProductGalleryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrderInput | Prisma.SortOrder
-  productId?: Prisma.SortOrder
+  productId?: Prisma.SortOrderInput | Prisma.SortOrder
   media?: Prisma.MediaLibraryOrderByWithRelationInput
   product?: Prisma.ProductOrderByWithRelationInput
 }
@@ -226,15 +226,15 @@ export type ProductGalleryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ProductGalleryWhereInput[]
   NOT?: Prisma.ProductGalleryWhereInput | Prisma.ProductGalleryWhereInput[]
   mediaId?: Prisma.IntNullableFilter<"ProductGallery"> | number | null
-  productId?: Prisma.IntFilter<"ProductGallery"> | number
+  productId?: Prisma.IntNullableFilter<"ProductGallery"> | number | null
   media?: Prisma.XOR<Prisma.MediaLibraryNullableScalarRelationFilter, Prisma.MediaLibraryWhereInput> | null
-  product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
 }, "id">
 
 export type ProductGalleryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   mediaId?: Prisma.SortOrderInput | Prisma.SortOrder
-  productId?: Prisma.SortOrder
+  productId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProductGalleryCountOrderByAggregateInput
   _avg?: Prisma.ProductGalleryAvgOrderByAggregateInput
   _max?: Prisma.ProductGalleryMaxOrderByAggregateInput
@@ -248,35 +248,35 @@ export type ProductGalleryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ProductGalleryScalarWhereWithAggregatesInput | Prisma.ProductGalleryScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"ProductGallery"> | number
   mediaId?: Prisma.IntNullableWithAggregatesFilter<"ProductGallery"> | number | null
-  productId?: Prisma.IntWithAggregatesFilter<"ProductGallery"> | number
+  productId?: Prisma.IntNullableWithAggregatesFilter<"ProductGallery"> | number | null
 }
 
 export type ProductGalleryCreateInput = {
   media?: Prisma.MediaLibraryCreateNestedOneWithoutGalleryItemsInput
-  product: Prisma.ProductCreateNestedOneWithoutGalleryInput
+  product?: Prisma.ProductCreateNestedOneWithoutGalleryInput
 }
 
 export type ProductGalleryUncheckedCreateInput = {
   id?: number
   mediaId?: number | null
-  productId: number
+  productId?: number | null
 }
 
 export type ProductGalleryUpdateInput = {
   media?: Prisma.MediaLibraryUpdateOneWithoutGalleryItemsNestedInput
-  product?: Prisma.ProductUpdateOneRequiredWithoutGalleryNestedInput
+  product?: Prisma.ProductUpdateOneWithoutGalleryNestedInput
 }
 
 export type ProductGalleryUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   mediaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductGalleryCreateManyInput = {
   id?: number
   mediaId?: number | null
-  productId: number
+  productId?: number | null
 }
 
 export type ProductGalleryUpdateManyMutationInput = {
@@ -286,7 +286,7 @@ export type ProductGalleryUpdateManyMutationInput = {
 export type ProductGalleryUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   mediaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductGalleryListRelationFilter = {
@@ -414,12 +414,12 @@ export type ProductGalleryUncheckedUpdateManyWithoutProductNestedInput = {
 }
 
 export type ProductGalleryCreateWithoutMediaInput = {
-  product: Prisma.ProductCreateNestedOneWithoutGalleryInput
+  product?: Prisma.ProductCreateNestedOneWithoutGalleryInput
 }
 
 export type ProductGalleryUncheckedCreateWithoutMediaInput = {
   id?: number
-  productId: number
+  productId?: number | null
 }
 
 export type ProductGalleryCreateOrConnectWithoutMediaInput = {
@@ -454,7 +454,7 @@ export type ProductGalleryScalarWhereInput = {
   NOT?: Prisma.ProductGalleryScalarWhereInput | Prisma.ProductGalleryScalarWhereInput[]
   id?: Prisma.IntFilter<"ProductGallery"> | number
   mediaId?: Prisma.IntNullableFilter<"ProductGallery"> | number | null
-  productId?: Prisma.IntFilter<"ProductGallery"> | number
+  productId?: Prisma.IntNullableFilter<"ProductGallery"> | number | null
 }
 
 export type ProductGalleryCreateWithoutProductInput = {
@@ -494,21 +494,21 @@ export type ProductGalleryUpdateManyWithWhereWithoutProductInput = {
 
 export type ProductGalleryCreateManyMediaInput = {
   id?: number
-  productId: number
+  productId?: number | null
 }
 
 export type ProductGalleryUpdateWithoutMediaInput = {
-  product?: Prisma.ProductUpdateOneRequiredWithoutGalleryNestedInput
+  product?: Prisma.ProductUpdateOneWithoutGalleryNestedInput
 }
 
 export type ProductGalleryUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductGalleryUncheckedUpdateManyWithoutMediaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductGalleryCreateManyProductInput = {
@@ -537,7 +537,7 @@ export type ProductGallerySelect<ExtArgs extends runtime.Types.Extensions.Intern
   mediaId?: boolean
   productId?: boolean
   media?: boolean | Prisma.ProductGallery$mediaArgs<ExtArgs>
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.ProductGallery$productArgs<ExtArgs>
 }, ExtArgs["result"]["productGallery"]>
 
 export type ProductGallerySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -545,7 +545,7 @@ export type ProductGallerySelectCreateManyAndReturn<ExtArgs extends runtime.Type
   mediaId?: boolean
   productId?: boolean
   media?: boolean | Prisma.ProductGallery$mediaArgs<ExtArgs>
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.ProductGallery$productArgs<ExtArgs>
 }, ExtArgs["result"]["productGallery"]>
 
 export type ProductGallerySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -553,7 +553,7 @@ export type ProductGallerySelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   mediaId?: boolean
   productId?: boolean
   media?: boolean | Prisma.ProductGallery$mediaArgs<ExtArgs>
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.ProductGallery$productArgs<ExtArgs>
 }, ExtArgs["result"]["productGallery"]>
 
 export type ProductGallerySelectScalar = {
@@ -565,27 +565,27 @@ export type ProductGallerySelectScalar = {
 export type ProductGalleryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mediaId" | "productId", ExtArgs["result"]["productGallery"]>
 export type ProductGalleryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.ProductGallery$mediaArgs<ExtArgs>
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.ProductGallery$productArgs<ExtArgs>
 }
 export type ProductGalleryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.ProductGallery$mediaArgs<ExtArgs>
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.ProductGallery$productArgs<ExtArgs>
 }
 export type ProductGalleryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | Prisma.ProductGallery$mediaArgs<ExtArgs>
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.ProductGallery$productArgs<ExtArgs>
 }
 
 export type $ProductGalleryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ProductGallery"
   objects: {
     media: Prisma.$MediaLibraryPayload<ExtArgs> | null
-    product: Prisma.$ProductPayload<ExtArgs>
+    product: Prisma.$ProductPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     mediaId: number | null
-    productId: number
+    productId: number | null
   }, ExtArgs["result"]["productGallery"]>
   composites: {}
 }
@@ -981,7 +981,7 @@ readonly fields: ProductGalleryFieldRefs;
 export interface Prisma__ProductGalleryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   media<T extends Prisma.ProductGallery$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductGallery$mediaArgs<ExtArgs>>): Prisma.Prisma__MediaLibraryClient<runtime.Types.Result.GetResult<Prisma.$MediaLibraryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  product<T extends Prisma.ProductGallery$productArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductGallery$productArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1232,7 +1232,7 @@ export type ProductGalleryCreateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * The data needed to create a ProductGallery.
    */
-  data: Prisma.XOR<Prisma.ProductGalleryCreateInput, Prisma.ProductGalleryUncheckedCreateInput>
+  data?: Prisma.XOR<Prisma.ProductGalleryCreateInput, Prisma.ProductGalleryUncheckedCreateInput>
 }
 
 /**
@@ -1426,6 +1426,25 @@ export type ProductGallery$mediaArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.MediaLibraryInclude<ExtArgs> | null
   where?: Prisma.MediaLibraryWhereInput
+}
+
+/**
+ * ProductGallery.product
+ */
+export type ProductGallery$productArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Product
+   */
+  select?: Prisma.ProductSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Product
+   */
+  omit?: Prisma.ProductOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductInclude<ExtArgs> | null
+  where?: Prisma.ProductWhereInput
 }
 
 /**

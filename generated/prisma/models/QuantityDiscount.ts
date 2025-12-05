@@ -207,7 +207,7 @@ export type QuantityDiscountGroupByOutputType = {
   maxQty: number
   amount: number
   note: string | null
-  productId: number
+  productId: number | null
   _count: QuantityDiscountCountAggregateOutputType | null
   _avg: QuantityDiscountAvgAggregateOutputType | null
   _sum: QuantityDiscountSumAggregateOutputType | null
@@ -239,8 +239,8 @@ export type QuantityDiscountWhereInput = {
   maxQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.IntFilter<"QuantityDiscount"> | number
-  product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  productId?: Prisma.IntNullableFilter<"QuantityDiscount"> | number | null
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
 }
 
 export type QuantityDiscountOrderByWithRelationInput = {
@@ -249,7 +249,7 @@ export type QuantityDiscountOrderByWithRelationInput = {
   maxQty?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
-  productId?: Prisma.SortOrder
+  productId?: Prisma.SortOrderInput | Prisma.SortOrder
   product?: Prisma.ProductOrderByWithRelationInput
 }
 
@@ -262,8 +262,8 @@ export type QuantityDiscountWhereUniqueInput = Prisma.AtLeast<{
   maxQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.IntFilter<"QuantityDiscount"> | number
-  product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  productId?: Prisma.IntNullableFilter<"QuantityDiscount"> | number | null
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
 }, "id">
 
 export type QuantityDiscountOrderByWithAggregationInput = {
@@ -272,7 +272,7 @@ export type QuantityDiscountOrderByWithAggregationInput = {
   maxQty?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
-  productId?: Prisma.SortOrder
+  productId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.QuantityDiscountCountOrderByAggregateInput
   _avg?: Prisma.QuantityDiscountAvgOrderByAggregateInput
   _max?: Prisma.QuantityDiscountMaxOrderByAggregateInput
@@ -289,7 +289,7 @@ export type QuantityDiscountScalarWhereWithAggregatesInput = {
   maxQty?: Prisma.IntWithAggregatesFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatWithAggregatesFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableWithAggregatesFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.IntWithAggregatesFilter<"QuantityDiscount"> | number
+  productId?: Prisma.IntNullableWithAggregatesFilter<"QuantityDiscount"> | number | null
 }
 
 export type QuantityDiscountCreateInput = {
@@ -297,7 +297,7 @@ export type QuantityDiscountCreateInput = {
   maxQty: number
   amount: number
   note?: string | null
-  product: Prisma.ProductCreateNestedOneWithoutQuantityDiscountsInput
+  product?: Prisma.ProductCreateNestedOneWithoutQuantityDiscountsInput
 }
 
 export type QuantityDiscountUncheckedCreateInput = {
@@ -306,7 +306,7 @@ export type QuantityDiscountUncheckedCreateInput = {
   maxQty: number
   amount: number
   note?: string | null
-  productId: number
+  productId?: number | null
 }
 
 export type QuantityDiscountUpdateInput = {
@@ -314,7 +314,7 @@ export type QuantityDiscountUpdateInput = {
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  product?: Prisma.ProductUpdateOneRequiredWithoutQuantityDiscountsNestedInput
+  product?: Prisma.ProductUpdateOneWithoutQuantityDiscountsNestedInput
 }
 
 export type QuantityDiscountUncheckedUpdateInput = {
@@ -323,7 +323,7 @@ export type QuantityDiscountUncheckedUpdateInput = {
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type QuantityDiscountCreateManyInput = {
@@ -332,7 +332,7 @@ export type QuantityDiscountCreateManyInput = {
   maxQty: number
   amount: number
   note?: string | null
-  productId: number
+  productId?: number | null
 }
 
 export type QuantityDiscountUpdateManyMutationInput = {
@@ -348,7 +348,7 @@ export type QuantityDiscountUncheckedUpdateManyInput = {
   maxQty?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  productId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type QuantityDiscountListRelationFilter = {
@@ -496,7 +496,7 @@ export type QuantityDiscountScalarWhereInput = {
   maxQty?: Prisma.IntFilter<"QuantityDiscount"> | number
   amount?: Prisma.FloatFilter<"QuantityDiscount"> | number
   note?: Prisma.StringNullableFilter<"QuantityDiscount"> | string | null
-  productId?: Prisma.IntFilter<"QuantityDiscount"> | number
+  productId?: Prisma.IntNullableFilter<"QuantityDiscount"> | number | null
 }
 
 export type QuantityDiscountCreateManyProductInput = {
@@ -539,7 +539,7 @@ export type QuantityDiscountSelect<ExtArgs extends runtime.Types.Extensions.Inte
   amount?: boolean
   note?: boolean
   productId?: boolean
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.QuantityDiscount$productArgs<ExtArgs>
 }, ExtArgs["result"]["quantityDiscount"]>
 
 export type QuantityDiscountSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -549,7 +549,7 @@ export type QuantityDiscountSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   amount?: boolean
   note?: boolean
   productId?: boolean
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.QuantityDiscount$productArgs<ExtArgs>
 }, ExtArgs["result"]["quantityDiscount"]>
 
 export type QuantityDiscountSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -559,7 +559,7 @@ export type QuantityDiscountSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   amount?: boolean
   note?: boolean
   productId?: boolean
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.QuantityDiscount$productArgs<ExtArgs>
 }, ExtArgs["result"]["quantityDiscount"]>
 
 export type QuantityDiscountSelectScalar = {
@@ -573,19 +573,19 @@ export type QuantityDiscountSelectScalar = {
 
 export type QuantityDiscountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "minQty" | "maxQty" | "amount" | "note" | "productId", ExtArgs["result"]["quantityDiscount"]>
 export type QuantityDiscountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.QuantityDiscount$productArgs<ExtArgs>
 }
 export type QuantityDiscountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.QuantityDiscount$productArgs<ExtArgs>
 }
 export type QuantityDiscountIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  product?: boolean | Prisma.QuantityDiscount$productArgs<ExtArgs>
 }
 
 export type $QuantityDiscountPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "QuantityDiscount"
   objects: {
-    product: Prisma.$ProductPayload<ExtArgs>
+    product: Prisma.$ProductPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -593,7 +593,7 @@ export type $QuantityDiscountPayload<ExtArgs extends runtime.Types.Extensions.In
     maxQty: number
     amount: number
     note: string | null
-    productId: number
+    productId: number | null
   }, ExtArgs["result"]["quantityDiscount"]>
   composites: {}
 }
@@ -988,7 +988,7 @@ readonly fields: QuantityDiscountFieldRefs;
  */
 export interface Prisma__QuantityDiscountClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  product<T extends Prisma.QuantityDiscount$productArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuantityDiscount$productArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1417,6 +1417,25 @@ export type QuantityDiscountDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many QuantityDiscounts to delete.
    */
   limit?: number
+}
+
+/**
+ * QuantityDiscount.product
+ */
+export type QuantityDiscount$productArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Product
+   */
+  select?: Prisma.ProductSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Product
+   */
+  omit?: Prisma.ProductOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductInclude<ExtArgs> | null
+  where?: Prisma.ProductWhereInput
 }
 
 /**
