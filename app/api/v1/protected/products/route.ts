@@ -147,11 +147,12 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
         { catalogId: { contains: search, mode: 'insensitive' } },
       ],
     }),
-    ...(category && category !== 'all' && { categoryId: parseInt(category) }),
+    ...(category && category !== 'all' && { categoryId: Number(category) }),
     ...(subCategory &&
-      subCategory !== 'all' && { subCategoryId: parseInt(subCategory) }),
+      subCategory !== 'all' && {
+        subCategoryId: Number(subCategory),
+      }),
     ...(isNew && isNew !== 'all' && { isNew: isNew === 'true' }),
-    // Stock filter - check if product has variants with quantity > 0 or quantity === 0
     ...(stock &&
       stock !== 'all' && {
         variants:
@@ -161,7 +162,31 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       }),
   };
 
-  const orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
+  let sortedProductIds: number[] | null = null;
+
+  if (priceOrder && priceOrder !== 'all') {
+    const grouped = await prisma.productVariant.groupBy({
+      by: ['productId'],
+      _min: { price: true },
+      _max: { price: true },
+      orderBy:
+        priceOrder === 'LOW_TO_HIGH'
+          ? { _min: { price: 'asc' } }
+          : { _max: { price: 'desc' } },
+    });
+
+    sortedProductIds = grouped
+      .map((g) => g.productId)
+      .filter((id): id is number => id !== null);
+  }
+
+  let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
+
+  if (sortedProductIds) {
+    orderBy = {
+      id: 'asc',
+    };
+  }
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({
@@ -169,7 +194,28 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       skip,
       take: limit,
       orderBy,
-      include: {
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        description: true,
+        shortDescription: true,
+        additionalDesc: true,
+        discountNote: true,
+        metaTitle: true,
+        metaDescription: true,
+        metaKeyword: true,
+        isNew: true,
+        productType: true,
+        twoSidePrice: true,
+        mainImageId: true,
+        alternativeImageId: true,
+        createdById: true,
+        catalogId: true,
+        categoryId: true,
+        subCategoryId: true,
+        createdAt: true,
+        updatedAt: true,
         category: true,
         subCategory: true,
         mainImage: true,
@@ -178,64 +224,55 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
           select: {
             price: true,
             quantity: true,
-            color: {
-              select: {
-                name: true,
-              },
-            },
-            size: {
-              select: {
-                name: true,
-              },
-            },
+            color: { select: { name: true } },
+            size: { select: { name: true } },
           },
         },
-        gallery: {
-          select: {
-            media: true,
-          },
-        },
+        gallery: { select: { media: true } },
       },
     }),
     prisma.product.count({ where }),
   ]);
 
-  // Add aggregated fields using database aggregation for each product
-  const productsWithAggregations = await Promise.all(
-    products.map(async (product) => {
-      const aggregation = await prisma.productVariant.aggregate({
-        where: { productId: product.id },
-        _min: { price: true },
-        _max: { price: true },
-        _sum: { quantity: true },
-      });
+  const productIds = products.map((p) => p.id);
 
-      const minPrice = aggregation._min.price ?? 0;
-      const maxPrice = aggregation._max.price ?? 0;
-      const quantity = aggregation._sum.quantity ?? 0;
-      const inStock = quantity > 0;
+  const aggregated = await prisma.productVariant.groupBy({
+    by: ['productId'],
+    where: { productId: { in: productIds } },
+    _min: { price: true },
+    _max: { price: true },
+    _sum: { quantity: true },
+  });
 
-      return {
-        ...product,
-        minPrice,
-        maxPrice,
-        quantity,
-        inStock,
-      };
-    })
+  const aggMap = new Map(
+    aggregated.map((a) => [
+      a.productId,
+      {
+        minPrice: a._min.price ?? 0,
+        maxPrice: a._max.price ?? 0,
+        quantity: a._sum.quantity ?? 0,
+        inStock: (a._sum.quantity ?? 0) > 0,
+      },
+    ])
   );
 
+  const finalProducts = products.map((p) => ({
+    ...p,
+    ...aggMap.get(p.id),
+  }));
+
+  // Apply price sorting if requested
   if (priceOrder && priceOrder !== 'all') {
     if (priceOrder === 'LOW_TO_HIGH') {
-      productsWithAggregations.sort((a, b) => a.minPrice - b.minPrice);
+      finalProducts.sort((a, b) => (a.minPrice ?? 0) - (b.minPrice ?? 0));
     } else if (priceOrder === 'HIGH_TO_LOW') {
-      productsWithAggregations.sort((a, b) => b.maxPrice - a.maxPrice);
+      finalProducts.sort((a, b) => (b.maxPrice ?? 0) - (a.maxPrice ?? 0));
     }
   }
 
   return NextResponse.json({
     message: 'Products fetched successfully',
-    data: productsWithAggregations,
+    data: finalProducts,
     meta: {
       page,
       limit,
