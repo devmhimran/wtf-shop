@@ -1,7 +1,15 @@
+import { PublicFooter, PublicNavbar } from '@/components/shared';
+
 export default function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <main className='font-oswald'>{children}</main>;
+  return (
+    <main className='font-oswald'>
+      <PublicNavbar />
+      <div className=' min-h-screen'>{children}</div>
+      <PublicFooter />
+    </main>
+  );
 }

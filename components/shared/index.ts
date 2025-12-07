@@ -9,6 +9,9 @@ import { DetailItems } from './detail-items';
 import { ReactAsyncSelect } from './react-async-select';
 import { SearchAndSelect } from './search-and-select';
 import { MultiSelect } from './multi-select';
+import { PublicNavbar } from './public-navbar';
+import { PublicFooter } from './public-footer';
+import { HeroHighlight } from './hero-highlight';
 
 export {
   AppSidebar,
@@ -22,4 +25,7 @@ export {
   ReactAsyncSelect,
   SearchAndSelect,
   MultiSelect,
+  PublicNavbar,
+  PublicFooter,
+  HeroHighlight,
 };
