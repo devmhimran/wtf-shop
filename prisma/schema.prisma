@@ -57,6 +57,9 @@ model Category {
   name            String
   slug            String   @unique
 
+  imageId         Int?
+  image           MediaLibrary? @relation("CategoryImage", fields: [imageId], references: [id], onDelete: SetNull)
+
   subcategories   SubCategory[]
   products        Product[]
 }
@@ -114,6 +117,7 @@ model MediaLibrary {
   mainImageProducts    Product[]       @relation("MainImage")
   alternativeImageProducts Product[]   @relation("AlternativeImage")
   galleryItems         ProductGallery[]
+  categories           Category[]      @relation("CategoryImage")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

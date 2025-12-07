@@ -40,6 +40,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       skip,
       take: limit,
       include: {
+        image: true,
         _count: {
           select: {
             subcategories: true,
@@ -77,7 +78,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   }
 
   const body = await req.json();
-  const { name, slug } = body;
+  const { name, slug, imageId } = body;
 
   if (!name || !slug) {
     return NextResponse.json(
@@ -90,6 +91,10 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
     data: {
       name,
       slug,
+      ...(imageId && { imageId }),
+    },
+    include: {
+      image: true,
     },
   });
 

@@ -18,7 +18,9 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { useCategories } from '@/hooks';
-import { CategoryType } from '@/types';
+import { CategoryType, MediaType } from '@/types';
+import { Modal } from '../shared';
+import { ProductFeaturedImage } from '../pages/products';
 
 const FormSchema = z.object({
   name: z
@@ -33,6 +35,15 @@ const FormSchema = z.object({
       message:
         'Slug must contain only lowercase letters, numbers, and hyphens. No spaces allowed.',
     }),
+
+  image: z
+    .object({
+      id: z.number(),
+      fileUrl: z.string(),
+      fileName: z.string(),
+    })
+    .nullable()
+    .optional(),
 });
 
 export function UpdateCategoryForm({
@@ -43,12 +54,17 @@ export function UpdateCategoryForm({
   data: CategoryType | null;
 }) {
   const [isPending, setIsPending] = useState(false);
+  const [openCategoryImage, setOpenCategoryImage] = useState(false);
+  const [categoryImage, setCategoryImage] = useState<MediaType | null>(
+    data?.image || null
+  );
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: data?.name || '',
       slug: data?.slug || '',
+      image: data?.image || null,
     },
   });
 
@@ -56,14 +72,19 @@ export function UpdateCategoryForm({
 
   function onSubmit(formData: z.infer<typeof FormSchema>) {
     if (!data) return;
+    const payload = {
+      name: formData.name,
+      slug: formData.slug,
+      imageId: categoryImage?.id || null,
+    };
     const response = updateCategoryAsync({
       slug: data.slug,
-      data: formData,
+      data: payload,
     });
 
     setIsPending(true);
     toast.promise(response, {
-      loading: 'Creating User...',
+      loading: 'Updating Category...',
       success: (response) => {
         form.reset();
         setIsPending(false);
@@ -121,15 +142,78 @@ export function UpdateCategoryForm({
           )}
         />
 
+        <FormField
+          control={form.control}
+          name='image'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category Image (Optional)</FormLabel>
+              <FormControl>
+                <div className='space-y-2'>
+                  {categoryImage ? (
+                    <div className='flex items-center gap-3 p-3 border rounded-md'>
+                      <img
+                        src={categoryImage.fileUrl}
+                        alt={categoryImage.fileName}
+                        className='w-16 h-16 object-cover rounded'
+                      />
+                      <div className='flex-1'>
+                        <p className='text-sm font-medium'>
+                          {categoryImage.fileName}
+                        </p>
+                      </div>
+                      <Button
+                        type='button'
+                        variant='destructive'
+                        size='sm'
+                        onClick={() => {
+                          setCategoryImage(null);
+                          field.onChange(null);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      type='button'
+                      variant='outline'
+                      onClick={() => setOpenCategoryImage(true)}
+                    >
+                      Select Image
+                    </Button>
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button
           type='submit'
-          disabled={isPending || !form.formState.isDirty}
+          disabled={isPending}
           className='flex justify-start'
         >
           {isPending && <Loader2Icon className='animate-spin' />}
           Save Changes
         </Button>
       </form>
+      <Modal
+        isOpen={openCategoryImage}
+        setIsOpen={setOpenCategoryImage}
+        title='Select Category Image'
+        description='Choose from media library or upload new'
+      >
+        <ProductFeaturedImage
+          image={categoryImage}
+          setImage={(img) => {
+            setCategoryImage(img);
+            form.setValue('image', img);
+          }}
+          setIsOpen={setOpenCategoryImage}
+        />
+      </Modal>
     </Form>
   );
 }

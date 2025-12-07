@@ -1,7 +1,11 @@
+import { MediaType } from './media.types';
+
 export type CategoryType = {
   id: number;
   name: string;
   slug: string;
+  imageId?: number | null;
+  image?: MediaType | null;
   _count?: {
     subcategories: number;
     products: number;
@@ -11,6 +15,7 @@ export type CategoryType = {
 export type CreateCategoryType = {
   name: string;
   slug: string;
+  imageId?: number | null;
 };
 
 export type CreateSubCategoryType = {

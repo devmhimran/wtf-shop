@@ -27,6 +27,7 @@ export const GET = catchAsyncNext(
     const category = await prisma.category.findUnique({
       where: { slug: slugValue },
       include: {
+        image: true,
         subcategories: true,
         _count: {
           select: {
@@ -74,13 +75,17 @@ export const PUT = catchAsyncNext(
     }
 
     const body = await req.json();
-    const { name, slug } = body;
+    const { name, slug, imageId } = body;
 
     const category = await prisma.category.update({
       where: { slug: slugValue },
       data: {
         ...(name && { name }),
         ...(slug && { slug }),
+        ...(imageId !== undefined && { imageId }),
+      },
+      include: {
+        image: true,
       },
     });
 

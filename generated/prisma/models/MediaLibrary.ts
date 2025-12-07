@@ -268,6 +268,7 @@ export type MediaLibraryWhereInput = {
   mainImageProducts?: Prisma.ProductListRelationFilter
   alternativeImageProducts?: Prisma.ProductListRelationFilter
   galleryItems?: Prisma.ProductGalleryListRelationFilter
+  categories?: Prisma.CategoryListRelationFilter
 }
 
 export type MediaLibraryOrderByWithRelationInput = {
@@ -285,6 +286,7 @@ export type MediaLibraryOrderByWithRelationInput = {
   mainImageProducts?: Prisma.ProductOrderByRelationAggregateInput
   alternativeImageProducts?: Prisma.ProductOrderByRelationAggregateInput
   galleryItems?: Prisma.ProductGalleryOrderByRelationAggregateInput
+  categories?: Prisma.CategoryOrderByRelationAggregateInput
 }
 
 export type MediaLibraryWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +307,7 @@ export type MediaLibraryWhereUniqueInput = Prisma.AtLeast<{
   mainImageProducts?: Prisma.ProductListRelationFilter
   alternativeImageProducts?: Prisma.ProductListRelationFilter
   galleryItems?: Prisma.ProductGalleryListRelationFilter
+  categories?: Prisma.CategoryListRelationFilter
 }, "id" | "fileName">
 
 export type MediaLibraryOrderByWithAggregationInput = {
@@ -354,6 +357,7 @@ export type MediaLibraryCreateInput = {
   mainImageProducts?: Prisma.ProductCreateNestedManyWithoutMainImageInput
   alternativeImageProducts?: Prisma.ProductCreateNestedManyWithoutAlternativeImageInput
   galleryItems?: Prisma.ProductGalleryCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryUncheckedCreateInput = {
@@ -370,6 +374,7 @@ export type MediaLibraryUncheckedCreateInput = {
   mainImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutMainImageInput
   alternativeImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutAlternativeImageInput
   galleryItems?: Prisma.ProductGalleryUncheckedCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryUpdateInput = {
@@ -385,6 +390,7 @@ export type MediaLibraryUpdateInput = {
   mainImageProducts?: Prisma.ProductUpdateManyWithoutMainImageNestedInput
   alternativeImageProducts?: Prisma.ProductUpdateManyWithoutAlternativeImageNestedInput
   galleryItems?: Prisma.ProductGalleryUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUncheckedUpdateInput = {
@@ -401,6 +407,7 @@ export type MediaLibraryUncheckedUpdateInput = {
   mainImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutMainImageNestedInput
   alternativeImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutAlternativeImageNestedInput
   galleryItems?: Prisma.ProductGalleryUncheckedUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryCreateManyInput = {
@@ -448,6 +455,11 @@ export type MediaLibraryListRelationFilter = {
 
 export type MediaLibraryOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type MediaLibraryNullableScalarRelationFilter = {
+  is?: Prisma.MediaLibraryWhereInput | null
+  isNot?: Prisma.MediaLibraryWhereInput | null
 }
 
 export type MediaLibraryCountOrderByAggregateInput = {
@@ -501,11 +513,6 @@ export type MediaLibrarySumOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
 }
 
-export type MediaLibraryNullableScalarRelationFilter = {
-  is?: Prisma.MediaLibraryWhereInput | null
-  isNot?: Prisma.MediaLibraryWhereInput | null
-}
-
 export type MediaLibraryCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.MediaLibraryCreateWithoutCreatedByInput, Prisma.MediaLibraryUncheckedCreateWithoutCreatedByInput> | Prisma.MediaLibraryCreateWithoutCreatedByInput[] | Prisma.MediaLibraryUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.MediaLibraryCreateOrConnectWithoutCreatedByInput | Prisma.MediaLibraryCreateOrConnectWithoutCreatedByInput[]
@@ -546,6 +553,22 @@ export type MediaLibraryUncheckedUpdateManyWithoutCreatedByNestedInput = {
   update?: Prisma.MediaLibraryUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.MediaLibraryUpdateWithWhereUniqueWithoutCreatedByInput[]
   updateMany?: Prisma.MediaLibraryUpdateManyWithWhereWithoutCreatedByInput | Prisma.MediaLibraryUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.MediaLibraryScalarWhereInput | Prisma.MediaLibraryScalarWhereInput[]
+}
+
+export type MediaLibraryCreateNestedOneWithoutCategoriesInput = {
+  create?: Prisma.XOR<Prisma.MediaLibraryCreateWithoutCategoriesInput, Prisma.MediaLibraryUncheckedCreateWithoutCategoriesInput>
+  connectOrCreate?: Prisma.MediaLibraryCreateOrConnectWithoutCategoriesInput
+  connect?: Prisma.MediaLibraryWhereUniqueInput
+}
+
+export type MediaLibraryUpdateOneWithoutCategoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaLibraryCreateWithoutCategoriesInput, Prisma.MediaLibraryUncheckedCreateWithoutCategoriesInput>
+  connectOrCreate?: Prisma.MediaLibraryCreateOrConnectWithoutCategoriesInput
+  upsert?: Prisma.MediaLibraryUpsertWithoutCategoriesInput
+  disconnect?: Prisma.MediaLibraryWhereInput | boolean
+  delete?: Prisma.MediaLibraryWhereInput | boolean
+  connect?: Prisma.MediaLibraryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaLibraryUpdateToOneWithWhereWithoutCategoriesInput, Prisma.MediaLibraryUpdateWithoutCategoriesInput>, Prisma.MediaLibraryUncheckedUpdateWithoutCategoriesInput>
 }
 
 export type MediaLibraryCreateNestedOneWithoutMainImageProductsInput = {
@@ -608,6 +631,7 @@ export type MediaLibraryCreateWithoutCreatedByInput = {
   mainImageProducts?: Prisma.ProductCreateNestedManyWithoutMainImageInput
   alternativeImageProducts?: Prisma.ProductCreateNestedManyWithoutAlternativeImageInput
   galleryItems?: Prisma.ProductGalleryCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryUncheckedCreateWithoutCreatedByInput = {
@@ -623,6 +647,7 @@ export type MediaLibraryUncheckedCreateWithoutCreatedByInput = {
   mainImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutMainImageInput
   alternativeImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutAlternativeImageInput
   galleryItems?: Prisma.ProductGalleryUncheckedCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryCreateOrConnectWithoutCreatedByInput = {
@@ -667,6 +692,84 @@ export type MediaLibraryScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
 }
 
+export type MediaLibraryCreateWithoutCategoriesInput = {
+  title?: string | null
+  alt?: string | null
+  fileUrl: string
+  fileName: string
+  fileType?: string | null
+  fileSize?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
+  mainImageProducts?: Prisma.ProductCreateNestedManyWithoutMainImageInput
+  alternativeImageProducts?: Prisma.ProductCreateNestedManyWithoutAlternativeImageInput
+  galleryItems?: Prisma.ProductGalleryCreateNestedManyWithoutMediaInput
+}
+
+export type MediaLibraryUncheckedCreateWithoutCategoriesInput = {
+  id?: number
+  title?: string | null
+  alt?: string | null
+  fileUrl: string
+  fileName: string
+  fileType?: string | null
+  fileSize?: number | null
+  createdById?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mainImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutMainImageInput
+  alternativeImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutAlternativeImageInput
+  galleryItems?: Prisma.ProductGalleryUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type MediaLibraryCreateOrConnectWithoutCategoriesInput = {
+  where: Prisma.MediaLibraryWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaLibraryCreateWithoutCategoriesInput, Prisma.MediaLibraryUncheckedCreateWithoutCategoriesInput>
+}
+
+export type MediaLibraryUpsertWithoutCategoriesInput = {
+  update: Prisma.XOR<Prisma.MediaLibraryUpdateWithoutCategoriesInput, Prisma.MediaLibraryUncheckedUpdateWithoutCategoriesInput>
+  create: Prisma.XOR<Prisma.MediaLibraryCreateWithoutCategoriesInput, Prisma.MediaLibraryUncheckedCreateWithoutCategoriesInput>
+  where?: Prisma.MediaLibraryWhereInput
+}
+
+export type MediaLibraryUpdateToOneWithWhereWithoutCategoriesInput = {
+  where?: Prisma.MediaLibraryWhereInput
+  data: Prisma.XOR<Prisma.MediaLibraryUpdateWithoutCategoriesInput, Prisma.MediaLibraryUncheckedUpdateWithoutCategoriesInput>
+}
+
+export type MediaLibraryUpdateWithoutCategoriesInput = {
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
+  mainImageProducts?: Prisma.ProductUpdateManyWithoutMainImageNestedInput
+  alternativeImageProducts?: Prisma.ProductUpdateManyWithoutAlternativeImageNestedInput
+  galleryItems?: Prisma.ProductGalleryUpdateManyWithoutMediaNestedInput
+}
+
+export type MediaLibraryUncheckedUpdateWithoutCategoriesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mainImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutMainImageNestedInput
+  alternativeImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutAlternativeImageNestedInput
+  galleryItems?: Prisma.ProductGalleryUncheckedUpdateManyWithoutMediaNestedInput
+}
+
 export type MediaLibraryCreateWithoutMainImageProductsInput = {
   title?: string | null
   alt?: string | null
@@ -679,6 +782,7 @@ export type MediaLibraryCreateWithoutMainImageProductsInput = {
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
   alternativeImageProducts?: Prisma.ProductCreateNestedManyWithoutAlternativeImageInput
   galleryItems?: Prisma.ProductGalleryCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryUncheckedCreateWithoutMainImageProductsInput = {
@@ -694,6 +798,7 @@ export type MediaLibraryUncheckedCreateWithoutMainImageProductsInput = {
   updatedAt?: Date | string
   alternativeImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutAlternativeImageInput
   galleryItems?: Prisma.ProductGalleryUncheckedCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryCreateOrConnectWithoutMainImageProductsInput = {
@@ -713,6 +818,7 @@ export type MediaLibraryCreateWithoutAlternativeImageProductsInput = {
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
   mainImageProducts?: Prisma.ProductCreateNestedManyWithoutMainImageInput
   galleryItems?: Prisma.ProductGalleryCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryUncheckedCreateWithoutAlternativeImageProductsInput = {
@@ -728,6 +834,7 @@ export type MediaLibraryUncheckedCreateWithoutAlternativeImageProductsInput = {
   updatedAt?: Date | string
   mainImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutMainImageInput
   galleryItems?: Prisma.ProductGalleryUncheckedCreateNestedManyWithoutMediaInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryCreateOrConnectWithoutAlternativeImageProductsInput = {
@@ -758,6 +865,7 @@ export type MediaLibraryUpdateWithoutMainImageProductsInput = {
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
   alternativeImageProducts?: Prisma.ProductUpdateManyWithoutAlternativeImageNestedInput
   galleryItems?: Prisma.ProductGalleryUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUncheckedUpdateWithoutMainImageProductsInput = {
@@ -773,6 +881,7 @@ export type MediaLibraryUncheckedUpdateWithoutMainImageProductsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   alternativeImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutAlternativeImageNestedInput
   galleryItems?: Prisma.ProductGalleryUncheckedUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUpsertWithoutAlternativeImageProductsInput = {
@@ -798,6 +907,7 @@ export type MediaLibraryUpdateWithoutAlternativeImageProductsInput = {
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
   mainImageProducts?: Prisma.ProductUpdateManyWithoutMainImageNestedInput
   galleryItems?: Prisma.ProductGalleryUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUncheckedUpdateWithoutAlternativeImageProductsInput = {
@@ -813,6 +923,7 @@ export type MediaLibraryUncheckedUpdateWithoutAlternativeImageProductsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mainImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutMainImageNestedInput
   galleryItems?: Prisma.ProductGalleryUncheckedUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryCreateWithoutGalleryItemsInput = {
@@ -827,6 +938,7 @@ export type MediaLibraryCreateWithoutGalleryItemsInput = {
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
   mainImageProducts?: Prisma.ProductCreateNestedManyWithoutMainImageInput
   alternativeImageProducts?: Prisma.ProductCreateNestedManyWithoutAlternativeImageInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryUncheckedCreateWithoutGalleryItemsInput = {
@@ -842,6 +954,7 @@ export type MediaLibraryUncheckedCreateWithoutGalleryItemsInput = {
   updatedAt?: Date | string
   mainImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutMainImageInput
   alternativeImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutAlternativeImageInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutImageInput
 }
 
 export type MediaLibraryCreateOrConnectWithoutGalleryItemsInput = {
@@ -872,6 +985,7 @@ export type MediaLibraryUpdateWithoutGalleryItemsInput = {
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
   mainImageProducts?: Prisma.ProductUpdateManyWithoutMainImageNestedInput
   alternativeImageProducts?: Prisma.ProductUpdateManyWithoutAlternativeImageNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUncheckedUpdateWithoutGalleryItemsInput = {
@@ -887,6 +1001,7 @@ export type MediaLibraryUncheckedUpdateWithoutGalleryItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mainImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutMainImageNestedInput
   alternativeImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutAlternativeImageNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryCreateManyCreatedByInput = {
@@ -913,6 +1028,7 @@ export type MediaLibraryUpdateWithoutCreatedByInput = {
   mainImageProducts?: Prisma.ProductUpdateManyWithoutMainImageNestedInput
   alternativeImageProducts?: Prisma.ProductUpdateManyWithoutAlternativeImageNestedInput
   galleryItems?: Prisma.ProductGalleryUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUncheckedUpdateWithoutCreatedByInput = {
@@ -928,6 +1044,7 @@ export type MediaLibraryUncheckedUpdateWithoutCreatedByInput = {
   mainImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutMainImageNestedInput
   alternativeImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutAlternativeImageNestedInput
   galleryItems?: Prisma.ProductGalleryUncheckedUpdateManyWithoutMediaNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutImageNestedInput
 }
 
 export type MediaLibraryUncheckedUpdateManyWithoutCreatedByInput = {
@@ -951,12 +1068,14 @@ export type MediaLibraryCountOutputType = {
   mainImageProducts: number
   alternativeImageProducts: number
   galleryItems: number
+  categories: number
 }
 
 export type MediaLibraryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mainImageProducts?: boolean | MediaLibraryCountOutputTypeCountMainImageProductsArgs
   alternativeImageProducts?: boolean | MediaLibraryCountOutputTypeCountAlternativeImageProductsArgs
   galleryItems?: boolean | MediaLibraryCountOutputTypeCountGalleryItemsArgs
+  categories?: boolean | MediaLibraryCountOutputTypeCountCategoriesArgs
 }
 
 /**
@@ -990,6 +1109,13 @@ export type MediaLibraryCountOutputTypeCountGalleryItemsArgs<ExtArgs extends run
   where?: Prisma.ProductGalleryWhereInput
 }
 
+/**
+ * MediaLibraryCountOutputType without action
+ */
+export type MediaLibraryCountOutputTypeCountCategoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CategoryWhereInput
+}
+
 
 export type MediaLibrarySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1006,6 +1132,7 @@ export type MediaLibrarySelect<ExtArgs extends runtime.Types.Extensions.Internal
   mainImageProducts?: boolean | Prisma.MediaLibrary$mainImageProductsArgs<ExtArgs>
   alternativeImageProducts?: boolean | Prisma.MediaLibrary$alternativeImageProductsArgs<ExtArgs>
   galleryItems?: boolean | Prisma.MediaLibrary$galleryItemsArgs<ExtArgs>
+  categories?: boolean | Prisma.MediaLibrary$categoriesArgs<ExtArgs>
   _count?: boolean | Prisma.MediaLibraryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaLibrary"]>
 
@@ -1056,6 +1183,7 @@ export type MediaLibraryInclude<ExtArgs extends runtime.Types.Extensions.Interna
   mainImageProducts?: boolean | Prisma.MediaLibrary$mainImageProductsArgs<ExtArgs>
   alternativeImageProducts?: boolean | Prisma.MediaLibrary$alternativeImageProductsArgs<ExtArgs>
   galleryItems?: boolean | Prisma.MediaLibrary$galleryItemsArgs<ExtArgs>
+  categories?: boolean | Prisma.MediaLibrary$categoriesArgs<ExtArgs>
   _count?: boolean | Prisma.MediaLibraryCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MediaLibraryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1072,6 +1200,7 @@ export type $MediaLibraryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     mainImageProducts: Prisma.$ProductPayload<ExtArgs>[]
     alternativeImageProducts: Prisma.$ProductPayload<ExtArgs>[]
     galleryItems: Prisma.$ProductGalleryPayload<ExtArgs>[]
+    categories: Prisma.$CategoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1482,6 +1611,7 @@ export interface Prisma__MediaLibraryClient<T, Null = never, ExtArgs extends run
   mainImageProducts<T extends Prisma.MediaLibrary$mainImageProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaLibrary$mainImageProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   alternativeImageProducts<T extends Prisma.MediaLibrary$alternativeImageProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaLibrary$alternativeImageProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   galleryItems<T extends Prisma.MediaLibrary$galleryItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaLibrary$galleryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductGalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  categories<T extends Prisma.MediaLibrary$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaLibrary$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2005,6 +2135,30 @@ export type MediaLibrary$galleryItemsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ProductGalleryScalarFieldEnum | Prisma.ProductGalleryScalarFieldEnum[]
+}
+
+/**
+ * MediaLibrary.categories
+ */
+export type MediaLibrary$categoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+  orderBy?: Prisma.CategoryOrderByWithRelationInput | Prisma.CategoryOrderByWithRelationInput[]
+  cursor?: Prisma.CategoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CategoryScalarFieldEnum | Prisma.CategoryScalarFieldEnum[]
 }
 
 /**

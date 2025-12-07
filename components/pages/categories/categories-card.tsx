@@ -81,9 +81,19 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
           <CardHeader className='px-0'>
             <div className='flex items-start justify-between'>
               <div className='flex items-center gap-3'>
-                <div className='p-2 bg-primary/10 rounded-lg'>
-                  <FolderOpen className='h-5 w-5 text-primary' />
-                </div>
+                {category.image ? (
+                  <div className='relative w-10 h-10 rounded-md overflow-hidden bg-muted'>
+                    <img
+                      src={category.image.fileUrl}
+                      alt={category.name}
+                      className='object-cover w-full h-full'
+                    />
+                  </div>
+                ) : (
+                  <div className='p-2 bg-primary/10 rounded-lg'>
+                    <FolderOpen className='h-5 w-5 text-primary' />
+                  </div>
+                )}
                 <div>
                   <CardTitle className='text-lg line-clamp-1'>
                     {category.name}

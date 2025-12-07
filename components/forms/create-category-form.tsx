@@ -18,6 +18,9 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { useCategories } from '@/hooks';
+import { Modal } from '../shared';
+import { ProductFeaturedImage } from '../pages/products';
+import { MediaType } from '@/types';
 
 const FormSchema = z.object({
   name: z
@@ -32,6 +35,15 @@ const FormSchema = z.object({
       message:
         'Slug must contain only lowercase letters, numbers, and hyphens. No spaces allowed.',
     }),
+
+  image: z
+    .object({
+      id: z.number(),
+      fileUrl: z.string(),
+      fileName: z.string(),
+    })
+    .nullable()
+    .optional(),
 });
 
 export function CreateCategoryForm({
@@ -40,19 +52,27 @@ export function CreateCategoryForm({
   setIsOpen: (open: boolean) => void;
 }) {
   const [isPending, setIsPending] = useState(false);
+  const [openCategoryImage, setOpenCategoryImage] = useState(false);
+  const [categoryImage, setCategoryImage] = useState<MediaType | null>(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',
       slug: '',
+      image: null,
     },
   });
 
   const { createCategoryAsync } = useCategories();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const response = createCategoryAsync(data);
+    const payload = {
+      name: data.name,
+      slug: data.slug,
+      imageId: categoryImage?.id || null,
+    };
+    const response = createCategoryAsync(payload);
 
     setIsPending(true);
     toast.promise(response, {
@@ -114,6 +134,54 @@ export function CreateCategoryForm({
           )}
         />
 
+        <FormField
+          control={form.control}
+          name='image'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category Image (Optional)</FormLabel>
+              <FormControl>
+                <div className='space-y-2'>
+                  {categoryImage ? (
+                    <div className='flex items-center gap-3 p-3 border rounded-md'>
+                      <img
+                        src={categoryImage.fileUrl}
+                        alt={categoryImage.fileName}
+                        className='w-16 h-16 object-cover rounded'
+                      />
+                      <div className='flex-1'>
+                        <p className='text-sm font-medium'>
+                          {categoryImage.fileName}
+                        </p>
+                      </div>
+                      <Button
+                        type='button'
+                        variant='destructive'
+                        size='sm'
+                        onClick={() => {
+                          setCategoryImage(null);
+                          field.onChange(null);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      type='button'
+                      variant='outline'
+                      onClick={() => setOpenCategoryImage(true)}
+                    >
+                      Select Image
+                    </Button>
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button
           type='submit'
           disabled={isPending}
@@ -123,6 +191,21 @@ export function CreateCategoryForm({
           Create
         </Button>
       </form>
+      <Modal
+        isOpen={openCategoryImage}
+        setIsOpen={setOpenCategoryImage}
+        title='Select Category Image'
+        description='Choose from media library or upload new'
+      >
+        <ProductFeaturedImage
+          image={categoryImage}
+          setImage={(img) => {
+            setCategoryImage(img);
+            form.setValue('image', img);
+          }}
+          setIsOpen={setOpenCategoryImage}
+        />
+      </Modal>
     </Form>
   );
 }
