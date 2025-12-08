@@ -1,23 +1,16 @@
 'use client';
 
-import { Menu, ShoppingCart, User, X } from 'lucide-react';
+import { Menu, ShoppingCart, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
 
 export function PublicNavbar() {
   const [bgColor, setBgColor] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [dropDownOpen, setDropDownOpen] = useState(false);
-  const [isShopOpen, setIsShopOpen] = useState(false);
+
   const [customIsOpen, setCustomIsOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+
   //   const cart = useSelector((state: any) => state.cart.products);
   const [cartLength, setCartLength] = useState(false);
   //   const { data: session }: { data: any } = useSession();
@@ -65,7 +58,7 @@ export function PublicNavbar() {
   //   }, [cart]);
 
   return (
-    <div className='sticky top-0 z-[50] -mb-20 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-900/10 dark:border-slate-50/[0.06] bg-white/50 supports-backdrop-blur:bg-white/65 dark:bg-transparent'>
+    <div className='sticky top-0 z-50 -mb-20 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-900/10 dark:border-slate-50/[0.06] bg-white/50 supports-backdrop-blur:bg-white/65 dark:bg-transparent'>
       <div className='max-w-8xl mx-auto'>
         <div className='relative border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 px-4 lg:mx-0'>
           <div className='flex items-center'>
