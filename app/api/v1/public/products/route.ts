@@ -58,8 +58,6 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
     _sum: { quantity: true },
   });
 
-  console.dir({ aggregated, productIds }, { depth: null });
-
   let sorted = aggregated;
   if (priceOrder && priceOrder !== 'all') {
     if (priceOrder === 'LOW_TO_HIGH') {
