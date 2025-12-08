@@ -65,6 +65,8 @@ const updateProductSchema = z
         message: 'Catalog ID must be at least 2 characters if provided.',
       }),
     discountNote: z.string().optional().nullable(),
+    flatDiscount: z.number().optional(),
+    twoSidePrice: z.number().optional(),
     metaTitle: z.string().optional().nullable(),
     metaDescription: z.string().optional().nullable(),
     metaKeyword: z.array(z.string()).optional(),
@@ -379,6 +381,12 @@ export const PUT = catchAsyncNext(
           }),
           ...(validatedData.productType && {
             productType: validatedData.productType,
+          }),
+          ...(validatedData.flatDiscount !== undefined && {
+            flatDiscount: validatedData.flatDiscount,
+          }),
+          ...(validatedData.twoSidePrice !== undefined && {
+            twoSidePrice: validatedData.twoSidePrice,
           }),
         },
       });

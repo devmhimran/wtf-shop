@@ -3,8 +3,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function ProductCardSkeleton() {
   return (
-    <div className='flex flex-col gap-4'>
-      {Array.from({ length: 3 }).map((_, index) => (
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+      {Array.from({ length: 4 }).map((_, index) => (
         <Card key={index} className='overflow-hidden border bg-card'>
           <CardContent className='p-0'>
             <div className='flex gap-5 p-5'>

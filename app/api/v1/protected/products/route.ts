@@ -59,6 +59,8 @@ const productSchema = z
       .max(100, { message: 'Catalog ID must not exceed 100 characters' })
       .optional(),
     discountNote: z.string().optional(),
+    flatDiscount: z.number().optional(),
+    twoSidePrice: z.number().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
     metaKeyword: z.array(z.string()).optional(),
@@ -135,6 +137,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const isNew = searchParams.get('is_new');
   const stock = searchParams.get('stock');
   const priceOrder = searchParams.get('price');
+  const productType = searchParams.get('product_type');
 
   const skip = (page - 1) * limit;
 
@@ -159,6 +162,10 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
           stock === 'IN_STOCK'
             ? { some: { quantity: { gt: 0 } } }
             : { every: { quantity: { lte: 0 } } },
+      }),
+    ...(productType &&
+      productType !== 'all' && {
+        productType: productType as 'STANDARD' | 'CUSTOM',
       }),
   };
 
@@ -202,6 +209,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
         shortDescription: true,
         additionalDesc: true,
         discountNote: true,
+        flatDiscount: true,
         metaTitle: true,
         metaDescription: true,
         metaKeyword: true,
@@ -315,6 +323,9 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       shortDescription: validatedData.shortDescription,
       additionalDesc: validatedData.additionalDesc,
       slug: validatedData.slug,
+      discountNote: validatedData.discountNote || '',
+      flatDiscount: validatedData.flatDiscount || 0,
+      twoSidePrice: validatedData.twoSidePrice || 0,
       metaTitle: validatedData.metaTitle || '',
       metaDescription: validatedData.metaDescription || '',
       metaKeyword: validatedData.metaKeyword?.join(', ') || '',

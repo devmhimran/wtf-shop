@@ -22,6 +22,7 @@ import { useGetAllProducts } from '@/hooks';
 import { ProductCards, ProductFilter } from '@/components/pages/products';
 import { ProductCardSkeleton } from '@/components/skeletons';
 import { Modal } from '@/components/shared';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
@@ -36,6 +37,7 @@ export default function ProductsPage() {
     price: searchParams.get('price') || '',
     category: searchParams.get('category') || '',
     subCategory: searchParams.get('subCategory') || '',
+    product_type: searchParams.get('product_type') || '',
   });
 
   const [searchQuery, setSearchQuery] = useState(
@@ -114,6 +116,23 @@ export default function ProductsPage() {
           </div>
         </CardContent>
       </Card>
+
+      <Tabs
+        value={params.product_type === '' ? 'ALL' : params.product_type}
+        onValueChange={(value) => {
+          setParams((prev) => ({
+            ...prev,
+            product_type: value === 'ALL' ? '' : value,
+            page: '1',
+          }));
+        }}
+      >
+        <TabsList className='w-full md:w-[450px]'>
+          <TabsTrigger value='ALL'>All</TabsTrigger>
+          <TabsTrigger value='STANDARD'>Standard</TabsTrigger>
+          <TabsTrigger value='CUSTOM'>Custom</TabsTrigger>
+        </TabsList>
+      </Tabs>
 
       <Card>
         <CardHeader>

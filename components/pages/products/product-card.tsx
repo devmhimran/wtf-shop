@@ -23,10 +23,10 @@ import { productTypeTypes } from '@/lib/utils';
 
 type ProductCardProps = {
   data: ProductType;
-  onDelete?: (id: number) => void;
+  index: number;
 };
 
-export function ProductCard({ data }: ProductCardProps) {
+export function ProductCard({ data, index }: ProductCardProps) {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 
@@ -98,6 +98,9 @@ export function ProductCard({ data }: ProductCardProps) {
             {/* Title and Status */}
             <div className='flex items-start justify-between gap-3'>
               <div className='flex-1 min-w-0'>
+                <div className='text-sm text-muted-foreground'>
+                  #{index + 1}
+                </div>
                 <h3 className='font-bold text-base line-clamp-1 group-hover:text-primary transition-colors mb-1'>
                   {data.title}
                 </h3>
@@ -150,6 +153,16 @@ export function ProductCard({ data }: ProductCardProps) {
                   {data.variants?.length || 0}
                 </span>
               </div>
+            </div>
+            <div className='text-sm flex gap-2'>
+              <span>Flat Discount:</span>
+              {data.flatDiscount ? (
+                <Badge variant='outline'>{`AU$${data.flatDiscount.toFixed(
+                  2
+                )}`}</Badge>
+              ) : (
+                'N/A'
+              )}
             </div>
 
             {/* Price and Quantity */}

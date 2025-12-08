@@ -26,6 +26,8 @@ export const GET = catchAsyncNext(
         slug: true,
         description: true,
         shortDescription: true,
+        flatDiscount: true,
+        twoSidePrice: true,
         additionalDesc: true,
         catalogId: true,
         categoryId: true,

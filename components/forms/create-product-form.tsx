@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -84,6 +84,8 @@ const formSchema = z
       })
       .optional(),
     discountNote: z.string().optional(),
+    flatDiscount: z.coerce.number<number>().optional(),
+    twoSidePrice: z.coerce.number<number>().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
     metaKeyword: z.array(z.string()).optional(),
@@ -185,7 +187,7 @@ export function CreateProductForm() {
   >([]);
   const [variantMode, setVariantMode] = useState<'bulk' | 'individual'>('bulk');
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
@@ -194,6 +196,9 @@ export function CreateProductForm() {
       additionalDesc: '',
       slug: '',
       discountNote: '',
+      catalogId: '',
+      flatDiscount: 0,
+      twoSidePrice: 0,
       metaTitle: '',
       metaDescription: '',
       productType: 'STANDARD',
@@ -584,6 +589,28 @@ export function CreateProductForm() {
                 </FormItem>
               )}
             />
+            {form.watch('productType') === 'CUSTOM' && (
+              <FormField
+                control={form.control}
+                name='twoSidePrice'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>Two Side Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        min={0}
+                        defaultValue={field.value}
+                        placeholder='Flat Discount'
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </CardContent>
         </Card>
 
@@ -1044,30 +1071,54 @@ export function CreateProductForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='isNew'
-                render={({ field }) => (
-                  <FormItem className='inline-block'>
-                    <div className=' flex gap-6 items-center justify-between rounded-lg border p-4'>
-                      <div className='space-y-0.5'>
-                        <FormLabel className='text-base'>New Product</FormLabel>
-                        <div className='text-sm text-muted-foreground'>
-                          Mark this product as new
+              <div className='flex gap-4'>
+                <FormField
+                  control={form.control}
+                  name='isNew'
+                  render={({ field }) => (
+                    <FormItem className='inline-block shrink-0'>
+                      <div className=' flex gap-6 items-center justify-between rounded-lg border p-4'>
+                        <div className='space-y-0.5'>
+                          <FormLabel className='text-base'>
+                            New Product
+                          </FormLabel>
+                          <div className='text-sm text-muted-foreground'>
+                            Mark this product as new
+                          </div>
                         </div>
+                        <FormControl>
+                          <input
+                            type='checkbox'
+                            checked={field.value || false}
+                            onChange={field.onChange}
+                            className='h-4 w-4 cursor-pointer'
+                          />
+                        </FormControl>
                       </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='flatDiscount'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Flat Discount</FormLabel>
                       <FormControl>
-                        <input
-                          type='checkbox'
-                          checked={field.value || false}
-                          onChange={field.onChange}
-                          className='h-4 w-4 cursor-pointer'
+                        <Input
+                          type='number'
+                          min={0}
+                          defaultValue={field.value}
+                          placeholder='Flat Discount'
+                          {...field}
                         />
                       </FormControl>
-                    </div>
-                  </FormItem>
-                )}
-              />
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -1301,7 +1352,6 @@ export function CreateProductForm() {
           </CardContent>
         </Card>
       </form>
-
       <Modal
         isOpen={openFeaturedImage}
         setIsOpen={setOpenFeaturedImage}

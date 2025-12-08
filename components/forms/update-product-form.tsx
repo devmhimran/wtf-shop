@@ -89,6 +89,8 @@ const formSchema = z
         message: 'Catalog ID must be at least 2 characters if provided.',
       }),
     discountNote: z.string().optional(),
+    flatDiscount: z.coerce.number<number>().optional(),
+    twoSidePrice: z.coerce.number<number>().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
     metaKeyword: z.array(z.string()).optional(),
@@ -210,6 +212,9 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
       productType: data?.productType || 'STANDARD',
       metaKeyword: [],
       isNew: data?.isNew || false,
+      flatDiscount: data?.flatDiscount || 0,
+      catalogId: data?.catalogId || '',
+      twoSidePrice: data?.twoSidePrice || 0,
       category: null,
       subCategory: null,
       variants: [],
@@ -689,6 +694,28 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                 </FormItem>
               )}
             />
+            {form.watch('productType') === 'CUSTOM' && (
+              <FormField
+                control={form.control}
+                name='twoSidePrice'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>Two Side Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        min={0}
+                        defaultValue={field.value}
+                        placeholder='Flat Discount'
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </CardContent>
         </Card>
 
@@ -909,7 +936,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                       />
                     </div>
 
-                    <div className='flex items-end'>
+                    <div className='flex items-center'>
                       <Button
                         type='button'
                         variant='destructive'
@@ -1149,30 +1176,54 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='isNew'
-                render={({ field }) => (
-                  <FormItem className='inline-block'>
-                    <div className=' flex gap-6 items-center justify-between rounded-lg border p-4'>
-                      <div className='space-y-0.5'>
-                        <FormLabel className='text-base'>New Product</FormLabel>
-                        <div className='text-sm text-muted-foreground'>
-                          Mark this product as new
+              <div className='flex gap-4'>
+                <FormField
+                  control={form.control}
+                  name='isNew'
+                  render={({ field }) => (
+                    <FormItem className='inline-block shrink-0'>
+                      <div className=' flex gap-6 items-center justify-between rounded-lg border p-4'>
+                        <div className='space-y-0.5'>
+                          <FormLabel className='text-base'>
+                            New Product
+                          </FormLabel>
+                          <div className='text-sm text-muted-foreground'>
+                            Mark this product as new
+                          </div>
                         </div>
+                        <FormControl>
+                          <input
+                            type='checkbox'
+                            checked={field.value || false}
+                            onChange={field.onChange}
+                            className='h-4 w-4 cursor-pointer'
+                          />
+                        </FormControl>
                       </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='flatDiscount'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Flat Discount</FormLabel>
                       <FormControl>
-                        <input
-                          type='checkbox'
-                          checked={field.value || false}
-                          onChange={field.onChange}
-                          className='h-4 w-4 cursor-pointer'
+                        <Input
+                          type='number'
+                          min={0}
+                          defaultValue={field.value}
+                          placeholder='Flat Discount'
+                          {...field}
                         />
                       </FormControl>
-                    </div>
-                  </FormItem>
-                )}
-              />
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </CardContent>
           </Card>
 

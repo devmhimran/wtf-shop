@@ -108,6 +108,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       alternativeImage: product?.alternativeImage,
       category: product?.category,
       subCategory: product?.subCategory,
+      flatDiscount: product?.flatDiscount ?? 0,
       minPrice: aggr._min.price ?? 0,
       maxPrice: aggr._max.price ?? 0,
       inStock: (aggr._sum.quantity ?? 0) > 0,

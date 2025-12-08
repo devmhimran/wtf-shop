@@ -172,6 +172,7 @@ export const ProductScalarFieldEnum = {
   isActive: 'isActive',
   isDelete: 'isDelete',
   slug: 'slug',
+  flatDiscount: 'flatDiscount',
   mainImageId: 'mainImageId',
   alternativeImageId: 'alternativeImageId',
   categoryId: 'categoryId',

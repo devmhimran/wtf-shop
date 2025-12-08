@@ -146,6 +146,7 @@ model Product {
   isActive          Boolean  @default(true)
   isDelete          Boolean  @default(false)
   slug              String   @unique
+  flatDiscount      Float?   @default(0.0)
 
   // Updated: images now reference MediaLibrary instead of raw string
   mainImageId        Int?

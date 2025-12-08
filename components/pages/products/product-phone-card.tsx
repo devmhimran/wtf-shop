@@ -23,10 +23,10 @@ import { productTypeTypes } from '@/lib/utils';
 
 type ProductPhoneCardProps = {
   data: ProductType;
-  onDelete?: (id: number) => void;
+  index: number;
 };
 
-export function ProductPhoneCard({ data }: ProductPhoneCardProps) {
+export function ProductPhoneCard({ data, index }: ProductPhoneCardProps) {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -91,15 +91,20 @@ export function ProductPhoneCard({ data }: ProductPhoneCardProps) {
         </div>
 
         {/* Content Section */}
-        <div className='space-y-3'>
+        <div className='space-y-4'>
           {/* Title and Actions */}
           <div className='flex items-start justify-between gap-2'>
             <div className='flex-1 min-w-0'>
-              <h3 className='font-bold text-base line-clamp-2 group-hover:text-primary transition-colors mb-1'>
-                {data.title}
-              </h3>
+              <div className='flex gap-2'>
+                <div className='text-sm text-muted-foreground'>
+                  #{index + 1}
+                </div>
+                <h3 className='font-bold text-base line-clamp-2 group-hover:text-primary transition-colors mb-1'>
+                  {data.title}
+                </h3>
+              </div>
               <p className='text-xs text-muted-foreground line-clamp-1'>
-                {data.catalogId || 'No Catalog ID'}
+                CatalogId: {data.catalogId || 'No Catalog ID'}
               </p>
             </div>
             <DropdownMenu>
@@ -145,7 +150,18 @@ export function ProductPhoneCard({ data }: ProductPhoneCardProps) {
               {productTypeTypes[data.productType]}
             </Badge>
           </div>
-
+          <div className='text-sm flex gap-2 items-center'>
+            <span className='text-muted-foreground text-xs'>
+              Flat Discount:
+            </span>
+            {data.flatDiscount ? (
+              <Badge variant='outline'>{`AU$${data.flatDiscount.toFixed(
+                2
+              )}`}</Badge>
+            ) : (
+              'N/A'
+            )}
+          </div>
           {/* Price */}
           <div className='flex items-center justify-between'>
             <div>

@@ -51,6 +51,7 @@ export type ProductType = {
   twoSidePrice: number | null;
   isNew: boolean;
   isActive: boolean;
+  flatDiscount: number;
   slug: string;
   mainImage: MediaType;
   productType: ProductTypeTypes;
@@ -81,6 +82,7 @@ export type CreateProductType = {
   metaDescription?: string;
   metaKeyword?: string[];
   twoSidePrice?: number | null;
+  flatDiscount?: number;
   isNew?: boolean;
   slug: string;
   featuredImage: ImageType | null;

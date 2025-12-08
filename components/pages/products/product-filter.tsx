@@ -20,6 +20,7 @@ type ParamsType = {
   price: string;
   category: string;
   subCategory: string;
+  product_type: string;
 };
 
 type ProductFilterProps = {
@@ -40,6 +41,7 @@ export function ProductFilter({ setParams, params }: ProductFilterProps) {
       price: '',
       category: '',
       subCategory: '',
+      product_type: '',
     });
   };
 

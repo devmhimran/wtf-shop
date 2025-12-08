@@ -51,11 +51,6 @@ const superAdminMenuItems = [
     icon: ListOrdered,
   },
   {
-    title: 'Custom Products',
-    url: '/dashboard/custom-products',
-    icon: List,
-  },
-  {
     title: 'Categories',
     url: '/dashboard/categories',
     icon: List,
