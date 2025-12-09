@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu, ShoppingCart, X } from 'lucide-react';
+import { Menu, ShoppingCart, X, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
@@ -20,7 +20,8 @@ export function PublicNavbar() {
 
   const [customIsOpen, setCustomIsOpen] = useState(false);
 
-  const { fetchPublicCategoriesData } = useGetPublicCategories();
+  const { fetchPublicCategoriesData, fetchPublicCategories } =
+    useGetPublicCategories();
 
   //   const cart = useSelector((state: any) => state.cart.products);
   const [cartLength, setCartLength] = useState(false);
@@ -336,91 +337,62 @@ export function PublicNavbar() {
                     setCustomIsOpen(false);
                   }}
                 >
-                  <Link className='text-xl' href='/collections/new-drops'>
+                  <Link className='text-xl' href='/new-drops'>
                     New Drops
                   </Link>
                 </li>
                 {/* Shop Dropdown */}
-                <li
-                  className='text-center text-xl cursor-pointer'
-                  onClick={() => setDropDownOpen(!dropDownOpen)}
-                >
-                  <div className='flex gap-3 justify-center items-center'>
+                <li className='text-center text-xl cursor-pointer'>
+                  <div
+                    className='flex gap-3 justify-center items-center'
+                    onClick={() => setDropDownOpen(!dropDownOpen)}
+                  >
                     Shop
-                    {/* {dropDownOpen ? (
-                        <MdKeyboardArrowUp className='h-5 w-5' />
-                      ) : (
-                        <MdKeyboardArrowDown className='h-5 w-5' />
-                      )} */}
-                  </div>
-                  {/* {isLoadingCategoryWithoutCustom ? (
-                      'Loading'
+                    {dropDownOpen ? (
+                      <ChevronUp className='h-5 w-5' />
                     ) : (
-                      <ul
-                        className={cn(
-                          'transition-all duration-300 ease-in-out space-y-4 mt-4',
-                          dropDownOpen ? 'block' : 'hidden'
-                        )}
-                      >
-                        {categoriesWithoutCustom.data.map((item: any) => (
-                          <li
-                            key={item.id}
-                            onClick={() => {
-                              setIsOpen(false);
-                              setDropDownOpen(false);
-                            }}
+                      <ChevronDown className='h-5 w-5' />
+                    )}
+                  </div>
+                  {fetchPublicCategories.isLoading ? (
+                    <div className='text-sm mt-2'>Loading...</div>
+                  ) : (
+                    <ul
+                      className={`transition-all duration-300 ease-in-out space-y-4 mt-4 ${
+                        dropDownOpen ? 'block' : 'hidden'
+                      }`}
+                    >
+                      {fetchPublicCategoriesData?.data?.map((category) => (
+                        <li
+                          key={category.id}
+                          onClick={() => {
+                            setIsOpen(false);
+                            setDropDownOpen(false);
+                          }}
+                        >
+                          <Link
+                            className='text-center text-lg'
+                            href={`/new-drops?page=1&category=${category.slug}`}
                           >
-                            <Link
-                              className='text-center text-lg'
-                              href={`/collections/new-drops?page=1&filter=${item.attributes.category_slug}`}
-                            >
-                              {item.attributes.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )} */}
+                            {category.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
-                {/* Custom Products Dropdown */}
+                {/* Custom Products */}
                 <li
-                  className='text-center text-xl cursor-pointer'
-                  onClick={() => setCustomIsOpen(!customIsOpen)}
+                  className='text-center'
+                  onClick={() => {
+                    setIsOpen(false);
+                    setDropDownOpen(false);
+                    setCustomIsOpen(false);
+                  }}
                 >
-                  <div className='flex gap-3 justify-center items-center'>
-                    {/* Custom Products
-                      {customIsOpen ? (
-                        <MdKeyboardArrowUp className='h-5 w-5' />
-                      ) : (
-                        <MdKeyboardArrowDown className='h-5 w-5' />
-                      )} */}
-                  </div>
-                  {/* {isLoadingCategoryWithCustom ? (
-                      'Loading'
-                    ) : (
-                      <ul
-                        className={cn(
-                          'transition-all duration-300 ease-in-out space-y-4 mt-4',
-                          customIsOpen ? 'block' : 'hidden'
-                        )}
-                      >
-                        {categoriesWithCustom.data.map((item: any) => (
-                          <li
-                            key={item.id}
-                            onClick={() => {
-                              setIsOpen(false);
-                              setCustomIsOpen(false);
-                            }}
-                          >
-                            <Link
-                              className='text-center text-lg'
-                              href={`/collections/new-drops?page=1&filter=${item.attributes.category_slug}`}
-                            >
-                              {item.attributes.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )} */}
+                  <Link className='text-xl' href='/custom-products'>
+                    Custom Products
+                  </Link>
                 </li>
               </ul>
             </div>
