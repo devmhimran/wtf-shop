@@ -111,3 +111,22 @@ export function useGetAllPublicProducts(options?: string) {
     fetchAllPublicProductsMutationData: fetchAllPublicProductsMutation.data,
   };
 }
+
+export function useGetSinglePublicProductBySlug(slug: string) {
+  const fetchSinglePublicProductMutation = useQuery<
+    DetailsResponse<ProductType>
+  >({
+    queryKey: ['public-products', slug],
+    queryFn: async () => {
+      const res = await productApi.public.products
+        .getSingleProduct(slug)
+        .then((response) => response.data);
+      return res;
+    },
+    placeholderData: keepPreviousData,
+  });
+  return {
+    fetchSinglePublicProductMutation,
+    fetchSinglePublicProductMutationData: fetchSinglePublicProductMutation.data,
+  };
+}

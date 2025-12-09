@@ -173,6 +173,10 @@ export const productApi = {
         const url = `/public/products` + (params ? params : '');
         return axiosInstanceWithAuth.get<Response<ProductType[], Meta>>(url);
       },
+      getSingleProduct: (slug: string) => {
+        const url = `/public/products/${slug}`;
+        return axiosInstanceWithAuth.get<DetailsResponse<ProductType>>(url);
+      },
     },
   },
 };

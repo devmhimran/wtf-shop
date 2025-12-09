@@ -3,23 +3,23 @@ import { prisma } from '@/prisma/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 type RouteParams = {
-  id: string;
+  slug: string;
 };
 
 export const GET = catchAsyncNext(
   async (req: NextRequest, context?: { params: Promise<RouteParams> }) => {
     if (!context?.params) throw new Error('Missing params');
-    const { id: productId } = await context.params;
-    const id = Number(productId);
-    if (isNaN(id)) {
+    const { slug } = await context.params;
+
+    if (typeof slug !== 'string') {
       return NextResponse.json(
-        { error: 'Invalid product ID' },
+        { error: 'Invalid product Slug' },
         { status: 400 }
       );
     }
 
     const product = await prisma.product.findUnique({
-      where: { id, isDelete: false },
+      where: { slug, isDelete: false },
       select: {
         id: true,
         title: true,
@@ -74,7 +74,7 @@ export const GET = catchAsyncNext(
 
     // Calculate aggregated fields
     const aggregation = await prisma.productVariant.aggregate({
-      where: { productId: id },
+      where: { productId: product.id },
       _min: { price: true },
       _max: { price: true },
       _sum: { quantity: true },

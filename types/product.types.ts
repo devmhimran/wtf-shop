@@ -124,3 +124,44 @@ export type PublicProductType = {
   maxPrice: number;
   inStock: boolean;
 };
+
+export type PublicProductDetailsType = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  additionalDesc: string;
+  shortDescription: string;
+  flatDiscount: number;
+  twoSidePrice: number | null;
+  catalogId: string | null;
+  categoryId: number;
+  subCategoryId: number | null;
+  createdAt: string;
+  updatedAt: string;
+  category: Omit<CategoryType, '_count' | 'image'>;
+  subCategory: Omit<SubCategoryType, '_count'> | null;
+  mainImage: MediaType;
+  alternativeImage?: MediaType | null;
+  variants: {
+    id: number;
+    price: number;
+    quantity: number;
+    color: {
+      id: number;
+      name: string;
+    };
+    size: {
+      id: number;
+      name: string;
+    };
+  }[];
+  quantityDiscounts: QuantityDiscountType[];
+  gallery: {
+    media: MediaType;
+  }[];
+  minPrice: number;
+  maxPrice: number;
+  quantity: number;
+  inStock: boolean;
+};

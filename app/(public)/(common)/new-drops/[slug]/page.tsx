@@ -1,9 +1,5 @@
-'use client';
-
-import { useParams } from 'next/navigation';
+import { ProductDetailsContent } from '@/components/public-pages/product-details';
 
 export default function NewDropsPageDetails() {
-  const { slug } = useParams();
-  console.log({ slug });
-  return <div>page</div>;
+  return <ProductDetailsContent />;
 }
