@@ -11,7 +11,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
   const search = searchParams.get('search') || '';
   const category = searchParams.get('category');
   const subCategory = searchParams.get('subCategory');
-  const priceOrder = searchParams.get('price');
+  const priceOrder = searchParams.get('sortBy');
 
   const skip = (page - 1) * limit;
 
@@ -25,7 +25,10 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
         { catalogId: { contains: search, mode: 'insensitive' } },
       ],
     }),
-    ...(category && category !== 'all' && { categoryId: parseInt(category) }),
+    ...(category &&
+      category !== 'all' && {
+        category: { slug: { equals: category, mode: 'insensitive' } },
+      }),
     ...(subCategory &&
       subCategory !== 'all' && { subCategoryId: parseInt(subCategory) }),
   };
@@ -66,7 +69,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       );
     } else if (priceOrder === 'HIGH_TO_LOW') {
       sorted = aggregated.sort(
-        (a, b) => (b._max.price ?? 0) - (a._max.price ?? 0)
+        (a, b) => (b._min.price ?? 0) - (a._min.price ?? 0)
       );
     }
   }

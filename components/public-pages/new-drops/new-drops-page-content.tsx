@@ -3,6 +3,7 @@
 import { HeroSection } from '@/components/shared';
 import { ProductsCard } from '@/components/shared/product';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -10,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useGetAllPublicProducts } from '@/hooks';
-import { generateQueryString } from '@/lib/utils';
+import { useGetAllPublicProducts, useGetPublicCategories } from '@/hooks';
+import { generateQueryString, productSortBy } from '@/lib/utils';
 import { Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,17 +22,27 @@ export function NewDropsPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const { fetchPublicCategoriesData, fetchPublicCategories } =
+    useGetPublicCategories('?page=1&limit=30');
+
   const [params, setParams] = useState({
     search: searchParams.get('search') || '',
     page: searchParams.get('page') || '1',
     category: searchParams.get('category') || '',
     subCategory: searchParams.get('subCategory') || '',
     sortBy: searchParams.get('sortBy') || '',
-    priceRange: searchParams.get('priceRange') || '',
   });
 
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get('search') || ''
+  );
+
+  const [sortByFilter, setSortByFilter] = useState(
+    searchParams.get('sortBy') || 'all'
+  );
+
+  const [categoryFilter, setCategoryFilter] = useState(
+    searchParams.get('category') || 'all'
   );
 
   const queryString = generateQueryString(params);
@@ -67,30 +78,60 @@ export function NewDropsPageContent() {
               className='pl-8 rounded-none'
             />
           </div>
-          <Select>
-            <SelectTrigger className='w-full md:w-[180px] rounded-none'>
-              <SelectValue placeholder='Filter by status' />
-            </SelectTrigger>
-            <SelectContent className=' rounded-none'>
-              <SelectItem value='all'>All Status</SelectItem>
-              <SelectItem value='ACTIVE'>Active</SelectItem>
-              <SelectItem value='INACTIVE'>Inactive</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select>
-            <SelectTrigger className='w-full md:w-[180px] rounded-none'>
+
+          {fetchPublicCategories.isPending ? (
+            <Skeleton className='w-full md:w-[180px] h-10 rounded-none' />
+          ) : (
+            <Select
+              value={categoryFilter}
+              onValueChange={(value) => {
+                setParams((prev) => ({
+                  ...prev,
+                  category: value === 'all' ? '' : value,
+                }));
+                setCategoryFilter(value);
+              }}
+            >
+              <SelectTrigger className='w-full md:w-[180px] rounded-none'>
+                <SelectValue placeholder='Filter by category' />
+              </SelectTrigger>
+              <SelectContent className='rounded-none'>
+                <SelectItem value='all'>All Categories</SelectItem>
+                {fetchPublicCategoriesData?.data?.map((category) => (
+                  <SelectItem key={category.id} value={category.slug}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
+          <Select
+            value={sortByFilter}
+            onValueChange={(value) => {
+              setParams((prev) => ({
+                ...prev,
+                sortBy: value === 'all' ? '' : value,
+              }));
+              setSortByFilter(value);
+            }}
+          >
+            <SelectTrigger
+              className='w-full md:w-[180px] rounded-none'
+              defaultValue={params.sortBy}
+            >
               <SelectValue placeholder='Filter by role' />
             </SelectTrigger>
             <SelectContent className=' rounded-none'>
-              <SelectItem value='all'>All Roles</SelectItem>
-              <SelectItem value='ADMIN'>Admin</SelectItem>
-              <SelectItem value='SUPER_ADMIN'>Super Admin</SelectItem>
+              <SelectItem value='all'>Sort By</SelectItem>
+              <SelectItem value='LOW_TO_HIGH'>Price (Low to High)</SelectItem>
+              <SelectItem value='HIGH_TO_LOW'>Price (High to Low)</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-wrap gap-2 mt-2'>
           {params.search && (
-            <div className='pl-3 pr-2 py-1 border flex gap-2 items-center rounded-full text-sm'>
+            <div className='pl-3 pr-2 py-1 border flex gap-2 items-center text-xs'>
               {params.search}
               <span
                 onClick={() => {
@@ -99,6 +140,41 @@ export function NewDropsPageContent() {
                     search: '',
                   }));
                   setSearchQuery('');
+                }}
+              >
+                <X className='w-4 h-4 cursor-pointer' />
+              </span>
+            </div>
+          )}
+          {params.category && (
+            <div className='pl-3 pr-2 py-1 border flex gap-2 items-center text-xs'>
+              Category:{' '}
+              {fetchPublicCategoriesData?.data?.find(
+                (cat) => cat.slug === params.category
+              )?.name || params.category}
+              <span
+                onClick={() => {
+                  setParams((prev) => ({
+                    ...prev,
+                    category: '',
+                  }));
+                  setCategoryFilter('all');
+                }}
+              >
+                <X className='w-4 h-4 cursor-pointer' />
+              </span>
+            </div>
+          )}
+          {params.sortBy && (
+            <div className='pl-3 pr-2 py-1 border flex gap-2 items-center text-xs'>
+              {productSortBy[params.sortBy as keyof typeof productSortBy]}
+              <span
+                onClick={() => {
+                  setParams((prev) => ({
+                    ...prev,
+                    sortBy: '',
+                  }));
+                  setSortByFilter('all');
                 }}
               >
                 <X className='w-4 h-4 cursor-pointer' />

@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { useProducts } from '@/hooks';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { productTypeTypes } from '@/lib/utils';
+import { productTypeConvert } from '@/lib/utils';
 
 type ProductCardProps = {
   data: ProductType;
@@ -142,7 +142,7 @@ export function ProductCard({ data, index }: ProductCardProps) {
               <div className='flex items-center gap-2'>
                 <span className='text-muted-foreground font-medium'>Type:</span>
                 <Badge variant='outline' className='text-xs px-2 py-0.5 h-6'>
-                  {productTypeTypes[data.productType]}
+                  {productTypeConvert[data.productType]}
                 </Badge>
               </div>
               <div className='flex items-center gap-2'>

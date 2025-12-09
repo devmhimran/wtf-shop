@@ -9,9 +9,14 @@ import { ZodError } from 'zod';
 
 export const USER_COUNT_PER_PAGE = 10;
 
-export const productTypeTypes = {
+export const productTypeConvert = {
   STANDARD: 'Standard',
   CUSTOM: 'Custom',
+};
+
+export const productSortBy = {
+  LOW_TO_HIGH: 'Low to High',
+  HIGH_TO_LOW: 'High to Low',
 };
 
 export function cn(...inputs: ClassValue[]) {
