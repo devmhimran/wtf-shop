@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
@@ -70,6 +70,7 @@ export function useGetAllCategories(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllCategoriesMutation,
@@ -86,6 +87,7 @@ export function useGetPublicCategories(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchPublicCategories,

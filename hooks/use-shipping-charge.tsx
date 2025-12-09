@@ -6,7 +6,7 @@ import {
   Response,
   ShippingChargeType,
 } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -72,6 +72,7 @@ export function useGetAllShippingCharge(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllShippingChargeMutation,

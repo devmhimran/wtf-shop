@@ -3,6 +3,15 @@
 import { Menu, ShoppingCart, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '../ui/navigation-menu';
+import { useGetPublicCategories } from '@/hooks';
 
 export function PublicNavbar() {
   const [bgColor, setBgColor] = useState('');
@@ -10,6 +19,8 @@ export function PublicNavbar() {
   const [dropDownOpen, setDropDownOpen] = useState(false);
 
   const [customIsOpen, setCustomIsOpen] = useState(false);
+
+  const { fetchPublicCategoriesData } = useGetPublicCategories();
 
   //   const cart = useSelector((state: any) => state.cart.products);
   const [cartLength, setCartLength] = useState(false);
@@ -74,7 +85,7 @@ export function PublicNavbar() {
             </div>
             {/* desktop menu */}
             <div className='hidden lg:flex items-center ml-auto'>
-              <ul className='flex text-lg'>
+              <ul className='flex items-center text-lg'>
                 {/* <li className='py-5 px-8'>
                     <Link
                       href={`/collections/new-drops?page=1&filter=${customCategory?.attributes.category_slug}`}
@@ -86,6 +97,39 @@ export function PublicNavbar() {
                 <li className='py-5 px-8'>
                   <Link href='/new-drops'>New Drops</Link>
                 </li>
+                <li className='py-5 px-8'>
+                  {/* <Link href='/custom-products'>Shop</Link> */}
+                  <NavigationMenu>
+                    <NavigationMenuList>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger
+                          className='cursor-pointer text-lg p-0 font-normal bg-transparent hover:bg-transparent focus:bg-transparent 
+                        data-[state=open]:hover:bg-transparent
+                        data-[state=open]:focus:bg-transparent data-[state=open]:bg-transparent'
+                        >
+                          Shop
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          {fetchPublicCategoriesData?.data?.map((category) => (
+                            <Link
+                              href={`/new-drops?page=1&category=${category.slug}`}
+                              key={category.id}
+                            >
+                              <NavigationMenuLink className='w-[300px]'>
+                                {category.name}
+                              </NavigationMenuLink>
+                            </Link>
+                          ))}
+                          {/* <NavigationMenuLink>Link</NavigationMenuLink> */}
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    </NavigationMenuList>
+                  </NavigationMenu>
+                </li>
+                <li className='py-5 px-8'>
+                  <Link href='/custom-products'>Custom Products</Link>
+                </li>
+
                 {/* {categoriesWithoutCustom?.data &&
                     categoriesWithoutCustom.data.length > 0 && (
                       <li className='py-5 px-8 cursor-pointer relative group'>

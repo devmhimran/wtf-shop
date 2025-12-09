@@ -1,7 +1,7 @@
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
 import { ColorType, CreateColorsType, Meta, Response } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -61,6 +61,7 @@ export function useGetAllColors(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllColorsMutation,

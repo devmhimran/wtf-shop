@@ -7,7 +7,7 @@ import {
   ProductType,
   Response,
 } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -68,6 +68,7 @@ export function useGetAllProducts(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllProductsMutation,
@@ -84,6 +85,7 @@ export function useGetSingleProduct(id: number) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchSingleProductMutation,
@@ -102,6 +104,7 @@ export function useGetAllPublicProducts(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllPublicProductsMutation,

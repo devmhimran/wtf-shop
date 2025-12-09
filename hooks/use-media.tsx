@@ -1,7 +1,7 @@
 import { mediaApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
 import { CreateMediaType, MediaType, Meta, Response } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -42,6 +42,7 @@ export const useGetAllMedia = (options?: string) => {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllMediaMutation,

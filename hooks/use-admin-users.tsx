@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 import { adminUserApi } from '@/lib/api-helper';
 import {
@@ -61,6 +61,7 @@ export function useAdminUsers(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAdminUsersMutation,

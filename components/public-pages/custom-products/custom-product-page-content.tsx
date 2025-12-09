@@ -3,7 +3,6 @@
 import { HeroSection } from '@/components/shared';
 import { ProductsCard } from '@/components/shared/product';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -11,14 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGetAllPublicProducts, useGetPublicCategories } from '@/hooks';
 import { generateQueryString, productSortBy } from '@/lib/utils';
 import { Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { startTransition, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-export function NewDropsPageContent() {
+export function CustomProductPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -45,6 +45,11 @@ export function NewDropsPageContent() {
     searchParams.get('category') || 'all'
   );
 
+  const queryString = generateQueryString(params);
+  const { fetchAllPublicProductsMutation } = useGetAllPublicProducts(
+    queryString + '&productType=CUSTOM'
+  );
+
   const debounced = useDebouncedCallback((value) => {
     setParams((prevParams) => ({
       ...prevParams,
@@ -53,44 +58,13 @@ export function NewDropsPageContent() {
     }));
   }, 500);
 
-  const queryString = generateQueryString(params);
-  const { fetchAllPublicProductsMutation } =
-    useGetAllPublicProducts(queryString);
-
   useEffect(() => {
     router.replace(queryString, { scroll: false });
   }, [queryString, router]);
 
-  useEffect(() => {
-    const currentPage = searchParams.get('page') || '1';
-    const currentSort = searchParams.get('sortBy') || '';
-    const currentCategory = searchParams.get('category') || '';
-    const currentSubCategory = searchParams.get('subCategory') || '';
-    const currentSearch = searchParams.get('search') || '';
-
-    const hasChanged =
-      currentPage !== params.page ||
-      currentSort !== params.sortBy ||
-      currentCategory !== params.category ||
-      currentSubCategory !== params.subCategory ||
-      currentSearch !== params.search;
-
-    if (hasChanged) {
-      startTransition(() => {
-        setParams({
-          search: currentSearch,
-          page: currentPage,
-          sortBy: currentSort,
-          category: currentCategory,
-          subCategory: currentSubCategory,
-        });
-      });
-    }
-  }, [searchParams]);
-
   return (
     <div className='container mx-auto px-2 md:px-0'>
-      <HeroSection title='Shop' subtitle='New Drops' />
+      <HeroSection title='Shop' subtitle='Custom Products' />
       <div className='mt-10'>
         <div className='flex flex-col gap-4 md:flex-row md:items-center'>
           <div className='relative flex-1'>

@@ -1,7 +1,7 @@
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
 import { CreateSizesType, Meta, Response, SizeType } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -61,6 +61,7 @@ export function useGetAllSizes(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllSizesMutation,

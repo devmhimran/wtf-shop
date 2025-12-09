@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { authApi } from '@/lib/api-helper';
 import { UserMeResponse } from '@/types';
@@ -12,6 +12,7 @@ export function useUser() {
       const res = await authApi.me().then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchMeMutation,

@@ -1,7 +1,7 @@
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
 import { CreatePromoCodeType, Meta, PromoCodeType, Response } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
 
@@ -62,6 +62,7 @@ export function useGetAllPromoCodes(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllPromoCodesMutation,

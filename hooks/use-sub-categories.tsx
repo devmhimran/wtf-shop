@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
@@ -75,6 +75,7 @@ export function useGetAllSubCategories(options?: string) {
         .then((response) => response.data);
       return res;
     },
+    placeholderData: keepPreviousData,
   });
   return {
     fetchAllSubCategoriesMutation,

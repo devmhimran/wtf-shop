@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { PublicProductType } from '@/types';
 import Link from 'next/link';
 
@@ -12,6 +13,12 @@ export function ProductCard({
     <Link href={`${root ? root : '/products'}/${item.slug}`}>
       <div className='w-full flex flex-col gap-2.5 group'>
         <div className='relative w-full h-[280px] md:h-[550px]  cursor-pointer'>
+          {!item.inStock && (
+            <div className='absolute top-4 left-4 z-10'>
+              <Badge variant='destructive'>{<span>Out of Stock</span>}</Badge>
+            </div>
+          )}
+
           <img
             src={item.mainImage.fileUrl || '/assets/img/placeholder-image.png'}
             decoding='async'
