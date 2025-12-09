@@ -1,3 +1,4 @@
 import { HeroSlider } from './hero-slider';
+import { AllCategories } from './all-categories';
 
-export { HeroSlider };
+export { HeroSlider, AllCategories };

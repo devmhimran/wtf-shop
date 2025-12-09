@@ -12,6 +12,7 @@ import { MultiSelect } from './multi-select';
 import { PublicNavbar } from './public-navbar';
 import { PublicFooter } from './public-footer';
 import { HeroHighlight } from './hero-highlight';
+import { HeroSection } from './hero-section';
 
 export {
   AppSidebar,
@@ -28,4 +29,5 @@ export {
   PublicNavbar,
   PublicFooter,
   HeroHighlight,
+  HeroSection,
 };

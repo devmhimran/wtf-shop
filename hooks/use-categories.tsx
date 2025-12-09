@@ -4,7 +4,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
-import { CategoryType, CreateCategoryType, Meta, Response } from '@/types';
+import {
+  CategoryType,
+  CreateCategoryType,
+  Meta,
+  PublicCategoryType,
+  Response,
+} from '@/types';
 
 const queryClient = getQueryClient();
 
@@ -68,5 +74,21 @@ export function useGetAllCategories(options?: string) {
   return {
     fetchAllCategoriesMutation,
     fetchAllCategoriesMutationData: fetchAllCategoriesMutation.data,
+  };
+}
+
+export function useGetPublicCategories(options?: string) {
+  const fetchPublicCategories = useQuery<Response<PublicCategoryType[], Meta>>({
+    queryKey: ['public-categories', options],
+    queryFn: async () => {
+      const res = await productApi.public.categories
+        .getCategories(options)
+        .then((response) => response.data);
+      return res;
+    },
+  });
+  return {
+    fetchPublicCategories,
+    fetchPublicCategoriesData: fetchPublicCategories.data,
   };
 }

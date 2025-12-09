@@ -84,7 +84,7 @@ export function PublicNavbar() {
                   </li> */}
 
                 <li className='py-5 px-8'>
-                  <Link href='/collections/new-drops'>New Drops</Link>
+                  <Link href='/new-drops'>New Drops</Link>
                 </li>
                 {/* {categoriesWithoutCustom?.data &&
                     categoriesWithoutCustom.data.length > 0 && (

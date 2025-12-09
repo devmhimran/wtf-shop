@@ -9,6 +9,7 @@ import { MediaViewSkeleton } from './media-view-skeleton';
 import { MediaCardSkeleton } from './media-card-skeleton';
 import { FeaturedProductImageChooseSkeleton } from './featured-product-image-choose-skeleton';
 import { ProductCardSkeleton } from './product-card-skeleton';
+import { PublicProductSkeleton } from './public-product-skeleton';
 
 export {
   UserNavSkeleton,
@@ -22,4 +23,5 @@ export {
   MediaCardSkeleton,
   FeaturedProductImageChooseSkeleton,
   ProductCardSkeleton,
+  PublicProductSkeleton,
 };

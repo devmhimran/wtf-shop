@@ -90,3 +90,21 @@ export function useGetSingleProduct(id: number) {
     fetchSingleProductMutationData: fetchSingleProductMutation.data,
   };
 }
+
+export function useGetAllPublicProducts(options?: string) {
+  const fetchAllPublicProductsMutation = useQuery<
+    Response<ProductType[], Meta>
+  >({
+    queryKey: ['public-products', options],
+    queryFn: async () => {
+      const res = await productApi.public.products
+        .getProducts(options || '')
+        .then((response) => response.data);
+      return res;
+    },
+  });
+  return {
+    fetchAllPublicProductsMutation,
+    fetchAllPublicProductsMutationData: fetchAllPublicProductsMutation.data,
+  };
+}

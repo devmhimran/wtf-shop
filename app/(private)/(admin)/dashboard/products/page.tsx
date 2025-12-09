@@ -22,7 +22,7 @@ import { useGetAllProducts } from '@/hooks';
 import { ProductCards, ProductFilter } from '@/components/pages/products';
 import { ProductCardSkeleton } from '@/components/skeletons';
 import { Modal } from '@/components/shared';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();

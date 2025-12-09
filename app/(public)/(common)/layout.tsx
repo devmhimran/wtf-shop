@@ -3,5 +3,5 @@ export default function CommonLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <div className='mt-20'>{children}</div>;
 }

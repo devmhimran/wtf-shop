@@ -34,3 +34,10 @@ export type SubCategoryType = {
     products: number;
   };
 };
+
+export type PublicCategoryType = {
+  id: number;
+  name: string;
+  slug: string;
+  image: MediaType | null;
+};

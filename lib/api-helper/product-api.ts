@@ -12,6 +12,7 @@ import {
   Meta,
   ProductType,
   PromoCodeType,
+  PublicCategoryType,
   Response,
   ShippingChargeType,
   SizeType,
@@ -156,6 +157,22 @@ export const productApi = {
     getSingleProduct: (id: number) => {
       const url = `/protected/products/${id}`;
       return axiosInstanceWithAuth.get<DetailsResponse<ProductType>>(url);
+    },
+  },
+  public: {
+    categories: {
+      getCategories: (params?: string) => {
+        const url = '/public/categories' + (params ? params : '');
+        return axiosInstanceWithAuth.get<Response<PublicCategoryType[], Meta>>(
+          url
+        );
+      },
+    },
+    products: {
+      getProducts: (params?: string) => {
+        const url = `/public/products` + (params ? params : '');
+        return axiosInstanceWithAuth.get<Response<ProductType[], Meta>>(url);
+      },
     },
   },
 };

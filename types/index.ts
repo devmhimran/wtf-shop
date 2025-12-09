@@ -15,6 +15,7 @@ import {
   CreateCategoryType,
   CreateSubCategoryType,
   SubCategoryType,
+  PublicCategoryType,
 } from './categories.types';
 import { ColorType, CreateColorsType } from './colors.types';
 import { SizeType, CreateSizesType } from './size.types';
@@ -27,6 +28,7 @@ import {
   ProductType,
   CreateProductType,
   ProductTypeTypes,
+  PublicProductType,
 } from './product.types';
 
 export type {
@@ -59,4 +61,6 @@ export type {
   CreateProductType,
   DetailsResponse,
   ProductTypeTypes,
+  PublicCategoryType,
+  PublicProductType,
 };

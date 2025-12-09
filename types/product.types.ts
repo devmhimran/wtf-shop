@@ -108,3 +108,19 @@ export type CreateProductType = {
     note?: string | null;
   }[];
 };
+
+export type PublicProductType = {
+  id: number;
+  title: string;
+  slug: string;
+  mainImage: MediaType;
+  alternativeImage?: MediaType | null;
+  category: {
+    name: string;
+    slug: string;
+  };
+  flatDiscount: number;
+  minPrice: number;
+  maxPrice: number;
+  inStock: boolean;
+};
