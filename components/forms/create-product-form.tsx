@@ -431,13 +431,12 @@ export function CreateProductForm() {
                 )}
               />
             </div>
-
             <FormField
               control={form.control}
-              name='description'
+              name='shortDescription'
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
+                <FormItem className='w-full'>
+                  <FormLabel>Short Description</FormLabel>
                   <FormControl>
                     <TextEditor value={field.value} onChange={field.onChange} />
                   </FormControl>
@@ -1007,10 +1006,10 @@ export function CreateProductForm() {
           <CardContent className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             <FormField
               control={form.control}
-              name='shortDescription'
+              name='description'
               render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>Short Description</FormLabel>
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <TextEditor value={field.value} onChange={field.onChange} />
                   </FormControl>
