@@ -13,6 +13,7 @@ import { PublicNavbar } from './public-navbar';
 import { PublicFooter } from './public-footer';
 import { HeroHighlight } from './hero-highlight';
 import { HeroSection } from './hero-section';
+import { LightBox } from './light-box';
 
 export {
   AppSidebar,
@@ -30,4 +31,5 @@ export {
   PublicFooter,
   HeroHighlight,
   HeroSection,
+  LightBox,
 };

@@ -17,6 +17,7 @@ import { Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { startTransition, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { PublicProductSkeleton } from '@/components/skeletons';
 
 export function NewDropsPageContent() {
   const searchParams = useSearchParams();
@@ -210,7 +211,11 @@ export function NewDropsPageContent() {
           )}
         </div>
       </div>
-      <ProductsCard data={fetchAllPublicProductsMutation?.data?.data || []} />
+      {fetchAllPublicProductsMutation.isLoading ? (
+        <PublicProductSkeleton />
+      ) : (
+        <ProductsCard data={fetchAllPublicProductsMutation?.data?.data || []} />
+      )}
     </div>
   );
 }

@@ -5,8 +5,11 @@ import {
   DetailsResponse,
   Meta,
   ProductType,
+  PublicProductDetailsType,
+  PublicProductType,
   Response,
 } from '@/types';
+
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
@@ -95,7 +98,7 @@ export function useGetSingleProduct(id: number) {
 
 export function useGetAllPublicProducts(options?: string) {
   const fetchAllPublicProductsMutation = useQuery<
-    Response<ProductType[], Meta>
+    Response<PublicProductType[], Meta>
   >({
     queryKey: ['public-products', options],
     queryFn: async () => {
@@ -114,7 +117,7 @@ export function useGetAllPublicProducts(options?: string) {
 
 export function useGetSinglePublicProductBySlug(slug: string) {
   const fetchSinglePublicProductMutation = useQuery<
-    DetailsResponse<ProductType>
+    DetailsResponse<PublicProductDetailsType>
   >({
     queryKey: ['public-products', slug],
     queryFn: async () => {
@@ -128,5 +131,26 @@ export function useGetSinglePublicProductBySlug(slug: string) {
   return {
     fetchSinglePublicProductMutation,
     fetchSinglePublicProductMutationData: fetchSinglePublicProductMutation.data,
+  };
+}
+
+export function useGetAllRelatedPublicProducts(options?: string) {
+  const fetchAllRelatedPublicProductsMutation = useQuery<
+    Response<PublicProductType[], Meta>
+  >({
+    queryKey: ['related-public-products', options],
+    queryFn: async () => {
+      const res = await productApi.public.products
+
+        .getAllRelatedProducts(options || '')
+        .then((response) => response.data);
+      return res;
+    },
+    placeholderData: keepPreviousData,
+  });
+  return {
+    fetchAllRelatedPublicProductsMutation,
+    fetchAllRelatedPublicProductsMutationData:
+      fetchAllRelatedPublicProductsMutation.data,
   };
 }

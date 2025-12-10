@@ -16,7 +16,7 @@ export default async function NewDropsPage({
   };
 }) {
   const params = await searchParams;
-  const page = params.page ? (params.page, 10) : 1;
+  const page = params.page ? params.page : 1;
   const search = params.search || '';
 
   const queryParams = {

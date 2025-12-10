@@ -8,7 +8,7 @@ export function PublicProductSkeleton({ numberOfCards = 3 }) {
               key={index}
               className='animate-pulse bg-gray-300 h-60 md:h-[540px] w-full'
             ></div>
-            <div className='bg-gray-300 rounded-lg h-4 w-8/12 mt-6 md:mt-[70px] mb-4'></div>
+            <div className='bg-gray-300 rounded-lg h-4 w-8/12 mt-6 md:mt-10 mb-4'></div>
             <div className=' bg-gray-300 rounded-lg h-4 w-3/12'></div>
           </div>
         ))}

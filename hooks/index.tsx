@@ -18,6 +18,7 @@ import {
   useGetSingleProduct,
   useGetAllPublicProducts,
   useGetSinglePublicProductBySlug,
+  useGetAllRelatedPublicProducts,
 } from './use-products';
 
 export {
@@ -40,4 +41,5 @@ export {
   useGetPublicCategories,
   useGetAllPublicProducts,
   useGetSinglePublicProductBySlug,
+  useGetAllRelatedPublicProducts,
 };

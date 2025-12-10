@@ -29,6 +29,8 @@ import {
   CreateProductType,
   ProductTypeTypes,
   PublicProductType,
+  PublicProductDetailsType,
+  QuantityDiscountType,
 } from './product.types';
 
 export type {
@@ -63,4 +65,6 @@ export type {
   ProductTypeTypes,
   PublicCategoryType,
   PublicProductType,
+  PublicProductDetailsType,
+  QuantityDiscountType,
 };

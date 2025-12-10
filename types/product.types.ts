@@ -143,6 +143,7 @@ export type PublicProductDetailsType = {
   subCategory: Omit<SubCategoryType, '_count'> | null;
   mainImage: MediaType;
   alternativeImage?: MediaType | null;
+  productType: ProductTypeTypes;
   variants: {
     id: number;
     price: number;
