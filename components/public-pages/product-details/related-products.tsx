@@ -6,13 +6,10 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/ui/carousel';
 import { useGetAllRelatedPublicProducts } from '@/hooks';
 import Autoplay from 'embla-carousel-autoplay';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 type RelatedProductsProps = {
   orientation?: 'horizontal' | 'vertical';
@@ -26,17 +23,6 @@ export function RelatedProducts({
     fetchAllRelatedPublicProductsMutationData,
     fetchAllRelatedPublicProductsMutation,
   } = useGetAllRelatedPublicProducts(`?slug=${slug}` as string);
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <div className='w-full mt-14'>
@@ -72,7 +58,7 @@ export function RelatedProducts({
                       : 'basis-full'
                   }
                 >
-                  <ProductCard key={item.id} item={item} root='/new-drops' />
+                  <ProductCard item={item} root='/new-drops' />
                 </CarouselItem>
               ))}
             </CarouselContent>

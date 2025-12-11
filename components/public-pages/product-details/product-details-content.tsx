@@ -189,7 +189,47 @@ export function ProductDetailsContent() {
     );
   };
 
-  // Add standard product to cart
+  const getTotalPrice = () => {
+    if (!product) return '0.00';
+
+    let total = 0;
+    let totalQuantity = 0;
+
+    Object.entries(sizeQuantities).forEach(([size, qty]) => {
+      if (qty > 0) {
+        totalQuantity += qty;
+
+        const matchingVariant = product.variants.find(
+          (v) => v.color.name === selectedColor && v.size.name === size
+        );
+
+        let itemPrice = matchingVariant
+          ? matchingVariant.price
+          : product.minPrice || 0;
+
+        if (selectedPrintSide === 'two' && product.twoSidePrice) {
+          itemPrice += product.twoSidePrice;
+        }
+
+        total += itemPrice * qty;
+      }
+    });
+
+    if (totalQuantity > 0) {
+      const applicableDiscount = getApplicableDiscount(totalQuantity);
+      if (applicableDiscount) {
+        total = total - applicableDiscount.amount;
+      }
+    }
+
+    if (product.flatDiscount && product.flatDiscount > 0) {
+      const flatDiscountAmount = (total * product.flatDiscount) / 100;
+      total = total - flatDiscountAmount;
+    }
+
+    return total.toFixed(2);
+  };
+
   const addStandardToCart = async () => {
     if (!product) return;
 
@@ -209,7 +249,6 @@ export function ProductDetailsContent() {
     const applicableDiscount = getApplicableDiscount(totalQuantity);
 
     const payload = {
-      id: `${product.id}-${selectedColor}-${selectedSize}-${Date.now()}`,
       productId: product.id,
       catalogId: product.catalogId,
       quantity: quantity,
@@ -220,8 +259,6 @@ export function ProductDetailsContent() {
       price: basePrice,
       color: selectedColor,
       size: selectedSize,
-      customizations: [],
-      customizationKey: '',
       quantityDiscounts: product.quantityDiscounts,
       applicableDiscount: applicableDiscount || null,
       productType: 'STANDARD' as const,
@@ -282,9 +319,8 @@ export function ProductDetailsContent() {
       }
     }
 
-    // Calculate discount and customization key
+    // Calculate discount
     const applicableDiscount = getApplicableDiscount(totalQuantity);
-    const customizationKey = JSON.stringify(customizations);
 
     for (const [size, qty] of sizesToAdd) {
       const matchingVariant = product.variants.find(
@@ -311,10 +347,6 @@ export function ProductDetailsContent() {
       }));
 
       const payload = {
-        id: `${product.id}-${selectedColor}-${size}-${customizationKey.slice(
-          0,
-          10
-        )}-${Date.now()}`,
         productId: product.id,
         catalogId: product.catalogId,
         quantity: qty,
@@ -327,7 +359,6 @@ export function ProductDetailsContent() {
         size: size,
         printSide: selectedPrintSide,
         customizations: serializableCustomizations,
-        customizationKey,
         quantityDiscounts: product.quantityDiscounts,
         applicableDiscount: applicableDiscount || null,
         productType: 'CUSTOM' as const,
@@ -413,7 +444,253 @@ export function ProductDetailsContent() {
             Tax included. Shipping calculated at checkout.
           </p>
           <div>
-            <p className='text-4xl'></p>
+            <p className='text-4xl'>
+              AU$
+              {product.productType === 'STANDARD'
+                ? (() => {
+                    if (!selectedColor || !selectedSize || quantity === 0) {
+                      // Show price range if no selection
+                      return product.minPrice === product.maxPrice
+                        ? product.minPrice.toFixed(2)
+                        : `${product.minPrice.toFixed(
+                            2
+                          )} - ${product.maxPrice.toFixed(2)}`;
+                    }
+
+                    // Calculate total price with discounts
+                    const basePrice = getCurrentPrice();
+                    const totalQuantity = quantity;
+                    let total = basePrice * totalQuantity;
+
+                    const applicableDiscount =
+                      getApplicableDiscount(totalQuantity);
+                    if (applicableDiscount) {
+                      total = total - applicableDiscount.amount;
+                    }
+
+                    if (product.flatDiscount && product.flatDiscount > 0) {
+                      const flatDiscountAmount =
+                        (total * product.flatDiscount) / 100;
+                      total = total - flatDiscountAmount;
+                    }
+
+                    return total.toFixed(2);
+                  })()
+                : (() => {
+                    const totalQty = Object.values(sizeQuantities).reduce(
+                      (sum, qty) => sum + qty,
+                      0
+                    );
+
+                    if (totalQty === 0) {
+                      // Show lowest price initially
+                      let lowestPrice = product.minPrice || 0;
+
+                      // Add print side price to lowest price
+                      if (selectedPrintSide === 'two' && product.twoSidePrice) {
+                        lowestPrice += product.twoSidePrice;
+                      }
+
+                      return lowestPrice.toFixed(2);
+                    }
+
+                    return getTotalPrice();
+                  })()}
+            </p>
+
+            {/* STANDARD Product Price Breakdown */}
+            {product.productType === 'STANDARD' &&
+              selectedColor &&
+              selectedSize &&
+              quantity > 0 &&
+              (() => {
+                const basePrice = getCurrentPrice();
+                const totalQuantity = quantity;
+                const baseTotal = basePrice * totalQuantity;
+                const applicableDiscount = getApplicableDiscount(totalQuantity);
+
+                let finalTotal = baseTotal;
+                let flatDiscountAmount = 0;
+
+                if (applicableDiscount) {
+                  finalTotal = finalTotal - applicableDiscount.amount;
+                }
+
+                if (product.flatDiscount && product.flatDiscount > 0) {
+                  flatDiscountAmount =
+                    (finalTotal * product.flatDiscount) / 100;
+                  finalTotal = finalTotal - flatDiscountAmount;
+                }
+
+                const hasAnyDiscount =
+                  applicableDiscount ||
+                  (product.flatDiscount && product.flatDiscount > 0);
+
+                // Only show breakdown if there are discounts or multiple quantities
+                if (!hasAnyDiscount && totalQuantity === 1) return null;
+
+                return (
+                  <div className='mt-2 space-y-1 text-sm'>
+                    {totalQuantity > 1 && (
+                      <div className='flex items-center justify-between text-gray-600'>
+                        <span>Total Quantity:</span>
+                        <span className='font-medium'>
+                          {totalQuantity} items
+                        </span>
+                      </div>
+                    )}
+
+                    <div className='flex items-center justify-between text-gray-600'>
+                      <span>Base Price:</span>
+                      <span>AU${baseTotal.toFixed(2)}</span>
+                    </div>
+
+                    {applicableDiscount && (
+                      <div className='flex items-center justify-between text-green-600 font-medium'>
+                        <span>Quantity Discount:</span>
+                        <span>-AU${applicableDiscount.amount.toFixed(2)}</span>
+                      </div>
+                    )}
+
+                    {product.flatDiscount && product.flatDiscount > 0 && (
+                      <div className='flex items-center justify-between text-green-600 font-medium'>
+                        <span>Flat Discount ({product.flatDiscount}%):</span>
+                        <span>-AU${flatDiscountAmount.toFixed(2)}</span>
+                      </div>
+                    )}
+
+                    {hasAnyDiscount && (
+                      <div className='border-t pt-1'>
+                        <div className='flex items-center justify-between text-lg font-semibold text-gray-900'>
+                          <span>Final Price:</span>
+                          <span>AU${finalTotal.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+            {/* CUSTOM Product Price Breakdown */}
+            {product.productType === 'CUSTOM' &&
+              Object.values(sizeQuantities).reduce(
+                (sum, qty) => sum + qty,
+                0
+              ) === 0 && (
+                <span className='text-sm text-gray-500'>Starting Price</span>
+              )}
+
+            {product.productType === 'CUSTOM' &&
+              (() => {
+                const totalQty = Object.values(sizeQuantities).reduce(
+                  (sum, qty) => sum + qty,
+                  0
+                );
+
+                if (totalQty === 0) return null;
+
+                let baseTotal = 0;
+                let printSideTotal = 0;
+
+                // Calculate base price and print side separately
+                Object.entries(sizeQuantities).forEach(([size, qty]) => {
+                  if (qty > 0) {
+                    const matchingVariant = product.variants.find(
+                      (v) =>
+                        v.color.name === selectedColor && v.size.name === size
+                    );
+                    const itemPrice = matchingVariant
+                      ? matchingVariant.price
+                      : product.minPrice || 0;
+
+                    baseTotal += itemPrice * qty;
+
+                    // Add print side price separately
+                    if (selectedPrintSide === 'two' && product.twoSidePrice) {
+                      printSideTotal += product.twoSidePrice * qty;
+                    }
+                  }
+                });
+
+                const originalTotal = baseTotal + printSideTotal;
+                const applicableDiscount = getApplicableDiscount(totalQty);
+                let finalTotal = originalTotal;
+                let flatDiscountAmount = 0;
+
+                if (applicableDiscount) {
+                  finalTotal = finalTotal - applicableDiscount.amount;
+                }
+
+                if (product.flatDiscount && product.flatDiscount > 0) {
+                  flatDiscountAmount =
+                    (finalTotal * product.flatDiscount) / 100;
+                  finalTotal = finalTotal - flatDiscountAmount;
+                }
+
+                const hasAnyDiscount =
+                  applicableDiscount ||
+                  (product.flatDiscount && product.flatDiscount > 0);
+
+                return (
+                  <div className='mt-2 space-y-1 text-sm'>
+                    <div className='flex items-center justify-between text-gray-600'>
+                      <span>Total Quantity:</span>
+                      <span className='font-medium'>{totalQty} items</span>
+                    </div>
+
+                    <div className='flex items-center justify-between text-gray-600'>
+                      <span>Base Price:</span>
+                      <span>AU${baseTotal.toFixed(2)}</span>
+                    </div>
+
+                    {selectedPrintSide === 'two' &&
+                      product.twoSidePrice &&
+                      printSideTotal > 0 && (
+                        <div className='flex items-center justify-between text-gray-600'>
+                          <span>Print Side (Back):</span>
+                          <span>+AU${printSideTotal.toFixed(2)}</span>
+                        </div>
+                      )}
+
+                    <div className='flex items-center justify-between text-gray-700 font-medium border-t pt-1'>
+                      <span>Subtotal:</span>
+                      <span>AU${originalTotal.toFixed(2)}</span>
+                    </div>
+
+                    {applicableDiscount && (
+                      <div className='flex items-center justify-between text-green-600 font-medium'>
+                        <span>Quantity Discount:</span>
+                        <span>-AU${applicableDiscount.amount.toFixed(2)}</span>
+                      </div>
+                    )}
+
+                    {product.flatDiscount && product.flatDiscount > 0 && (
+                      <div className='flex items-center justify-between text-green-600 font-medium'>
+                        <span>Flat Discount ({product.flatDiscount}%):</span>
+                        <span>-AU${flatDiscountAmount.toFixed(2)}</span>
+                      </div>
+                    )}
+
+                    {hasAnyDiscount && (
+                      <div className='border-t pt-1'>
+                        <div className='flex items-center justify-between text-lg font-semibold text-gray-900'>
+                          <span>Final Price:</span>
+                          <span>AU${finalTotal.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+            {product.productType === 'CUSTOM' &&
+              product.twoSidePrice &&
+              product.twoSidePrice > 0 && (
+                <p className='text-sm text-gray-500 mt-2'>
+                  Print side pricing: Front (+AU$0) | Back (+AU$
+                  {product.twoSidePrice.toFixed(2)})
+                </p>
+              )}
           </div>
           <div>
             {product.shortDescription && (
@@ -444,7 +721,16 @@ export function ProductDetailsContent() {
                       (+AU${product.data.attributes.one_side_price})
                     </span>
                   )} */}
-                    <span className='ml-1 text-sm text-gray-500'>(+AU$0)</span>
+                    <span
+                      className={cn(
+                        selectedPrintSide === 'one'
+                          ? 'text-green-400'
+                          : 'text-gray-500',
+                        'ml-1 text-sm'
+                      )}
+                    >
+                      (+AU$0)
+                    </span>
                   </Button>
                   <Button
                     variant={
@@ -456,7 +742,14 @@ export function ProductDetailsContent() {
                   >
                     Back
                     {(product.twoSidePrice || 0) > 0 && (
-                      <span className='ml-1 text-sm text-gray-500'>
+                      <span
+                        className={cn(
+                          selectedPrintSide === 'two'
+                            ? 'text-green-400'
+                            : 'text-gray-500',
+                          'ml-1 text-sm'
+                        )}
+                      >
                         (+AU${product.twoSidePrice})
                       </span>
                     )}

@@ -3,7 +3,6 @@ import { persist } from 'zustand/middleware';
 import { QuantityDiscountType } from '@/types';
 
 export interface CartItem {
-  id: string;
   productId: number;
   catalogId: string | null;
   quantity: number;
@@ -21,7 +20,6 @@ export interface CartItem {
     imageType: string;
     note: string;
   }>;
-  customizationKey?: string;
   quantityDiscounts?: QuantityDiscountType[];
   applicableDiscount?: QuantityDiscountType | null;
   productType: 'STANDARD' | 'CUSTOM';
@@ -30,8 +28,13 @@ export interface CartItem {
 interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (productId: number, color: string, size: string) => void;
+  updateQuantity: (
+    productId: number,
+    color: string,
+    size: string,
+    quantity: number
+  ) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -59,21 +62,54 @@ export const useCart = create<CartStore>()(
       items: [],
 
       addItem: (item) => {
+        set((state) => {
+          // Check if same product with same color and size already exists
+          const existingItemIndex = state.items.findIndex((cartItem) => {
+            return (
+              cartItem.productId === item.productId &&
+              cartItem.color === item.color &&
+              cartItem.size === item.size &&
+              cartItem.printSide === item.printSide
+            );
+          });
+
+          if (existingItemIndex !== -1) {
+            // Update quantity of existing item
+            const updatedItems = [...state.items];
+            updatedItems[existingItemIndex] = {
+              ...updatedItems[existingItemIndex],
+              quantity:
+                updatedItems[existingItemIndex].quantity + item.quantity,
+            };
+            return { items: updatedItems };
+          } else {
+            // Add new item
+            return { items: [...state.items, item] };
+          }
+        });
+      },
+
+      removeItem: (productId, color, size) => {
         set((state) => ({
-          items: [...state.items, item],
+          items: state.items.filter(
+            (item) =>
+              !(
+                item.productId === productId &&
+                item.color === color &&
+                item.size === size
+              )
+          ),
         }));
       },
 
-      removeItem: (id) => {
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        }));
-      },
-
-      updateQuantity: (id, quantity) => {
+      updateQuantity: (productId, color, size, quantity) => {
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
+            item.productId === productId &&
+            item.color === color &&
+            item.size === size
+              ? { ...item, quantity }
+              : item
           ),
         }));
       },
