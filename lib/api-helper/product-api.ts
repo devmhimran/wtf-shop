@@ -20,7 +20,7 @@ import {
   SizeType,
   SubCategoryType,
 } from '@/types';
-import { axiosInstanceWithAuth } from '../axios';
+import { axiosInstance, axiosInstanceWithAuth } from '../axios';
 
 export const productApi = {
   categories: {
@@ -165,27 +165,27 @@ export const productApi = {
     categories: {
       getCategories: (params?: string) => {
         const url = '/public/categories' + (params ? params : '');
-        return axiosInstanceWithAuth.get<Response<PublicCategoryType[], Meta>>(
-          url
-        );
+        return axiosInstance.get<Response<PublicCategoryType[], Meta>>(url);
       },
     },
     products: {
       getProducts: (params?: string) => {
         const url = `/public/products` + (params ? params : '');
-        return axiosInstanceWithAuth.get<Response<ProductType[], Meta>>(url);
+        return axiosInstance.get<Response<ProductType[], Meta>>(url);
       },
       getSingleProduct: (slug: string) => {
         const url = `/public/products/${slug}`;
-        return axiosInstanceWithAuth.get<
-          DetailsResponse<PublicProductDetailsType>
-        >(url);
+        return axiosInstance.get<DetailsResponse<PublicProductDetailsType>>(
+          url
+        );
       },
       getAllRelatedProducts: (params?: string) => {
         const url = `/public/related-products` + (params ? params : '');
-        return axiosInstanceWithAuth.get<Response<PublicProductType[], Meta>>(
-          url
-        );
+        return axiosInstance.get<Response<PublicProductType[], Meta>>(url);
+      },
+      getPromoCode: (code: string) => {
+        const url = `/public/promo-code`;
+        return axiosInstance.post(url, { promoCode: code });
       },
     },
   },

@@ -25,6 +25,29 @@ enum ProductType {
   CUSTOM
 }
 
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPING
+  COMPLETED
+  CANCELLED
+  RETURNED
+}
+
+enum DeliveryMethod {
+  PICKUP
+  SHIPPING
+}
+
+enum PaymentStatus {
+  INCOMPLETE
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
 //
 // USER MODEL
 //
@@ -261,17 +284,38 @@ model PromoCode {
 // ORDER
 //
 model Order {
-  id          Int       @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
 
-  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId      Int?
+  // Customer info
+  email           String
+  user            User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId          Int?
 
-  items       OrderItem[]
-  customImages CustomOrderImage[]
-  customNote  String?
+  // Order status
+  status          OrderStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(INCOMPLETE)
+  deliveryMethod  DeliveryMethod @default(SHIPPING)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  // Payment
+  stripeId        String?
+
+  // Pricing
+  subTotal        Float
+  shippingCost    Float     @default(0.0)
+  total           Float
+
+  // Shipping address
+  address         String?
+  state           String?
+  postalCode      String?
+  country         String?
+  phone           String?
+
+  // Relations
+  items           OrderItem[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 //
@@ -289,19 +333,30 @@ model OrderItem {
   variant    ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
   variantId  Int?
 
+  // Item details
+  color      String?
+  size       String?
+  printSide  String?
+  
   quantity   Int
   price      Float
   total      Float
+
+  // Customization (moved from Order)
+  customImages CustomOrderImage[]
+  customNote   String?
 }
 
 //
 // CUSTOM ORDER IMAGE
 //
 model CustomOrderImage {
-  id         Int       @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
 
-  order      Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  orderId    Int?
+  orderItem    OrderItem?  @relation(fields: [orderItemId], references: [id], onDelete: SetNull)
+  orderItemId  Int?
 
-  imageUrl   String
+  imageUrl     String
+  imageName    String?
+  note         String?
 }

@@ -1,0 +1,3 @@
+export function CheckoutPage() {
+  return <div>checkout-page</div>;
+}
