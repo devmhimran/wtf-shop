@@ -29,3 +29,12 @@ export type ErrorItem = {
   path?: string;
   message: string;
 };
+
+export type CartCustomization = {
+  id: string;
+  imagePreview: string;
+  imageName: string;
+  imageSize: number;
+  imageType: string;
+  note: string;
+};

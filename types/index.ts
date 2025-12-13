@@ -4,7 +4,12 @@ import {
   UserMeResponse,
   UserRole,
 } from './auth.types';
-import { Response, Meta, DetailsResponse } from './common.types';
+import {
+  Response,
+  Meta,
+  DetailsResponse,
+  CartCustomization,
+} from './common.types';
 import {
   UsersType,
   CreateAdminUserType,
@@ -67,4 +72,5 @@ export type {
   PublicProductType,
   PublicProductDetailsType,
   QuantityDiscountType,
+  CartCustomization,
 };

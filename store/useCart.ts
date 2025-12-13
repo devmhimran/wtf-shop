@@ -1,142 +1,92 @@
+import { CartCustomization } from '@/types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { QuantityDiscountType } from '@/types';
 
 export interface CartItem {
   productId: number;
-  catalogId: string | null;
+  slug: string;
   quantity: number;
   image: string;
-  title: string;
-  price: number;
   color: string;
   size: string;
-  printSide?: 'one' | 'two';
-  customizations?: Array<{
-    id: string;
-    imagePreview: string; // base64 data URL
-    imageName: string;
-    imageSize: number;
-    imageType: string;
-    note: string;
-  }>;
-  quantityDiscounts?: QuantityDiscountType[];
-  applicableDiscount?: QuantityDiscountType | null;
-  productType: 'STANDARD' | 'CUSTOM';
+  printSide: 'one' | 'two';
+  customizations?: CartCustomization[];
 }
 
 interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (productId: number, color: string, size: string) => void;
-  updateQuantity: (
+  removeItem: (productId: number, size: string, color: string) => void;
+  updateQty: (
     productId: number,
-    color: string,
     size: string,
-    quantity: number
+    color: string,
+    qty: number
   ) => void;
   clearCart: () => void;
-  getTotalItems: () => number;
-  getTotalPrice: () => number;
 }
 
-// Helper function to convert base64 back to File for uploading
-export const base64ToFile = (
-  base64: string,
-  filename: string,
-  mimeType: string
-): File => {
-  const arr = base64.split(',');
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], filename, { type: mimeType });
-};
-
-export const useCart = create<CartStore>()(
+export const useCartStore = create<CartStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       items: [],
 
-      addItem: (item) => {
+      addItem: (item) =>
         set((state) => {
-          // Check if same product with same color and size already exists
-          const existingItemIndex = state.items.findIndex((cartItem) => {
-            return (
-              cartItem.productId === item.productId &&
-              cartItem.color === item.color &&
-              cartItem.size === item.size &&
-              cartItem.printSide === item.printSide
-            );
-          });
+          // Check if same variant already exists (same product, size, color, printSide)
+          const existingIndex = state.items.findIndex(
+            (i) =>
+              i.productId === item.productId &&
+              i.size === item.size &&
+              i.color === item.color &&
+              i.printSide === item.printSide
+          );
 
-          if (existingItemIndex !== -1) {
-            // Update quantity of existing item
+          if (existingIndex !== -1) {
+            // Update quantity if variant already exists
             const updatedItems = [...state.items];
-            updatedItems[existingItemIndex] = {
-              ...updatedItems[existingItemIndex],
-              quantity:
-                updatedItems[existingItemIndex].quantity + item.quantity,
+            updatedItems[existingIndex] = {
+              ...updatedItems[existingIndex],
+              quantity: updatedItems[existingIndex].quantity + item.quantity,
+              // Update customizations if new ones are provided
+              customizations: item.customizations?.length
+                ? item.customizations
+                : updatedItems[existingIndex].customizations,
             };
             return { items: updatedItems };
-          } else {
-            // Add new item
-            return { items: [...state.items, item] };
           }
-        });
-      },
 
-      removeItem: (productId, color, size) => {
+          // Add new variant to cart
+          return { items: [...state.items, item] };
+        }),
+
+      updateQty: (productId, size, color, qty) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.productId === productId &&
+            item.size === size &&
+            item.color === color
+              ? { ...item, quantity: qty }
+              : item
+          ),
+        })),
+
+      removeItem: (productId, size, color) =>
         set((state) => ({
           items: state.items.filter(
             (item) =>
               !(
                 item.productId === productId &&
-                item.color === color &&
-                item.size === size
+                item.size === size &&
+                item.color === color
               )
           ),
-        }));
-      },
+        })),
 
-      updateQuantity: (productId, color, size, quantity) => {
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.productId === productId &&
-            item.color === color &&
-            item.size === size
-              ? { ...item, quantity }
-              : item
-          ),
-        }));
-      },
-
-      clearCart: () => {
-        set({ items: [] });
-      },
-
-      getTotalItems: () => {
-        return get().items.reduce((total, item) => total + item.quantity, 0);
-      },
-
-      getTotalPrice: () => {
-        return get().items.reduce((total, item) => {
-          let itemTotal = item.price * item.quantity;
-
-          // Apply discount if applicable
-          if (item.applicableDiscount) {
-            itemTotal -= item.applicableDiscount.amount;
-          }
-
-          return total + itemTotal;
-        }, 0);
-      },
+      clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'cart-storage',
+      name: 'cart-storage', // localStorage key
     }
   )
 );

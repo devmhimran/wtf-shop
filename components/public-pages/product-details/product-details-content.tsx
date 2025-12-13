@@ -26,9 +26,9 @@ import {
 } from '@/components/ui/select';
 import { ImagePlus, X, Plus } from 'lucide-react';
 import { toast } from 'sonner';
-import { useCart } from '@/store/useCart';
 import { RelatedProducts } from './related-products';
 import { ProductDescription } from './product-description';
+import { useCartStore } from '@/store/useCart';
 
 interface CustomizationItem {
   id: string;
@@ -39,7 +39,7 @@ interface CustomizationItem {
 
 export function ProductDetailsContent() {
   const { slug } = useParams();
-  const { addItem } = useCart();
+  const { addItem } = useCartStore();
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPrintSide, setSelectedPrintSide] = useState<'one' | 'two'>(
@@ -244,30 +244,22 @@ export function ProductDetailsContent() {
       return;
     }
 
-    const basePrice = getCurrentPrice();
-    const totalQuantity = quantity;
-    const applicableDiscount = getApplicableDiscount(totalQuantity);
-
     const payload = {
       productId: product.id,
-      catalogId: product.catalogId,
+      slug: product.slug,
       quantity: quantity,
       image:
         combinedGalleryData[photoIndex]?.fileUrl ||
         '/images/placeholder-image.png',
-      title: product.title,
-      price: basePrice,
       color: selectedColor,
       size: selectedSize,
-      quantityDiscounts: product.quantityDiscounts,
-      applicableDiscount: applicableDiscount || null,
-      productType: 'STANDARD' as const,
+      printSide: 'one' as const,
     };
 
     // Add to Zustand cart store
     addItem(payload);
     toast.success('Added to cart!');
-    console.log({ payload });
+
     // Reset fields
     setSelectedColor('');
     setSelectedSize('');
@@ -319,60 +311,36 @@ export function ProductDetailsContent() {
       }
     }
 
-    // Calculate discount
-    const applicableDiscount = getApplicableDiscount(totalQuantity);
+    // Transform customizations once (same for all sizes)
+    const serializableCustomizations = customizations.map((item) => ({
+      id: item.id,
+      imagePreview: item.imagePreview, // base64 string
+      imageName: item.image?.name || '',
+      imageSize: item.image?.size || 0,
+      imageType: item.image?.type || '',
+      note: item.note,
+    }));
 
-    for (const [size, qty] of sizesToAdd) {
-      const matchingVariant = product.variants.find(
-        (v) => v.color.name === selectedColor && v.size.name === size
-      );
+    // Prepare all payloads
+    const allPayloads = sizesToAdd.map(([size, qty]) => ({
+      productId: product.id,
+      slug: product.slug,
+      quantity: qty,
+      image:
+        combinedGalleryData[photoIndex]?.fileUrl ||
+        '/images/placeholder-image.png',
+      color: selectedColor,
+      size: size,
+      printSide: selectedPrintSide,
+      customizations: serializableCustomizations,
+    }));
 
-      let finalPrice = matchingVariant
-        ? matchingVariant.price
-        : product.minPrice || 0;
-
-      // Add print side price
-      if (selectedPrintSide === 'two' && product.twoSidePrice) {
-        finalPrice += product.twoSidePrice;
-      }
-
-      // Transform customizations to be serializable (remove File objects)
-      const serializableCustomizations = customizations.map((item) => ({
-        id: item.id,
-        imagePreview: item.imagePreview, // base64 string
-        imageName: item.image?.name || '',
-        imageSize: item.image?.size || 0,
-        imageType: item.image?.type || '',
-        note: item.note,
-      }));
-
-      const payload = {
-        productId: product.id,
-        catalogId: product.catalogId,
-        quantity: qty,
-        image:
-          combinedGalleryData[photoIndex]?.fileUrl ||
-          '/images/placeholder-image.png',
-        title: product.title,
-        price: finalPrice,
-        color: selectedColor,
-        size: size,
-        printSide: selectedPrintSide,
-        customizations: serializableCustomizations,
-        quantityDiscounts: product.quantityDiscounts,
-        applicableDiscount: applicableDiscount || null,
-        productType: 'CUSTOM' as const,
-      };
-      console.log({
-        handleCardPayload: payload,
-        originalCustomizations: customizations,
-      });
-
-      // Add to Zustand cart store
+    // Add all items to cart
+    allPayloads.forEach((payload) => {
       addItem(payload);
-    }
+    });
 
-    toast.success('Successfully added to cart');
+    toast.success(`Successfully added ${sizesToAdd.length} variant(s) to cart`);
 
     // Reset fields
     setSelectedColor('');
