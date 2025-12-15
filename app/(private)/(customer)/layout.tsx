@@ -8,7 +8,7 @@ export default function CustomerLayout({
   return (
     <main className='font-oswald'>
       <PublicNavbar />
-      <div className='min-h-screen mt-20'>{children}</div>
+      <div className='min-h-screen mt-20 bg-gray-50/50'>{children}</div>
       <PublicFooter />
     </main>
   );

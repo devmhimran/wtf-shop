@@ -132,6 +132,16 @@ export const shippingFreeChargeConvert = {
   PAID_SHIPPING: 'Paid Shipping',
 };
 
+export const orderStatusConvert = {
+  PENDING: 'Pending',
+  CONFIRMED: 'Confirmed',
+  PROCESSING: 'Processing',
+  SHIPPING: 'Shipping',
+  COMPLETED: 'Completed',
+  CANCELLED: 'Cancelled',
+  RETURNED: 'Returned',
+};
+
 export const authLogout = async () => {
   await authApi.logout();
 

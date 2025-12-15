@@ -11,7 +11,7 @@ export function PublicFooter() {
     });
   };
   return (
-    <div className='py-10 px-10 md:px-24 bg-[#313131] mt-12'>
+    <div className='py-10 px-10 md:px-24 bg-[#313131]'>
       <div>
         <div className='flex md:flex-row flex-col justify-between pb-6 gap-4 items-center'>
           <div>

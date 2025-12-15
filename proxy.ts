@@ -14,6 +14,7 @@ const SUPER_ADMIN_PATHS = [
   '/dashboard/sub-categories',
   '/dashboard/colors',
   '/dashboard/sizes',
+  '/profile',
 ];
 
 const ADMIN_PATHS = [
@@ -21,10 +22,11 @@ const ADMIN_PATHS = [
   '/dashboard/custom-products',
   '/dashboard/orders',
   '/dashboard/customers',
+  '/profile',
 ];
 
-const CUSTOMER_PATHS = ['/c/my-orders'];
-const COMMON_PATHS = ['/my-profile'];
+const CUSTOMER_PATHS = ['/c/my-orders', '/c/profile'];
+const COMMON_PATHS = ['/profile'];
 
 export async function proxy(request: NextRequest) {
   const refreshToken = request.cookies.get('refreshToken')?.value;

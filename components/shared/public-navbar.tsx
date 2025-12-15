@@ -265,7 +265,11 @@ export function PublicNavbar() {
                       </DropdownMenu>
                     </div>
                   ) : (
-                    <Link href='/signin' aria-label='Login to your account'>
+                    <Link
+                      href='/signin'
+                      aria-label='Login to your account'
+                      className='p-2'
+                    >
                       <User className='h-5 w-5' aria-hidden='true' />
                     </Link>
                   )}
