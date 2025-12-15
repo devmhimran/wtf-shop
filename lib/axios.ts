@@ -75,7 +75,12 @@ axiosInstanceWithAuth.interceptors.response.use(
       } catch (err) {
         processQueue(err as AxiosError);
 
-        if (typeof window !== 'undefined') {
+        // Only redirect to signin if we're on a protected route (dashboard)
+        if (
+          typeof window !== 'undefined' &&
+          (window.location.pathname.includes('/dashboard') ||
+            window.location.pathname.includes('/c'))
+        ) {
           // Delay to avoid cutting off queue processing
           setTimeout(() => {
             window.location.href = '/signin';

@@ -1,6 +1,13 @@
 'use client';
 
-import { Menu, ShoppingCart, X, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  Menu,
+  ShoppingCart,
+  X,
+  ChevronDown,
+  ChevronUp,
+  User,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
@@ -11,9 +18,18 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '../ui/navigation-menu';
-import { useGetPublicCategories } from '@/hooks';
+import { useGetPublicCategories, useUser } from '@/hooks';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+import { authLogout } from '@/lib/utils';
 
 export function PublicNavbar() {
+  const { fetchMe } = useUser();
+
   const [bgColor, setBgColor] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [dropDownOpen, setDropDownOpen] = useState(false);
@@ -216,26 +232,31 @@ export function PublicNavbar() {
                   </Link>
                 </li>
                 <li className='py-5 pl-8 flex items-center'>
-                  {/* {userId ? (
+                  {fetchMe?.role === 'CUSTOMER' ? (
                     <div className='cursor-pointer flex items-center'>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button
+                          {/* <Button
                             variant='ghost'
                             className='h-0 p-0'
                             aria-label='User menu'
-                          >
+                          > */}
+                          <div className='p-2'>
                             <User className='h-5 w-5' aria-hidden='true' />
-                          </Button>
+                          </div>
+                          {/* </Button> */}
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-32 mt-6 bg-white'>
-                          <Link href='/user/dashboard'>
+                        <DropdownMenuContent
+                          className='w-32 bg-white'
+                          align='end'
+                        >
+                          <Link href='/c/my-order'>
                             <DropdownMenuCheckboxItem className='cursor-pointer'>
-                              Dashboard
+                              My Orders
                             </DropdownMenuCheckboxItem>
                           </Link>
                           <DropdownMenuCheckboxItem
-                            //   onClick={() => signOut()}
+                            onClick={() => authLogout()}
                             className='cursor-pointer'
                           >
                             Sign out
@@ -244,10 +265,10 @@ export function PublicNavbar() {
                       </DropdownMenu>
                     </div>
                   ) : (
-                    <Link href='/login' aria-label='Login to your account'>
+                    <Link href='/signin' aria-label='Login to your account'>
                       <User className='h-5 w-5' aria-hidden='true' />
                     </Link>
-                  )} */}
+                  )}
                 </li>
               </ul>
             </div>
