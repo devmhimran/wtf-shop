@@ -202,7 +202,7 @@ model ProductGallery {
   id         Int       @id @default(autoincrement())
 
   mediaId    Int?
-  media      MediaLibrary? @relation(fields: [mediaId], references: [id], onDelete: SetNull)
+  media      MediaLibrary? @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
   product    Product?  @relation(fields: [productId], references: [id], onDelete: SetNull)
   productId  Int?

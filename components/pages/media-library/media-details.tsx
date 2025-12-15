@@ -44,7 +44,7 @@ export function MediaDetails({ data }: { data: MediaType | null }) {
   const isImage = data.fileType.startsWith('image/');
 
   const handleCopyUrl = () => {
-    const fullUrl = `${window.location.origin}${data.fileUrl}`;
+    const fullUrl = `${data.fileUrl}`;
     navigator.clipboard.writeText(fullUrl);
     toast.success('URL copied to clipboard!');
   };
