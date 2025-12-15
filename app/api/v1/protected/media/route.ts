@@ -1,10 +1,9 @@
 import { prisma } from '@/prisma/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { catchAsyncNext } from '@/lib/catch-async';
 import { authenticateRequest } from '@/lib/utils';
 import { Prisma } from '@/generated/prisma/client';
+import imagekit from '@/lib/image-kit';
 
 export const dynamic = 'force-dynamic';
 
@@ -113,42 +112,22 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   // Read file buffer
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  // folder path
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-
-  const fileExtension = path.extname(file.name);
-  const fileNameWithoutExt = path.basename(file.name, fileExtension);
-  let existingFileTitle = fileNameWithoutExt;
-  let fileName = `${fileNameWithoutExt}${fileExtension}`;
-  let filePath = path.join(uploadDir, fileName);
-  let counter = 1;
-
-  while (fs.existsSync(filePath)) {
-    fileName = `${fileNameWithoutExt}-${counter}${fileExtension}`;
-    existingFileTitle = `${fileNameWithoutExt}-${counter}`;
-    filePath = path.join(uploadDir, fileName);
-    counter++;
-  }
-
-  // Write file to server
-  fs.writeFileSync(filePath, buffer);
-
-  // Public URL
-  const fileUrl = `/uploads/${fileName}`;
+  const uploadResponse = await imagekit.upload({
+    file: buffer,
+    fileName: file.name,
+    folder: process.env.IMAGE_KIT_FOLDER_NAME || 'media-library',
+    useUniqueFileName: true,
+  });
 
   // Save to MediaLibrary
   const media = await prisma.mediaLibrary.create({
     data: {
-      title: title || existingFileTitle || null,
+      title: title || uploadResponse.name || null,
       alt: alt || null,
-      fileUrl,
-      fileName,
+      fileUrl: uploadResponse.url, // CDN URL
+      fileName: uploadResponse.name,
       fileType: file.type,
-      fileSize: buffer.length,
+      fileSize: uploadResponse.size,
       createdById: createdById ? Number(createdById) : null,
     },
   });

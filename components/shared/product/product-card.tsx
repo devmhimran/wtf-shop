@@ -20,7 +20,7 @@ export function ProductCard({
           )}
 
           <img
-            src={item.mainImage.fileUrl || '/assets/img/placeholder-image.png'}
+            src={item.mainImage?.fileUrl || '/assets/img/placeholder-image.png'}
             decoding='async'
             loading='lazy'
             alt={

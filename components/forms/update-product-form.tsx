@@ -27,7 +27,7 @@ import {
   useGetAllSubCategories,
   useProducts,
 } from '@/hooks';
-import { SearchAndSelect, MultiSelect, Modal, Loading } from '../shared';
+import { SearchAndSelect, MultiSelect, Modal } from '../shared';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ProductFeaturedImage, ProductGalleryImage } from '../pages/products';
@@ -299,26 +299,30 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
 
       // Set gallery images
       if (product.gallery && product.gallery.length > 0) {
-        const galleryMedia = product.gallery.map((g) => ({
-          id: g.media.id,
-          fileUrl: g.media.fileUrl,
-          fileName: g.media.fileName,
-          title: g.media.title,
-          alt: g.media.alt,
-          fileType: 'image',
-          fileSize: 0,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        })) as MediaType[];
+        const galleryMedia = product.gallery
+          .filter((g) => g.media !== null)
+          .map((g) => ({
+            id: g.media.id,
+            fileUrl: g.media.fileUrl,
+            fileName: g.media.fileName,
+            title: g.media.title,
+            alt: g.media.alt,
+            fileType: 'image',
+            fileSize: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          })) as MediaType[];
 
         setGalleryImages(galleryMedia);
         form.setValue(
           'galleryImages',
-          product.gallery.map((g) => ({
-            id: g.media.id,
-            fileUrl: g.media.fileUrl,
-            fileName: g.media.fileName,
-          }))
+          product.gallery
+            .filter((g) => g.media !== null)
+            .map((g) => ({
+              id: g.media.id,
+              fileUrl: g.media.fileUrl,
+              fileName: g.media.fileName,
+            }))
         );
       }
 
