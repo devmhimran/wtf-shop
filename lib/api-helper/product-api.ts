@@ -185,7 +185,12 @@ export const productApi = {
       },
       getPromoCode: (code: string) => {
         const url = `/public/promo-code`;
-        return axiosInstance.post(url, { promoCode: code });
+        return axiosInstance.post<DetailsResponse<Omit<PromoCodeType, 'id'>>>(
+          url,
+          {
+            promoCode: code,
+          }
+        );
       },
       getShippingCharge: (quantity: number, region: string) => {
         const url = `/public/shipping`;

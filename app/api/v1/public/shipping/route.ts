@@ -29,16 +29,6 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       minQty: {
         lte: quantity,
       },
-      OR: [
-        {
-          maxQty: {
-            gte: quantity,
-          },
-        },
-        {
-          maxQty: null,
-        },
-      ],
     },
     orderBy: {
       minQty: 'desc',
@@ -58,13 +48,12 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   // Calculate total shipping cost
   let totalShippingCost = shippingCharge.baseCharge;
 
-  // Add additional charge per item if applicable
-  if (shippingCharge.additionalChargePerItem) {
-    const additionalItems = quantity - shippingCharge.minQty;
-    if (additionalItems > 0) {
-      totalShippingCost +=
-        additionalItems * shippingCharge.additionalChargePerItem;
-    }
+  // Check if quantity exceeds maxQty
+  if (shippingCharge.maxQty && quantity > shippingCharge.maxQty) {
+    // Calculate additional items beyond maxQty
+    const additionalItems = quantity - shippingCharge.maxQty;
+    const additionalCharge = shippingCharge.additionalChargePerItem || 0;
+    totalShippingCost += additionalItems * additionalCharge;
   }
 
   // Check if free shipping applies

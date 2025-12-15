@@ -311,9 +311,11 @@ export default function Cart() {
                 </div>
               </div>
 
-              <Button className='w-full bg-orange-400 hover:bg-orange-500 text-white text-lg py-6'>
-                Proceed to Checkout
-              </Button>
+              <Link href='/checkout'>
+                <Button className='w-full bg-orange-400 hover:bg-orange-500 text-white text-lg py-6'>
+                  Proceed to Checkout
+                </Button>
+              </Link>
 
               <Link href='/'>
                 <Button variant='outline' className='w-full mt-3'>

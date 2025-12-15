@@ -61,7 +61,6 @@ model User {
   isDelete        Boolean  @default(false)
   isActive        Boolean  @default(true)
 
-  orders          Order[]
   createdProducts Product[] @relation("ProductCreatedBy")
 
   createdAt       DateTime @default(now())
@@ -285,11 +284,10 @@ model PromoCode {
 //
 model Order {
   id              Int       @id @default(autoincrement())
+  orderId         String    @unique
 
   // Customer info
   email           String
-  user            User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId          Int?
 
   // Order status
   status          OrderStatus @default(PENDING)

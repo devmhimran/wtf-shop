@@ -1732,8 +1732,8 @@ export type PromoCodeScalarFieldEnum = (typeof PromoCodeScalarFieldEnum)[keyof t
 
 export const OrderScalarFieldEnum = {
   id: 'id',
+  orderId: 'orderId',
   email: 'email',
-  userId: 'userId',
   status: 'status',
   paymentStatus: 'paymentStatus',
   deliveryMethod: 'deliveryMethod',
