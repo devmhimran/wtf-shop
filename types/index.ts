@@ -42,6 +42,9 @@ import {
   CheckoutDataType,
   CartItemType,
   CreateOrderDataType,
+  OrderDetailType,
+  OrderItemsType,
+  OrdersType,
 } from './order.types';
 
 export type {
@@ -83,4 +86,7 @@ export type {
   CheckoutDataType,
   CartItemType,
   CreateOrderDataType,
+  OrderDetailType,
+  OrderItemsType,
+  OrdersType,
 };

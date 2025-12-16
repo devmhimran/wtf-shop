@@ -1,3 +1,5 @@
+import { $Enums } from '@/generated/prisma/client';
+
 export type CartCustomizationType = {
   imagePreview: string;
   imageName: string;
@@ -77,4 +79,63 @@ export type CreateOrderDataType = {
       note: string;
     }[];
   }[];
+};
+
+export type OrderItemsType = {
+  id: number;
+  productId: number;
+  orderId: number;
+  variantId: number;
+  color: string;
+  size: string;
+  printSide: string;
+  quantity: number;
+  price: number;
+  total: number;
+  customNote: string | null;
+  customImages: {
+    id: number;
+    imageUrl: string;
+    imageName: string;
+    note: string;
+  }[];
+  product: {
+    id: number;
+    title: string;
+    slug: string;
+    catalogId: number;
+    productType: string;
+    mainImage: {
+      id: number;
+      fileUrl: string;
+      fileName: string;
+      title: string;
+      alt: string;
+    } | null;
+  };
+};
+
+export type OrdersType = {
+  id: number;
+  orderId: string;
+  email: string;
+  status: $Enums.OrderStatus;
+  paymentStatus: $Enums.PaymentStatus;
+  deliveryMethod: $Enums.DeliveryMethod;
+  stripeId: string;
+  total: number;
+  createdAt: string;
+};
+
+export type OrderDetailType = OrdersType & {
+  subtotal: number;
+  shippingCost: number;
+  total: number;
+  address: string;
+  state: string;
+  postalCode: string | null;
+  country: string;
+  phone: string;
+  updatedAt: string;
+  items: OrderItemsType[];
 };

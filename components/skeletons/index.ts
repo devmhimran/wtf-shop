@@ -11,6 +11,8 @@ import { FeaturedProductImageChooseSkeleton } from './featured-product-image-cho
 import { ProductCardSkeleton } from './product-card-skeleton';
 import { PublicProductSkeleton } from './public-product-skeleton';
 import { ProductDetailSkeleton } from './product-details-skeleton';
+import { OrdersTableSkeleton } from './orders-table-skeleton';
+import { OrdersCardSkeleton } from './orders-card-skeleton';
 
 export {
   UserNavSkeleton,
@@ -26,4 +28,6 @@ export {
   ProductCardSkeleton,
   PublicProductSkeleton,
   ProductDetailSkeleton,
+  OrdersTableSkeleton,
+  OrdersCardSkeleton,
 };

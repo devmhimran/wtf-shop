@@ -10,6 +10,7 @@ import {
   CreateSubCategoryType,
   DetailsResponse,
   Meta,
+  OrdersType,
   ProductType,
   PromoCodeType,
   PublicCategoryType,
@@ -159,6 +160,12 @@ export const productApi = {
     getSingleProduct: (id: number) => {
       const url = `/protected/products/${id}`;
       return axiosInstanceWithAuth.get<DetailsResponse<ProductType>>(url);
+    },
+  },
+  order: {
+    getAllOrders: (params?: string) => {
+      const url = '/protected/orders' + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<OrdersType[], Meta>>(url);
     },
   },
   public: {
