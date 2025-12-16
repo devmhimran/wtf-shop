@@ -15,11 +15,31 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { OrdersType } from '@/types';
 import { OrdersTableSkeleton } from '@/components/skeletons';
+import { cn, deliveryMethodConvert, paymentStatusConvert } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useGetOrders } from '@/hooks';
+import { toast } from 'sonner';
 
 type OrdersTableProps = {
   data?: OrdersType[];
   loading?: boolean;
 };
+
+const orderStatus = [
+  { value: 'PENDING', label: 'Pending' },
+  { value: 'CONFIRMED', label: 'Confirmed' },
+  { value: 'PROCESSING', label: 'Processing' },
+  { value: 'SHIPPING', label: 'Shipping' },
+  { value: 'COMPLETED', label: 'Completed' },
+  { value: 'CANCELLED', label: 'Cancelled' },
+  { value: 'RETURNED', label: 'Returned' },
+];
 
 const statusColors = {
   PENDING: 'bg-yellow-100 text-yellow-800',
@@ -40,6 +60,16 @@ const paymentStatusColors = {
 };
 
 export function OrdersTable({ data, loading }: OrdersTableProps) {
+  const { updateOrderStatusAsync } = useGetOrders();
+  const handleStatusChange = (orderId: string, newStatus: string) => {
+    const response = updateOrderStatusAsync({ orderId, newStatus });
+
+    toast.promise(response, {
+      loading: 'Updating order status...',
+      success: 'Order status updated successfully!',
+      error: 'Failed to update order status.',
+    });
+  };
   return loading ? (
     <OrdersTableSkeleton />
   ) : (
@@ -66,23 +96,38 @@ export function OrdersTable({ data, loading }: OrdersTableProps) {
                   {order.email}
                 </TableCell>
                 <TableCell>
-                  <Badge
-                    variant='outline'
-                    className={statusColors[order.status]}
+                  <Select
+                    value={order.status}
+                    onValueChange={(newStatus) =>
+                      handleStatusChange(order.orderId, newStatus)
+                    }
                   >
-                    {order.status}
-                  </Badge>
+                    <SelectTrigger
+                      className={cn(statusColors[order.status], 'w-[150px]')}
+                    >
+                      <SelectValue placeholder='Order Status' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {orderStatus.map((status) => (
+                        <SelectItem key={status.value} value={status.value}>
+                          {status.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </TableCell>
                 <TableCell>
                   <Badge
                     variant='outline'
                     className={paymentStatusColors[order.paymentStatus]}
                   >
-                    {order.paymentStatus}
+                    {paymentStatusConvert[order.paymentStatus]}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Badge variant='secondary'>{order.deliveryMethod}</Badge>
+                  <Badge variant='secondary'>
+                    {deliveryMethodConvert[order.deliveryMethod]}
+                  </Badge>
                 </TableCell>
                 <TableCell className='font-semibold'>
                   AU${order.total.toFixed(2)}

@@ -57,7 +57,7 @@ export type CreateOrderDataType = {
   country: string;
 
   deliveryMethod: string;
-  subTotal: number;
+  subtotal: number;
   shippingCost: number;
   total: number;
 

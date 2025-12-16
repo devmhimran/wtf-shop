@@ -69,7 +69,7 @@ export default function PaymentForm({ checkoutData }: PaymentFormProps) {
           state: checkoutData.formData.state,
           country: checkoutData.formData.country,
           deliveryMethod: checkoutData.formData.deliveryMethod,
-          subTotal: checkoutData.calculations.total,
+          subtotal: checkoutData.calculations.total,
           shippingCost: checkoutData.shippingCost,
           total: checkoutData.finalTotal,
           stripeId: paymentIntent.id,
@@ -251,7 +251,7 @@ export default function PaymentForm({ checkoutData }: PaymentFormProps) {
               <span>Shipping:</span>
               <span>AU${checkoutData.shippingCost.toFixed(2)}</span>
             </div>
-            {checkoutData.promoDiscount && checkoutData.promoDiscount > 0 && (
+            {!!checkoutData.promoDiscount && checkoutData.promoDiscount > 0 && (
               <div className='flex justify-between text-green-600'>
                 <span>Promo ({checkoutData.appliedPromo?.code}):</span>
                 <span>-AU${checkoutData.promoDiscount.toFixed(2)}</span>

@@ -28,14 +28,14 @@ export type AggregateOrder = {
 
 export type OrderAvgAggregateOutputType = {
   id: number | null
-  subTotal: number | null
+  subtotal: number | null
   shippingCost: number | null
   total: number | null
 }
 
 export type OrderSumAggregateOutputType = {
   id: number | null
-  subTotal: number | null
+  subtotal: number | null
   shippingCost: number | null
   total: number | null
 }
@@ -48,7 +48,7 @@ export type OrderMinAggregateOutputType = {
   paymentStatus: $Enums.PaymentStatus | null
   deliveryMethod: $Enums.DeliveryMethod | null
   stripeId: string | null
-  subTotal: number | null
+  subtotal: number | null
   shippingCost: number | null
   total: number | null
   address: string | null
@@ -68,7 +68,7 @@ export type OrderMaxAggregateOutputType = {
   paymentStatus: $Enums.PaymentStatus | null
   deliveryMethod: $Enums.DeliveryMethod | null
   stripeId: string | null
-  subTotal: number | null
+  subtotal: number | null
   shippingCost: number | null
   total: number | null
   address: string | null
@@ -88,7 +88,7 @@ export type OrderCountAggregateOutputType = {
   paymentStatus: number
   deliveryMethod: number
   stripeId: number
-  subTotal: number
+  subtotal: number
   shippingCost: number
   total: number
   address: number
@@ -104,14 +104,14 @@ export type OrderCountAggregateOutputType = {
 
 export type OrderAvgAggregateInputType = {
   id?: true
-  subTotal?: true
+  subtotal?: true
   shippingCost?: true
   total?: true
 }
 
 export type OrderSumAggregateInputType = {
   id?: true
-  subTotal?: true
+  subtotal?: true
   shippingCost?: true
   total?: true
 }
@@ -124,7 +124,7 @@ export type OrderMinAggregateInputType = {
   paymentStatus?: true
   deliveryMethod?: true
   stripeId?: true
-  subTotal?: true
+  subtotal?: true
   shippingCost?: true
   total?: true
   address?: true
@@ -144,7 +144,7 @@ export type OrderMaxAggregateInputType = {
   paymentStatus?: true
   deliveryMethod?: true
   stripeId?: true
-  subTotal?: true
+  subtotal?: true
   shippingCost?: true
   total?: true
   address?: true
@@ -164,7 +164,7 @@ export type OrderCountAggregateInputType = {
   paymentStatus?: true
   deliveryMethod?: true
   stripeId?: true
-  subTotal?: true
+  subtotal?: true
   shippingCost?: true
   total?: true
   address?: true
@@ -271,7 +271,7 @@ export type OrderGroupByOutputType = {
   paymentStatus: $Enums.PaymentStatus
   deliveryMethod: $Enums.DeliveryMethod
   stripeId: string | null
-  subTotal: number
+  subtotal: number
   shippingCost: number
   total: number
   address: string | null
@@ -314,7 +314,7 @@ export type OrderWhereInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Order"> | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFilter<"Order"> | $Enums.DeliveryMethod
   stripeId?: Prisma.StringNullableFilter<"Order"> | string | null
-  subTotal?: Prisma.FloatFilter<"Order"> | number
+  subtotal?: Prisma.FloatFilter<"Order"> | number
   shippingCost?: Prisma.FloatFilter<"Order"> | number
   total?: Prisma.FloatFilter<"Order"> | number
   address?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -335,7 +335,7 @@ export type OrderOrderByWithRelationInput = {
   paymentStatus?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   stripeId?: Prisma.SortOrderInput | Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -359,7 +359,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Order"> | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFilter<"Order"> | $Enums.DeliveryMethod
   stripeId?: Prisma.StringNullableFilter<"Order"> | string | null
-  subTotal?: Prisma.FloatFilter<"Order"> | number
+  subtotal?: Prisma.FloatFilter<"Order"> | number
   shippingCost?: Prisma.FloatFilter<"Order"> | number
   total?: Prisma.FloatFilter<"Order"> | number
   address?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -380,7 +380,7 @@ export type OrderOrderByWithAggregationInput = {
   paymentStatus?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   stripeId?: Prisma.SortOrderInput | Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -408,7 +408,7 @@ export type OrderScalarWhereWithAggregatesInput = {
   paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Order"> | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodWithAggregatesFilter<"Order"> | $Enums.DeliveryMethod
   stripeId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
-  subTotal?: Prisma.FloatWithAggregatesFilter<"Order"> | number
+  subtotal?: Prisma.FloatWithAggregatesFilter<"Order"> | number
   shippingCost?: Prisma.FloatWithAggregatesFilter<"Order"> | number
   total?: Prisma.FloatWithAggregatesFilter<"Order"> | number
   address?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
@@ -427,7 +427,7 @@ export type OrderCreateInput = {
   paymentStatus?: $Enums.PaymentStatus
   deliveryMethod?: $Enums.DeliveryMethod
   stripeId?: string | null
-  subTotal: number
+  subtotal: number
   shippingCost?: number
   total: number
   address?: string | null
@@ -448,7 +448,7 @@ export type OrderUncheckedCreateInput = {
   paymentStatus?: $Enums.PaymentStatus
   deliveryMethod?: $Enums.DeliveryMethod
   stripeId?: string | null
-  subTotal: number
+  subtotal: number
   shippingCost?: number
   total: number
   address?: string | null
@@ -468,7 +468,7 @@ export type OrderUpdateInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
   stripeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
   shippingCost?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -489,7 +489,7 @@ export type OrderUncheckedUpdateInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
   stripeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
   shippingCost?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -510,7 +510,7 @@ export type OrderCreateManyInput = {
   paymentStatus?: $Enums.PaymentStatus
   deliveryMethod?: $Enums.DeliveryMethod
   stripeId?: string | null
-  subTotal: number
+  subtotal: number
   shippingCost?: number
   total: number
   address?: string | null
@@ -529,7 +529,7 @@ export type OrderUpdateManyMutationInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
   stripeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
   shippingCost?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -549,7 +549,7 @@ export type OrderUncheckedUpdateManyInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
   stripeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
   shippingCost?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -569,7 +569,7 @@ export type OrderCountOrderByAggregateInput = {
   paymentStatus?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   stripeId?: Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -583,7 +583,7 @@ export type OrderCountOrderByAggregateInput = {
 
 export type OrderAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
 }
@@ -596,7 +596,7 @@ export type OrderMaxOrderByAggregateInput = {
   paymentStatus?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   stripeId?: Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -616,7 +616,7 @@ export type OrderMinOrderByAggregateInput = {
   paymentStatus?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   stripeId?: Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -630,7 +630,7 @@ export type OrderMinOrderByAggregateInput = {
 
 export type OrderSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  subTotal?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
   shippingCost?: Prisma.SortOrder
   total?: Prisma.SortOrder
 }
@@ -675,7 +675,7 @@ export type OrderCreateWithoutItemsInput = {
   paymentStatus?: $Enums.PaymentStatus
   deliveryMethod?: $Enums.DeliveryMethod
   stripeId?: string | null
-  subTotal: number
+  subtotal: number
   shippingCost?: number
   total: number
   address?: string | null
@@ -695,7 +695,7 @@ export type OrderUncheckedCreateWithoutItemsInput = {
   paymentStatus?: $Enums.PaymentStatus
   deliveryMethod?: $Enums.DeliveryMethod
   stripeId?: string | null
-  subTotal: number
+  subtotal: number
   shippingCost?: number
   total: number
   address?: string | null
@@ -730,7 +730,7 @@ export type OrderUpdateWithoutItemsInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
   stripeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
   shippingCost?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -750,7 +750,7 @@ export type OrderUncheckedUpdateWithoutItemsInput = {
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   deliveryMethod?: Prisma.EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
   stripeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subTotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
   shippingCost?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -801,7 +801,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   paymentStatus?: boolean
   deliveryMethod?: boolean
   stripeId?: boolean
-  subTotal?: boolean
+  subtotal?: boolean
   shippingCost?: boolean
   total?: boolean
   address?: boolean
@@ -823,7 +823,7 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   paymentStatus?: boolean
   deliveryMethod?: boolean
   stripeId?: boolean
-  subTotal?: boolean
+  subtotal?: boolean
   shippingCost?: boolean
   total?: boolean
   address?: boolean
@@ -843,7 +843,7 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   paymentStatus?: boolean
   deliveryMethod?: boolean
   stripeId?: boolean
-  subTotal?: boolean
+  subtotal?: boolean
   shippingCost?: boolean
   total?: boolean
   address?: boolean
@@ -863,7 +863,7 @@ export type OrderSelectScalar = {
   paymentStatus?: boolean
   deliveryMethod?: boolean
   stripeId?: boolean
-  subTotal?: boolean
+  subtotal?: boolean
   shippingCost?: boolean
   total?: boolean
   address?: boolean
@@ -875,7 +875,7 @@ export type OrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "email" | "status" | "paymentStatus" | "deliveryMethod" | "stripeId" | "subTotal" | "shippingCost" | "total" | "address" | "state" | "postalCode" | "country" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "email" | "status" | "paymentStatus" | "deliveryMethod" | "stripeId" | "subtotal" | "shippingCost" | "total" | "address" | "state" | "postalCode" | "country" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   items?: boolean | Prisma.Order$itemsArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
@@ -896,7 +896,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     paymentStatus: $Enums.PaymentStatus
     deliveryMethod: $Enums.DeliveryMethod
     stripeId: string | null
-    subTotal: number
+    subtotal: number
     shippingCost: number
     total: number
     address: string | null
@@ -1337,7 +1337,7 @@ export interface OrderFieldRefs {
   readonly paymentStatus: Prisma.FieldRef<"Order", 'PaymentStatus'>
   readonly deliveryMethod: Prisma.FieldRef<"Order", 'DeliveryMethod'>
   readonly stripeId: Prisma.FieldRef<"Order", 'String'>
-  readonly subTotal: Prisma.FieldRef<"Order", 'Float'>
+  readonly subtotal: Prisma.FieldRef<"Order", 'Float'>
   readonly shippingCost: Prisma.FieldRef<"Order", 'Float'>
   readonly total: Prisma.FieldRef<"Order", 'Float'>
   readonly address: Prisma.FieldRef<"Order", 'String'>

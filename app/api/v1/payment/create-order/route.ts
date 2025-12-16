@@ -45,7 +45,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       country,
       deliveryMethod,
       items,
-      subTotal,
+      subtotal,
       shippingCost,
       total,
       stripeId,
@@ -70,8 +70,43 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       );
     }
 
-    // Generate unique order ID
     const orderId = await generateOrderId();
+
+    // Check inventory availability for all items before processing
+    const unavailableItems: string[] = [];
+    for (const item of items) {
+      const variant = await prisma.productVariant.findUnique({
+        where: { id: item.variantId },
+        select: {
+          quantity: true,
+          color: { select: { name: true } },
+          size: { select: { name: true } },
+        },
+      });
+
+      if (!variant) {
+        unavailableItems.push(
+          `Product variant (Color: ${item.color}, Size: ${item.size}) not found`
+        );
+      } else if (variant.quantity < item.quantity) {
+        unavailableItems.push(
+          `Insufficient stock for ${item.color} / ${item.size.toUpperCase()}: ${
+            variant.quantity
+          } available, ${item.quantity} requested`
+        );
+      }
+    }
+
+    if (unavailableItems.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Some items are out of stock or have insufficient quantity',
+          errors: unavailableItems,
+        },
+        { status: 400 }
+      );
+    }
 
     // Process custom images for each item
     const processedItems = await Promise.all(
@@ -158,7 +193,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
           status: 'PENDING',
           paymentStatus: paymentStatus || 'PAID',
           stripeId: stripeId || null,
-          subTotal,
+          subtotal,
           shippingCost: shippingCost || 0,
           total,
           items: {

@@ -142,6 +142,19 @@ export const orderStatusConvert = {
   RETURNED: 'Returned',
 };
 
+export const paymentStatusConvert = {
+  INCOMPLETE: 'Incomplete',
+  PENDING: 'Pending',
+  PAID: 'Paid',
+  FAILED: 'Failed',
+  REFUNDED: 'Refunded',
+};
+
+export const deliveryMethodConvert = {
+  PICKUP: 'Pickup',
+  SHIPPING: 'Shipping',
+};
+
 export const authLogout = async () => {
   await authApi.logout();
 

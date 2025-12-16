@@ -298,7 +298,7 @@ model Order {
   stripeId        String?
 
   // Pricing
-  subTotal        Float
+  subtotal        Float
   shippingCost    Float     @default(0.0)
   total           Float
 

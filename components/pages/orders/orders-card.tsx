@@ -9,6 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { OrdersType } from '@/types';
 import { OrdersCardSkeleton } from '@/components/skeletons';
+import {
+  deliveryMethodConvert,
+  orderStatusConvert,
+  paymentStatusConvert,
+} from '@/lib/utils';
 
 type OrdersCardProps = {
   data?: OrdersType[];
@@ -61,13 +66,13 @@ export function OrdersCard({ data, loading }: OrdersCardProps) {
 
               <div className='flex gap-2 flex-wrap'>
                 <Badge variant='outline' className={statusColors[order.status]}>
-                  {order.status}
+                  {orderStatusConvert[order.status]}
                 </Badge>
                 <Badge
                   variant='outline'
                   className={paymentStatusColors[order.paymentStatus]}
                 >
-                  {order.paymentStatus}
+                  {paymentStatusConvert[order.paymentStatus]}
                 </Badge>
               </div>
 
@@ -82,7 +87,7 @@ export function OrdersCard({ data, loading }: OrdersCardProps) {
 
               <div className='flex items-center gap-2'>
                 <Badge variant='secondary' className='text-xs'>
-                  {order.deliveryMethod}
+                  {deliveryMethodConvert[order.deliveryMethod]}
                 </Badge>
               </div>
 

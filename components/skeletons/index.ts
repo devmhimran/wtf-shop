@@ -13,6 +13,7 @@ import { PublicProductSkeleton } from './public-product-skeleton';
 import { ProductDetailSkeleton } from './product-details-skeleton';
 import { OrdersTableSkeleton } from './orders-table-skeleton';
 import { OrdersCardSkeleton } from './orders-card-skeleton';
+import { OrderDetailsSkeleton } from './order-details-skeleton';
 
 export {
   UserNavSkeleton,
@@ -30,4 +31,5 @@ export {
   ProductDetailSkeleton,
   OrdersTableSkeleton,
   OrdersCardSkeleton,
+  OrderDetailsSkeleton,
 };

@@ -13,10 +13,9 @@ export const getQueryClient = (() => {
               if ((error as AxiosError)?.response?.status === 401) {
                 return false;
               }
-              // Retry other errors up to 2 times
-              return failureCount < 2;
+              // Retry other errors up to 3 times
+              return failureCount < 3;
             },
-            refetchOnWindowFocus: false,
           },
         },
       });
