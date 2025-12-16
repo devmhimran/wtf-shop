@@ -27,6 +27,13 @@ export default function PaymentPage() {
           body: JSON.stringify({
             amount: data.finalTotal,
             email: data.formData.email,
+            items: data.items.map((item) => ({
+              productId: item.productId,
+              variantId: item.variantId,
+              color: item.color,
+              size: item.size,
+              quantity: item.quantity,
+            })),
           }),
         });
 
@@ -35,11 +42,34 @@ export default function PaymentPage() {
         if (result.success) {
           setClientSecret(result.data.clientSecret);
         } else {
-          console.error('Failed to create payment intent');
+          console.error('Failed to create payment intent:', result.message);
+
+          // Show detailed error messages if available
+          if (result.errors && result.errors.length > 0) {
+            result.errors.forEach((error: string) => {
+              console.error(error);
+            });
+          }
+
+          // Redirect back to checkout with error
+          sessionStorage.setItem(
+            'paymentError',
+            JSON.stringify({
+              message: result.message,
+              errors: result.errors || [],
+              availabilityCheck: result.availabilityCheck || [],
+            })
+          );
           router.push('/checkout');
         }
       } catch (error) {
         console.error('Payment intent error:', error);
+        sessionStorage.setItem(
+          'paymentError',
+          JSON.stringify({
+            message: 'Failed to initialize payment. Please try again.',
+          })
+        );
         router.push('/checkout');
       } finally {
         setLoading(false);

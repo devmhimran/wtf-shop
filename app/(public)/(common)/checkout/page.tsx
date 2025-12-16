@@ -62,6 +62,25 @@ export default function CheckoutPage() {
   const [countryCode, setCountryCode] = useState('');
 
   const [availableStates, setAvailableStates] = useState<string[]>([]);
+  const [availabilityErrors, setAvailabilityErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    const errorData = sessionStorage.getItem('paymentError');
+    if (errorData) {
+      try {
+        const { message, errors } = JSON.parse(errorData);
+
+        if (errors && errors.length > 0) {
+          setAvailabilityErrors(errors);
+          toast.error(message || 'Some items are not available');
+        }
+
+        sessionStorage.removeItem('paymentError');
+      } catch (e) {
+        console.error('Failed to parse payment error:', e);
+      }
+    }
+  }, []);
 
   // Calculate total quantity
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -277,6 +296,25 @@ export default function CheckoutPage() {
     <div className='min-h-screen'>
       <div className='container mx-auto px-4 py-16'>
         <h1 className='text-4xl font-bold mb-8'>Checkout</h1>
+
+        {/* Availability Errors */}
+        {availabilityErrors.length > 0 && (
+          <div className='mb-6 p-4 bg-red-50 border border-red-200 rounded-lg'>
+            <h3 className='text-red-800 font-semibold mb-2'>
+              ⚠️ Product Availability Issues
+            </h3>
+            <ul className='list-disc list-inside space-y-1'>
+              {availabilityErrors.map((error, index) => (
+                <li key={index} className='text-red-600 text-sm'>
+                  {error}
+                </li>
+              ))}
+            </ul>
+            <p className='text-red-600 text-sm mt-2'>
+              Please update your cart before proceeding to payment.
+            </p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
