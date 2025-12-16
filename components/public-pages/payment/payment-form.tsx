@@ -12,56 +12,11 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import { useCartStore } from '@/store/useCart';
-import axios from 'axios';
-
-interface CartCustomization {
-  imagePreview: string;
-  imageName: string;
-  note: string;
-}
-
-interface CartItem {
-  productId: number;
-  variantId: number;
-  color: string;
-  size: string;
-  printSide: string;
-  quantity: number;
-  price: number;
-  total: number;
-  image: string;
-  title: string;
-  customizations?: CartCustomization[];
-}
-
-interface CheckoutData {
-  finalTotal: number;
-  formData: {
-    email: string;
-    name: string;
-    phone: string;
-    address: string;
-    city?: string;
-    state: string;
-    postalCode?: string;
-    country: string;
-  };
-  items: CartItem[];
-  calculations: {
-    total: number;
-    subtotal: number;
-    quantityDiscount: number;
-    flatDiscount: number;
-  };
-  shippingCost: number;
-  promoDiscount?: number;
-  appliedPromo?: {
-    code: string;
-  };
-}
+import { productApi } from '@/lib/api-helper';
+import { CheckoutDataType } from '@/types';
 
 interface PaymentFormProps {
-  checkoutData: CheckoutData;
+  checkoutData: CheckoutDataType;
   clientSecret: string;
 }
 
@@ -102,17 +57,18 @@ export default function PaymentForm({ checkoutData }: PaymentFormProps) {
       }
 
       if (paymentIntent && paymentIntent.status === 'succeeded') {
-        // Create order in database
+        // Create FormData for order with images
+        const formData = new FormData();
+
+        // Prepare order data
         const orderData = {
           email: checkoutData.formData.email,
           name: checkoutData.formData.name,
           phone: checkoutData.formData.phone,
           address: checkoutData.formData.address,
-          //   city: checkoutData.formData.city,
           state: checkoutData.formData.state,
-          //   postalCode: checkoutData.formData.postalCode,
           country: checkoutData.formData.country,
-          deliveryMethod: 'SHIPPING',
+          deliveryMethod: checkoutData.formData.deliveryMethod,
           subTotal: checkoutData.calculations.total,
           shippingCost: checkoutData.shippingCost,
           total: checkoutData.finalTotal,
@@ -129,14 +85,41 @@ export default function PaymentForm({ checkoutData }: PaymentFormProps) {
             total: item.total,
             customNote:
               item.customizations?.map((c) => c.note).join('; ') || null,
-            customImages: item.customizations || [],
+            customImages:
+              item.customizations?.map((c) => ({
+                note: c.note,
+              })) || [],
           })),
         };
 
-        const orderResponse = await axios.post(
-          '/api/v1/payment/create-order',
-          orderData
+        // Add order data as JSON
+        formData.append('data', JSON.stringify(orderData));
+
+        // Add custom image files for each item
+        await Promise.all(
+          checkoutData.items.map(async (item, itemIndex) => {
+            if (item.customizations && item.customizations.length > 0) {
+              await Promise.all(
+                item.customizations.map(async (customization, fileIndex) => {
+                  // Convert base64/blob URL to File
+                  const response = await fetch(customization.imagePreview);
+                  const blob = await response.blob();
+                  const file = new File([blob], customization.imageName, {
+                    type: customization.imageType || blob.type,
+                  });
+
+                  formData.append(
+                    `customImages_${itemIndex}_${fileIndex}`,
+                    file
+                  );
+                })
+              );
+            }
+          })
         );
+
+        const orderResponse =
+          await productApi.public.publicOrder.createPublicOrder(formData);
 
         if (orderResponse.data.success) {
           // Clear cart

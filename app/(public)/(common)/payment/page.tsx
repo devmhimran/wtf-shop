@@ -6,63 +6,20 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
 import PaymentForm from '@/components/public-pages/payment/payment-form';
+import { CheckoutDataType } from '@/types';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLISH_KEY!);
 
-interface CartCustomization {
-  imagePreview: string;
-  imageName: string;
-  note: string;
-}
-
-interface CartItem {
-  productId: number;
-  variantId: number;
-  color: string;
-  size: string;
-  printSide: string;
-  quantity: number;
-  price: number;
-  total: number;
-  image: string;
-  title: string;
-  customizations?: CartCustomization[];
-}
-
-interface CheckoutData {
-  finalTotal: number;
-  formData: {
-    email: string;
-    name: string;
-    phone: string;
-    address: string;
-    city?: string;
-    state: string;
-    postalCode?: string;
-    country: string;
-  };
-  items: CartItem[];
-  calculations: {
-    total: number;
-    subtotal: number;
-    quantityDiscount: number;
-    flatDiscount: number;
-  };
-  shippingCost: number;
-  promoDiscount?: number;
-  appliedPromo?: {
-    code: string;
-  };
-}
-
 export default function PaymentPage() {
   const router = useRouter();
-  const [checkoutData, setCheckoutData] = useState<CheckoutData | null>(null);
+  const [checkoutData, setCheckoutData] = useState<CheckoutDataType | null>(
+    null
+  );
   const [clientSecret, setClientSecret] = useState('');
   const [loading, setLoading] = useState(true);
 
   const createPaymentIntent = useCallback(
-    async (data: CheckoutData) => {
+    async (data: CheckoutDataType) => {
       try {
         const response = await fetch('/api/v1/payment/create-intent', {
           method: 'POST',
@@ -92,7 +49,6 @@ export default function PaymentPage() {
   );
 
   useEffect(() => {
-    // Get checkout data from sessionStorage
     const data = sessionStorage.getItem('checkoutData');
 
     if (!data) {

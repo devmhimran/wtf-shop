@@ -197,5 +197,13 @@ export const productApi = {
         return axiosInstance.post(url, { quantity, region });
       },
     },
+    publicOrder: {
+      createPublicOrder: (data: FormData) => {
+        const url = '/payment/create-order';
+        return axiosInstance.post(url, data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      },
+    },
   },
 };

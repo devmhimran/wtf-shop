@@ -21,8 +21,10 @@ export function CustomerSidebar() {
             key={item.href}
             href={item.href}
             className={cn(
-              pathname === item.href ? 'bg-orange-400 text-white' : '',
-              'hover:bg-gray-100 py-2 px-3 rounded-md block'
+              pathname === item.href
+                ? 'bg-orange-400 text-white'
+                : 'hover:bg-gray-100 text-dark',
+              ' py-2 px-3 rounded-md block'
             )}
           >
             {item.label}

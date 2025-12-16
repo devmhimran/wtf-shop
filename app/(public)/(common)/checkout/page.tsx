@@ -28,23 +28,25 @@ import {
   countryStateMap,
 } from '@/lib/country-codes';
 import { Textarea } from '@/components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useUser } from '@/hooks';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items } = useCartStore();
+  const { fetchMe } = useUser();
   const { productsWithDetails, calculations, loading } =
     useCartCalculations(items);
 
   // Form state
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    name: fetchMe?.name || '',
+    email: fetchMe?.email || '',
     phone: '',
     address: '',
-    city: '',
-    postalCode: '',
     country: '',
     state: '',
+    deliveryMethod: 'SHIPPING',
   });
 
   // Shipping & promo state
@@ -93,6 +95,16 @@ export default function CheckoutPage() {
     },
     [totalQuantity]
   );
+
+  useEffect(() => {
+    if (fetchMe) {
+      setFormData((prev) => ({
+        ...prev,
+        name: fetchMe.name || '',
+        email: fetchMe.email || '',
+      }));
+    }
+  }, [fetchMe]);
 
   // Handle country change
   useEffect(() => {
@@ -160,15 +172,16 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
+    if (!formData.name || !formData.email) {
+      toast.error('Please fill in name and email');
+      return;
+    }
+
     if (
-      !formData.name ||
-      !formData.email ||
-      !formData.address ||
-      !formData.country ||
-      !formData.state
+      formData.deliveryMethod === 'SHIPPING' &&
+      (!formData.address || !formData.country || !formData.state)
     ) {
-      toast.error('Please fill in all required fields');
+      toast.error('Please fill in all shipping address fields');
       return;
     }
 
@@ -260,9 +273,8 @@ export default function CheckoutPage() {
     );
   }
 
-
   return (
-    <div className='bg-gray-50/70 min-h-screen'>
+    <div className='min-h-screen'>
       <div className='container mx-auto px-4 py-16'>
         <h1 className='text-4xl font-bold mb-8'>Checkout</h1>
 
@@ -270,6 +282,29 @@ export default function CheckoutPage() {
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             {/* Left: Shipping Form */}
             <div className='lg:col-span-2 space-y-6'>
+              <RadioGroup
+                defaultValue='SHIPPING'
+                onValueChange={(value) => {
+                  setFormData({
+                    ...formData,
+                    deliveryMethod: value,
+                    address: value === 'PICKUP' ? '' : formData.address,
+                    country: value === 'PICKUP' ? '' : formData.country,
+                    state: value === 'PICKUP' ? '' : formData.state,
+                  });
+                }}
+                className='flex '
+              >
+                <div className='flex items-center gap-3'>
+                  <RadioGroupItem value='SHIPPING' id='SHIPPING' />
+                  <Label htmlFor='SHIPPING'>Shipping</Label>
+                </div>
+                <div className='flex items-center gap-3'>
+                  <RadioGroupItem value='PICKUP' id='PICKUP' />
+                  <Label htmlFor='PICKUP'>Pickup</Label>
+                </div>
+              </RadioGroup>
+
               {/* Contact Information */}
               <div className='bg-white  p-6 shadow-sm'>
                 <h2 className='text-2xl font-semibold mb-4'>
@@ -285,6 +320,7 @@ export default function CheckoutPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
+                      disabled={!!fetchMe?.name}
                       className='rounded-none'
                       placeholder='John Doe'
                     />
@@ -296,6 +332,7 @@ export default function CheckoutPage() {
                       type='email'
                       required
                       value={formData.email}
+                      disabled={!!fetchMe?.email}
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
                       }
@@ -320,76 +357,87 @@ export default function CheckoutPage() {
               </div>
 
               {/* Shipping Address */}
-              <div className='bg-white  p-6 shadow-sm'>
-                <h2 className='text-2xl font-semibold mb-4'>
-                  Shipping Address
-                </h2>
-                <div className='space-y-4'>
-                  <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                    <div className='space-y-2'>
-                      <Label htmlFor='country'>Country *</Label>
-                      <Select
-                        value={countryCode}
-                        onValueChange={(value) => handleCountryChange(value)}
-                        required
-                      >
-                        <SelectTrigger className='w-full rounded-none'>
-                          <SelectValue placeholder='Select country' />
-                        </SelectTrigger>
-                        <SelectContent className='rounded-none'>
-                          {countries.map((country) => (
-                            <SelectItem key={country} value={country}>
-                              {
-                                countryCodeToName[
-                                  country as keyof typeof countryCodeToName
-                                ]
-                              }
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {countryCode && availableStates.length > 0 && (
+              {formData.deliveryMethod === 'SHIPPING' && (
+                <div className='bg-white  p-6 shadow-sm'>
+                  <h2 className='text-2xl font-semibold mb-4'>
+                    Shipping Address
+                  </h2>
+                  <div className='space-y-4'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                       <div className='space-y-2'>
-                        <Label htmlFor='state'>State/City *</Label>
+                        <Label htmlFor='country'>
+                          Country{' '}
+                          {formData.deliveryMethod === 'SHIPPING' && '*'}
+                        </Label>
                         <Select
-                          value={formData.state}
-                          onValueChange={(value) =>
-                            setFormData({ ...formData, state: value })
-                          }
-                          required
+                          value={countryCode}
+                          onValueChange={(value) => handleCountryChange(value)}
+                          required={formData.deliveryMethod === 'SHIPPING'}
                         >
                           <SelectTrigger className='w-full rounded-none'>
-                            <SelectValue placeholder='Select state' />
+                            <SelectValue placeholder='Select country' />
                           </SelectTrigger>
                           <SelectContent className='rounded-none'>
-                            {availableStates.map((state) => (
-                              <SelectItem key={state} value={state}>
-                                {state}
+                            {countries.map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {
+                                  countryCodeToName[
+                                    country as keyof typeof countryCodeToName
+                                  ]
+                                }
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-                    )}
-                  </div>
 
-                  <div className='space-y-2'>
-                    <Label htmlFor='address'>Street Address *</Label>
-                    <Textarea
-                      placeholder='Enter discount note here'
-                      className='resize-none rounded-none'
-                      id='address'
-                      required
-                      value={formData.address}
-                      onChange={(e) =>
-                        setFormData({ ...formData, address: e.target.value })
-                      }
-                    />
+                      {countryCode && availableStates.length > 0 && (
+                        <div className='space-y-2'>
+                          <Label htmlFor='state'>
+                            State/City{' '}
+                            {formData.deliveryMethod === 'SHIPPING' && '*'}
+                          </Label>
+                          <Select
+                            value={formData.state}
+                            onValueChange={(value) =>
+                              setFormData({ ...formData, state: value })
+                            }
+                            required={formData.deliveryMethod === 'SHIPPING'}
+                          >
+                            <SelectTrigger className='w-full rounded-none'>
+                              <SelectValue placeholder='Select state' />
+                            </SelectTrigger>
+                            <SelectContent className='rounded-none'>
+                              {availableStates.map((state) => (
+                                <SelectItem key={state} value={state}>
+                                  {state}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className='space-y-2'>
+                      <Label htmlFor='address'>
+                        Street Address{' '}
+                        {formData.deliveryMethod === 'SHIPPING' && '*'}
+                      </Label>
+                      <Textarea
+                        placeholder='Enter discount note here'
+                        className='resize-none rounded-none'
+                        id='address'
+                        required={formData.deliveryMethod === 'SHIPPING'}
+                        value={formData.address}
+                        onChange={(e) =>
+                          setFormData({ ...formData, address: e.target.value })
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Right: Order Summary */}

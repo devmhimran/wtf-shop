@@ -33,7 +33,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={cn(oswald.variable, inter.variable, 'antialiased')}
+        className={cn(
+          oswald.variable,
+          inter.variable,
+          'antialiased bg-gray-50/50'
+        )}
         suppressHydrationWarning
       >
         <Suspense fallback={<Loading />}>

@@ -37,6 +37,12 @@ import {
   PublicProductDetailsType,
   QuantityDiscountType,
 } from './product.types';
+import {
+  CartCustomizationType,
+  CheckoutDataType,
+  CartItemType,
+  CreateOrderDataType,
+} from './order.types';
 
 export type {
   SignInResponse,
@@ -73,4 +79,8 @@ export type {
   PublicProductDetailsType,
   QuantityDiscountType,
   CartCustomization,
+  CartCustomizationType,
+  CheckoutDataType,
+  CartItemType,
+  CreateOrderDataType,
 };
