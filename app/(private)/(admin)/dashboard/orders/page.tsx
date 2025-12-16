@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
 import { useGetAllOrders } from '@/hooks';
-import { generateQueryString, orderStatusConvert } from '@/lib/utils';
+import { generateQueryString } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Funnel, Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,9 +21,6 @@ export default function OrdersPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [openFilter, setOpenFilter] = useState(false);
-  const [statusFilter, setStatusFilter] = useState(
-    searchParams.get('status') || 'all'
-  );
 
   const [params, setParams] = useState({
     search: searchParams.get('search') || '',
@@ -120,27 +117,6 @@ export default function OrdersPage() {
                       search: '',
                     }));
                     setSearchQuery('');
-                  }}
-                >
-                  <X className='w-4 h-4 cursor-pointer' />
-                </span>
-              </div>
-            )}
-            {params.status && (
-              <div className='pl-3 pr-2 py-1 border flex gap-2 items-center rounded-full text-sm capitalize'>
-                Status:{' '}
-                {
-                  orderStatusConvert[
-                    params.status as keyof typeof orderStatusConvert
-                  ]
-                }
-                <span
-                  onClick={() => {
-                    setParams((prev) => ({
-                      ...prev,
-                      status: '',
-                    }));
-                    setStatusFilter('all');
                   }}
                 >
                   <X className='w-4 h-4 cursor-pointer' />

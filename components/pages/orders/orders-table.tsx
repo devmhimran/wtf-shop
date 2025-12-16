@@ -61,7 +61,7 @@ export function OrdersTable({ data, loading }: OrdersTableProps) {
           {data && data.length > 0 ? (
             data.map((order) => (
               <TableRow key={order.id}>
-                <TableCell className='font-medium'>#{order.orderId}</TableCell>
+                <TableCell className='font-medium'>{order.orderId}</TableCell>
                 <TableCell className='max-w-[200px] truncate'>
                   {order.email}
                 </TableCell>
