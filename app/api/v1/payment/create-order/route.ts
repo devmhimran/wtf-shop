@@ -142,35 +142,52 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
       })
     );
 
-    // Create order with items
-    const order = await prisma.order.create({
-      data: {
-        orderId,
-        email,
-        phone: phone || null,
-        address: address || null,
-        state: state || null,
-        postalCode: postalCode || null,
-        country: country || null,
-        deliveryMethod: deliveryMethod || 'SHIPPING',
-        status: 'PENDING',
-        paymentStatus: paymentStatus || 'PAID',
-        stripeId: stripeId || null,
-        subTotal,
-        shippingCost: shippingCost || 0,
-        total,
-        items: {
-          create: processedItems,
-        },
-      },
-      include: {
-        items: {
-          include: {
-            product: true,
-            customImages: true,
+    // Create order with items and reduce variant quantities
+    const order = await prisma.$transaction(async (tx) => {
+      // Create the order
+      const newOrder = await tx.order.create({
+        data: {
+          orderId,
+          email,
+          phone: phone || null,
+          address: address || null,
+          state: state || null,
+          postalCode: postalCode || null,
+          country: country || null,
+          deliveryMethod: deliveryMethod || 'SHIPPING',
+          status: 'PENDING',
+          paymentStatus: paymentStatus || 'PAID',
+          stripeId: stripeId || null,
+          subTotal,
+          shippingCost: shippingCost || 0,
+          total,
+          items: {
+            create: processedItems,
           },
         },
-      },
+        include: {
+          items: {
+            include: {
+              product: true,
+              customImages: true,
+            },
+          },
+        },
+      });
+
+      // Reduce quantity from product variants
+      for (const item of items) {
+        await tx.productVariant.update({
+          where: { id: item.variantId },
+          data: {
+            quantity: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      }
+
+      return newOrder;
     });
 
     return NextResponse.json({
