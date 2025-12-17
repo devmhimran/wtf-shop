@@ -51,6 +51,11 @@ const superAdminMenuItems = [
     icon: ListOrdered,
   },
   {
+    title: 'Orders',
+    url: '/dashboard/orders',
+    icon: Package,
+  },
+  {
     title: 'Categories',
     url: '/dashboard/categories',
     icon: List,
@@ -80,11 +85,7 @@ const superAdminMenuItems = [
     url: '/dashboard/shipping-charge',
     icon: Truck,
   },
-  {
-    title: 'Orders',
-    url: '/dashboard/orders',
-    icon: Package,
-  },
+
   {
     title: 'Customers',
     url: '/dashboard/customers',
@@ -104,14 +105,14 @@ const adminMenuItems = [
     icon: ListOrdered,
   },
   {
-    title: 'Custom Products',
-    url: '/dashboard/custom-products',
-    icon: List,
-  },
-  {
     title: 'Orders',
     url: '/dashboard/orders',
     icon: Package,
+  },
+  {
+    title: 'Custom Products',
+    url: '/dashboard/custom-products',
+    icon: List,
   },
 ];
 

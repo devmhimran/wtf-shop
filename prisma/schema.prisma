@@ -130,6 +130,8 @@ model MediaLibrary {
   fileName   String   @unique  
   fileType   String?
   fileSize   Int?
+  fileId     String   @unique
+  thumbnailUrl String?
 
   // optional uploader
   createdBy   User?    @relation("MediaUploadedBy", fields: [createdById], references: [id], onDelete: SetNull)

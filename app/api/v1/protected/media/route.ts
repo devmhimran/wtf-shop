@@ -123,11 +123,13 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
   const media = await prisma.mediaLibrary.create({
     data: {
       title: title || uploadResponse.name || null,
-      alt: alt || null,
-      fileUrl: uploadResponse.url, // CDN URL
+      alt: alt || uploadResponse.name || null,
+      fileUrl: uploadResponse.url,
       fileName: uploadResponse.name,
       fileType: file.type,
       fileSize: uploadResponse.size,
+      fileId: uploadResponse.fileId,
+      thumbnailUrl: uploadResponse.thumbnailUrl || null,
       createdById: createdById ? Number(createdById) : null,
     },
   });

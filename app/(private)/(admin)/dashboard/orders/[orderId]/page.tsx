@@ -28,6 +28,14 @@ import {
 import { useState } from 'react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import {
+  deliveryMethodConvert,
+  orderStatusConvert,
+  paymentStatusConvert,
+} from '@/lib/utils';
+import { CustomImageType } from '@/types';
+import { Modal } from '@/components/shared';
+import { OrderCustomizeView } from '@/components/pages/orders';
 
 const statusColors = {
   PENDING: 'bg-yellow-100 text-yellow-800',
@@ -49,12 +57,15 @@ const paymentStatusColors = {
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams();
+  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [openCustomizeItemModal, setOpenCustomizeItemModal] = useState(false);
+  const [customizeItemData, setCustomizeItemData] =
+    useState<CustomImageType | null>(null);
+
   const { fetchOrderDetailsMutationData, fetchOrderDetailsMutation } =
     useGetOrderDetails(orderId as string);
   const { updateOrderStatusAsync } = useGetOrders();
-
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
-  const [isUpdating, setIsUpdating] = useState(false);
 
   const order = fetchOrderDetailsMutationData?.data;
   const isLoading = fetchOrderDetailsMutation.isLoading;
@@ -93,7 +104,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className='container mx-auto p-6 space-y-6'>
+    <div className='container mx-auto p-2 md:p-6 space-y-6'>
       {/* Header */}
       <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
         <div>
@@ -140,9 +151,9 @@ export default function OrderDetailsPage() {
                 <Package className='h-5 w-5 text-blue-600' />
               </div>
               <div>
-                <p className='text-sm text-gray-500'>Order Status</p>
+                <p className=' text-gray-500'>Order Status</p>
                 <Badge variant='outline' className={statusColors[order.status]}>
-                  {order.status}
+                  {orderStatusConvert[order.status]}
                 </Badge>
               </div>
             </div>
@@ -156,12 +167,12 @@ export default function OrderDetailsPage() {
                 <CreditCard className='h-5 w-5 text-green-600' />
               </div>
               <div>
-                <p className='text-sm text-gray-500'>Payment Status</p>
+                <p className='text-gray-500'>Payment Status</p>
                 <Badge
                   variant='outline'
                   className={paymentStatusColors[order.paymentStatus]}
                 >
-                  {order.paymentStatus}
+                  {paymentStatusConvert[order.paymentStatus]}
                 </Badge>
               </div>
             </div>
@@ -175,8 +186,10 @@ export default function OrderDetailsPage() {
                 <Truck className='h-5 w-5 text-purple-600' />
               </div>
               <div>
-                <p className='text-sm text-gray-500'>Delivery Method</p>
-                <p className='font-semibold'>{order.deliveryMethod}</p>
+                <p className='text-gray-500'>Delivery Method</p>
+                <p className='font-semibold text-lg'>
+                  {deliveryMethodConvert[order.deliveryMethod]}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -189,9 +202,9 @@ export default function OrderDetailsPage() {
                 <Calendar className='h-5 w-5 text-orange-600' />
               </div>
               <div>
-                <p className='text-sm text-gray-500'>Order Date</p>
+                <p className=' text-gray-500'>Order Date</p>
                 <p className='font-semibold'>
-                  {dayjs(order.createdAt).format('MMM DD, YYYY')}
+                  {dayjs(order.createdAt).format('MMM DD, YYYY, hh:mm A')}
                 </p>
               </div>
             </div>
@@ -258,9 +271,7 @@ export default function OrderDetailsPage() {
               {order.stripeId && (
                 <div>
                   <p className='text-sm text-gray-500'>Stripe ID</p>
-                  <p className='font-mono text-sm break-all'>
-                    {order.stripeId}
-                  </p>
+                  <p className='font-mono break-all'>{order.stripeId}</p>
                 </div>
               )}
               <Separator />
@@ -289,11 +300,11 @@ export default function OrderDetailsPage() {
 
         {/* Order Items */}
         <div className='lg:col-span-2'>
-          <Card>
+          <Card className='py-3 md:py-5'>
             <CardHeader>
               <CardTitle className='text-lg'>Order Items</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className='px-2 md:px-4'>
               <div className='space-y-4'>
                 {order.items && order.items.length > 0 ? (
                   order.items.map((item) => (
@@ -381,6 +392,10 @@ export default function OrderDetailsPage() {
                                     <div
                                       key={customImage.id}
                                       className='border rounded-lg p-2 space-y-2'
+                                      onClick={() => {
+                                        setCustomizeItemData(customImage);
+                                        setOpenCustomizeItemModal(true);
+                                      }}
                                     >
                                       <Image
                                         src={customImage.imageUrl}
@@ -413,6 +428,14 @@ export default function OrderDetailsPage() {
           </Card>
         </div>
       </div>
+      <Modal
+        isOpen={openCustomizeItemModal}
+        setIsOpen={setOpenCustomizeItemModal}
+        title='Customize Item Details'
+        description=''
+      >
+        <OrderCustomizeView data={customizeItemData} />
+      </Modal>
     </div>
   );
 }

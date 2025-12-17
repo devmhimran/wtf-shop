@@ -133,7 +133,7 @@ export function OrdersTable({ data, loading }: OrdersTableProps) {
                   AU${order.total.toFixed(2)}
                 </TableCell>
                 <TableCell>
-                  {dayjs(order.createdAt).format('MMM DD, YYYY')}
+                  {dayjs(order.createdAt).format('MMM DD, YYYY, hh:mm A')}
                 </TableCell>
                 <TableCell className='text-center'>
                   <Link href={`/dashboard/orders/${order.orderId}`}>

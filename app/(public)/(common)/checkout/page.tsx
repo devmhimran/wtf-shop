@@ -116,7 +116,7 @@ export default function CheckoutPage() {
   );
 
   useEffect(() => {
-    if (fetchMe) {
+    if (fetchMe && fetchMe.role === 'CUSTOMER') {
       setFormData((prev) => ({
         ...prev,
         name: fetchMe.name || '',
@@ -318,7 +318,6 @@ export default function CheckoutPage() {
 
         <form onSubmit={handleSubmit}>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-            {/* Left: Shipping Form */}
             <div className='lg:col-span-2 space-y-6'>
               <RadioGroup
                 defaultValue='SHIPPING'
@@ -330,6 +329,10 @@ export default function CheckoutPage() {
                     country: value === 'PICKUP' ? '' : formData.country,
                     state: value === 'PICKUP' ? '' : formData.state,
                   });
+                  if (value === 'PICKUP') {
+                    setShippingCost(0);
+                    setCountryCode('');
+                  }
                 }}
                 className='flex '
               >
@@ -358,7 +361,7 @@ export default function CheckoutPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
-                      disabled={!!fetchMe?.name}
+                      disabled={!!fetchMe?.name && fetchMe.role === 'CUSTOMER'}
                       className='rounded-none'
                       placeholder='John Doe'
                     />
@@ -370,7 +373,7 @@ export default function CheckoutPage() {
                       type='email'
                       required
                       value={formData.email}
-                      disabled={!!fetchMe?.email}
+                      disabled={!!fetchMe?.email && fetchMe.role === 'CUSTOMER'}
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
                       }

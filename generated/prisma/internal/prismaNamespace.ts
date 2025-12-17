@@ -1630,6 +1630,8 @@ export const MediaLibraryScalarFieldEnum = {
   fileName: 'fileName',
   fileType: 'fileType',
   fileSize: 'fileSize',
+  fileId: 'fileId',
+  thumbnailUrl: 'thumbnailUrl',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

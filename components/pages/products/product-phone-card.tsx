@@ -63,7 +63,7 @@ export function ProductPhoneCard({ data, index }: ProductPhoneCardProps) {
         <div className='relative w-full rounded-lg overflow-hidden bg-muted shadow-sm mb-3'>
           {data.mainImage ? (
             <Image
-              src={data.mainImage.fileUrl}
+              src={data.mainImage.thumbnailUrl || data.mainImage.fileUrl}
               alt={data.title}
               width={200}
               height={200}
@@ -71,7 +71,13 @@ export function ProductPhoneCard({ data, index }: ProductPhoneCardProps) {
             />
           ) : (
             <div className='w-full h-full flex items-center justify-center bg-muted'>
-              <span className='text-muted-foreground text-sm'>No Image</span>
+              <Image
+                src='/assets/img/placeholder-image.png'
+                alt={data.title}
+                width={200}
+                height={200}
+                className='w-full h-50 object-cover group-hover:scale-105 transition-transform duration-500'
+              />
             </div>
           )}
           {data.isNew && (

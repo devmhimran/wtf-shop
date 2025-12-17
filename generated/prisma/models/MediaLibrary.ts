@@ -46,6 +46,8 @@ export type MediaLibraryMinAggregateOutputType = {
   fileName: string | null
   fileType: string | null
   fileSize: number | null
+  fileId: string | null
+  thumbnailUrl: string | null
   createdById: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +61,8 @@ export type MediaLibraryMaxAggregateOutputType = {
   fileName: string | null
   fileType: string | null
   fileSize: number | null
+  fileId: string | null
+  thumbnailUrl: string | null
   createdById: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -72,6 +76,8 @@ export type MediaLibraryCountAggregateOutputType = {
   fileName: number
   fileType: number
   fileSize: number
+  fileId: number
+  thumbnailUrl: number
   createdById: number
   createdAt: number
   updatedAt: number
@@ -99,6 +105,8 @@ export type MediaLibraryMinAggregateInputType = {
   fileName?: true
   fileType?: true
   fileSize?: true
+  fileId?: true
+  thumbnailUrl?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -112,6 +120,8 @@ export type MediaLibraryMaxAggregateInputType = {
   fileName?: true
   fileType?: true
   fileSize?: true
+  fileId?: true
+  thumbnailUrl?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -125,6 +135,8 @@ export type MediaLibraryCountAggregateInputType = {
   fileName?: true
   fileType?: true
   fileSize?: true
+  fileId?: true
+  thumbnailUrl?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -225,6 +237,8 @@ export type MediaLibraryGroupByOutputType = {
   fileName: string
   fileType: string | null
   fileSize: number | null
+  fileId: string
+  thumbnailUrl: string | null
   createdById: number | null
   createdAt: Date
   updatedAt: Date
@@ -261,6 +275,8 @@ export type MediaLibraryWhereInput = {
   fileName?: Prisma.StringFilter<"MediaLibrary"> | string
   fileType?: Prisma.StringNullableFilter<"MediaLibrary"> | string | null
   fileSize?: Prisma.IntNullableFilter<"MediaLibrary"> | number | null
+  fileId?: Prisma.StringFilter<"MediaLibrary"> | string
+  thumbnailUrl?: Prisma.StringNullableFilter<"MediaLibrary"> | string | null
   createdById?: Prisma.IntNullableFilter<"MediaLibrary"> | number | null
   createdAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
@@ -279,6 +295,8 @@ export type MediaLibraryOrderByWithRelationInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrderInput | Prisma.SortOrder
   fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileId?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -292,6 +310,7 @@ export type MediaLibraryOrderByWithRelationInput = {
 export type MediaLibraryWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   fileName?: string
+  fileId?: string
   AND?: Prisma.MediaLibraryWhereInput | Prisma.MediaLibraryWhereInput[]
   OR?: Prisma.MediaLibraryWhereInput[]
   NOT?: Prisma.MediaLibraryWhereInput | Prisma.MediaLibraryWhereInput[]
@@ -300,6 +319,7 @@ export type MediaLibraryWhereUniqueInput = Prisma.AtLeast<{
   fileUrl?: Prisma.StringFilter<"MediaLibrary"> | string
   fileType?: Prisma.StringNullableFilter<"MediaLibrary"> | string | null
   fileSize?: Prisma.IntNullableFilter<"MediaLibrary"> | number | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"MediaLibrary"> | string | null
   createdById?: Prisma.IntNullableFilter<"MediaLibrary"> | number | null
   createdAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
@@ -308,7 +328,7 @@ export type MediaLibraryWhereUniqueInput = Prisma.AtLeast<{
   alternativeImageProducts?: Prisma.ProductListRelationFilter
   galleryItems?: Prisma.ProductGalleryListRelationFilter
   categories?: Prisma.CategoryListRelationFilter
-}, "id" | "fileName">
+}, "id" | "fileName" | "fileId">
 
 export type MediaLibraryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -318,6 +338,8 @@ export type MediaLibraryOrderByWithAggregationInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrderInput | Prisma.SortOrder
   fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileId?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -339,6 +361,8 @@ export type MediaLibraryScalarWhereWithAggregatesInput = {
   fileName?: Prisma.StringWithAggregatesFilter<"MediaLibrary"> | string
   fileType?: Prisma.StringNullableWithAggregatesFilter<"MediaLibrary"> | string | null
   fileSize?: Prisma.IntNullableWithAggregatesFilter<"MediaLibrary"> | number | null
+  fileId?: Prisma.StringWithAggregatesFilter<"MediaLibrary"> | string
+  thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"MediaLibrary"> | string | null
   createdById?: Prisma.IntNullableWithAggregatesFilter<"MediaLibrary"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MediaLibrary"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MediaLibrary"> | Date | string
@@ -351,6 +375,8 @@ export type MediaLibraryCreateInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
@@ -368,6 +394,8 @@ export type MediaLibraryUncheckedCreateInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdById?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -384,6 +412,8 @@ export type MediaLibraryUpdateInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
@@ -401,6 +431,8 @@ export type MediaLibraryUncheckedUpdateInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -418,6 +450,8 @@ export type MediaLibraryCreateManyInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdById?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -430,6 +464,8 @@ export type MediaLibraryUpdateManyMutationInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -442,6 +478,8 @@ export type MediaLibraryUncheckedUpdateManyInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -470,6 +508,8 @@ export type MediaLibraryCountOrderByAggregateInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
+  fileId?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -489,6 +529,8 @@ export type MediaLibraryMaxOrderByAggregateInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
+  fileId?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -502,6 +544,8 @@ export type MediaLibraryMinOrderByAggregateInput = {
   fileName?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
+  fileId?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -626,6 +670,8 @@ export type MediaLibraryCreateWithoutCreatedByInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mainImageProducts?: Prisma.ProductCreateNestedManyWithoutMainImageInput
@@ -642,6 +688,8 @@ export type MediaLibraryUncheckedCreateWithoutCreatedByInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mainImageProducts?: Prisma.ProductUncheckedCreateNestedManyWithoutMainImageInput
@@ -687,6 +735,8 @@ export type MediaLibraryScalarWhereInput = {
   fileName?: Prisma.StringFilter<"MediaLibrary"> | string
   fileType?: Prisma.StringNullableFilter<"MediaLibrary"> | string | null
   fileSize?: Prisma.IntNullableFilter<"MediaLibrary"> | number | null
+  fileId?: Prisma.StringFilter<"MediaLibrary"> | string
+  thumbnailUrl?: Prisma.StringNullableFilter<"MediaLibrary"> | string | null
   createdById?: Prisma.IntNullableFilter<"MediaLibrary"> | number | null
   createdAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MediaLibrary"> | Date | string
@@ -699,6 +749,8 @@ export type MediaLibraryCreateWithoutCategoriesInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
@@ -715,6 +767,8 @@ export type MediaLibraryUncheckedCreateWithoutCategoriesInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdById?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -746,6 +800,8 @@ export type MediaLibraryUpdateWithoutCategoriesInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
@@ -762,6 +818,8 @@ export type MediaLibraryUncheckedUpdateWithoutCategoriesInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -777,6 +835,8 @@ export type MediaLibraryCreateWithoutMainImageProductsInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
@@ -793,6 +853,8 @@ export type MediaLibraryUncheckedCreateWithoutMainImageProductsInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdById?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -813,6 +875,8 @@ export type MediaLibraryCreateWithoutAlternativeImageProductsInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
@@ -829,6 +893,8 @@ export type MediaLibraryUncheckedCreateWithoutAlternativeImageProductsInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdById?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -860,6 +926,8 @@ export type MediaLibraryUpdateWithoutMainImageProductsInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
@@ -876,6 +944,8 @@ export type MediaLibraryUncheckedUpdateWithoutMainImageProductsInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -902,6 +972,8 @@ export type MediaLibraryUpdateWithoutAlternativeImageProductsInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
@@ -918,6 +990,8 @@ export type MediaLibraryUncheckedUpdateWithoutAlternativeImageProductsInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -933,6 +1007,8 @@ export type MediaLibraryCreateWithoutGalleryItemsInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutMediaLibraryInput
@@ -949,6 +1025,8 @@ export type MediaLibraryUncheckedCreateWithoutGalleryItemsInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdById?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -980,6 +1058,8 @@ export type MediaLibraryUpdateWithoutGalleryItemsInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutMediaLibraryNestedInput
@@ -996,6 +1076,8 @@ export type MediaLibraryUncheckedUpdateWithoutGalleryItemsInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1012,6 +1094,8 @@ export type MediaLibraryCreateManyCreatedByInput = {
   fileName: string
   fileType?: string | null
   fileSize?: number | null
+  fileId: string
+  thumbnailUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1023,6 +1107,8 @@ export type MediaLibraryUpdateWithoutCreatedByInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mainImageProducts?: Prisma.ProductUpdateManyWithoutMainImageNestedInput
@@ -1039,6 +1125,8 @@ export type MediaLibraryUncheckedUpdateWithoutCreatedByInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mainImageProducts?: Prisma.ProductUncheckedUpdateManyWithoutMainImageNestedInput
@@ -1055,6 +1143,8 @@ export type MediaLibraryUncheckedUpdateManyWithoutCreatedByInput = {
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileId?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1125,6 +1215,8 @@ export type MediaLibrarySelect<ExtArgs extends runtime.Types.Extensions.Internal
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
+  fileId?: boolean
+  thumbnailUrl?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1144,6 +1236,8 @@ export type MediaLibrarySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
+  fileId?: boolean
+  thumbnailUrl?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1158,6 +1252,8 @@ export type MediaLibrarySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
+  fileId?: boolean
+  thumbnailUrl?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1172,12 +1268,14 @@ export type MediaLibrarySelectScalar = {
   fileName?: boolean
   fileType?: boolean
   fileSize?: boolean
+  fileId?: boolean
+  thumbnailUrl?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MediaLibraryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "alt" | "fileUrl" | "fileName" | "fileType" | "fileSize" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["mediaLibrary"]>
+export type MediaLibraryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "alt" | "fileUrl" | "fileName" | "fileType" | "fileSize" | "fileId" | "thumbnailUrl" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["mediaLibrary"]>
 export type MediaLibraryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.MediaLibrary$createdByArgs<ExtArgs>
   mainImageProducts?: boolean | Prisma.MediaLibrary$mainImageProductsArgs<ExtArgs>
@@ -1210,6 +1308,8 @@ export type $MediaLibraryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     fileName: string
     fileType: string | null
     fileSize: number | null
+    fileId: string
+    thumbnailUrl: string | null
     createdById: number | null
     createdAt: Date
     updatedAt: Date
@@ -1648,6 +1748,8 @@ export interface MediaLibraryFieldRefs {
   readonly fileName: Prisma.FieldRef<"MediaLibrary", 'String'>
   readonly fileType: Prisma.FieldRef<"MediaLibrary", 'String'>
   readonly fileSize: Prisma.FieldRef<"MediaLibrary", 'Int'>
+  readonly fileId: Prisma.FieldRef<"MediaLibrary", 'String'>
+  readonly thumbnailUrl: Prisma.FieldRef<"MediaLibrary", 'String'>
   readonly createdById: Prisma.FieldRef<"MediaLibrary", 'Int'>
   readonly createdAt: Prisma.FieldRef<"MediaLibrary", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MediaLibrary", 'DateTime'>

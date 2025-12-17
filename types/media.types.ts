@@ -6,7 +6,7 @@ export type MediaType = {
   fileName: string;
   fileType: string;
   fileSize: number;
-  createdById: number;
+  thumbnailUrl: string | null;
   createdAt: string;
   updatedAt: string;
 };

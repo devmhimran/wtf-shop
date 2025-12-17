@@ -1,9 +1,8 @@
 import { prisma } from '@/prisma/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { catchAsyncNext } from '@/lib/catch-async';
 import { authenticateRequest } from '@/lib/utils';
+import imagekit from '@/lib/image-kit';
 
 type RouteParams = {
   id: string;
@@ -39,10 +38,12 @@ export const DELETE = catchAsyncNext(
       return NextResponse.json({ error: 'Media not found' }, { status: 404 });
     }
 
-    // Delete the physical file from server
-    const filePath = path.join(process.cwd(), 'public', media.fileUrl);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+    // Delete the file from ImageKit
+    try {
+      await imagekit.deleteFile(media.fileId);
+    } catch (error) {
+      console.error('Error deleting from ImageKit:', error);
+      // Continue with database deletion even if ImageKit deletion fails
     }
 
     // Delete from database

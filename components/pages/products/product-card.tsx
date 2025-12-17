@@ -67,14 +67,20 @@ export function ProductCard({ data, index }: ProductCardProps) {
           <div className='relative w-32 h-32 shrink-0 rounded-xl overflow-hidden bg-muted shadow-sm'>
             {data.mainImage ? (
               <Image
-                src={data.mainImage.fileUrl}
+                src={data.mainImage.thumbnailUrl || data.mainImage.fileUrl}
                 alt={data.title}
                 fill
                 className='object-cover group-hover:scale-105 transition-transform duration-500'
               />
             ) : (
               <div className='w-full h-full flex items-center justify-center bg-muted'>
-                <span className='text-muted-foreground text-sm'>No Image</span>
+                <Image
+                  src='/assets/img/placeholder-image.png'
+                  alt={data.title}
+                  width={200}
+                  height={200}
+                  className='w-full h-50 object-cover group-hover:scale-105 transition-transform duration-500'
+                />
               </div>
             )}
             {data.isNew && (

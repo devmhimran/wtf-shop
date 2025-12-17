@@ -81,6 +81,13 @@ export type CreateOrderDataType = {
   }[];
 };
 
+export type CustomImageType = {
+  id: number;
+  imageUrl: string;
+  imageName: string;
+  note: string;
+};
+
 export type OrderItemsType = {
   id: number;
   productId: number;
@@ -93,12 +100,7 @@ export type OrderItemsType = {
   price: number;
   total: number;
   customNote: string | null;
-  customImages: {
-    id: number;
-    imageUrl: string;
-    imageName: string;
-    note: string;
-  }[];
+  customImages: CustomImageType[];
   product: {
     id: number;
     title: string;

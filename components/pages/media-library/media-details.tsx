@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Copy, Download, ExternalLink } from 'lucide-react';
-import { toast } from 'sonner';
 import dayjs from 'dayjs';
+import { handleCopyUrl, handleDownload, handleOpenInNewTab } from '@/lib/utils';
 
 const formatFileSize = (bytes: number) => {
   if (bytes === 0) return '0 Bytes';
@@ -43,26 +43,6 @@ export function MediaDetails({ data }: { data: MediaType | null }) {
 
   const isImage = data.fileType.startsWith('image/');
 
-  const handleCopyUrl = () => {
-    const fullUrl = `${data.fileUrl}`;
-    navigator.clipboard.writeText(fullUrl);
-    toast.success('URL copied to clipboard!');
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = data.fileUrl;
-    link.download = data.fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success('Download started!');
-  };
-
-  const handleOpenInNewTab = () => {
-    window.open(data.fileUrl, '_blank');
-  };
-
   return (
     <div className='space-y-6'>
       {/* Preview Section */}
@@ -87,15 +67,27 @@ export function MediaDetails({ data }: { data: MediaType | null }) {
 
       {/* Actions */}
       <div className='flex gap-2 flex-wrap'>
-        <Button onClick={handleCopyUrl} variant='outline' size='sm'>
+        <Button
+          onClick={() => handleCopyUrl(data.fileUrl)}
+          variant='outline'
+          size='sm'
+        >
           <Copy className='w-4 h-4 mr-2' />
           Copy URL
         </Button>
-        <Button onClick={handleDownload} variant='outline' size='sm'>
+        <Button
+          onClick={() => handleDownload(data.fileUrl, data.fileName)}
+          variant='outline'
+          size='sm'
+        >
           <Download className='w-4 h-4 mr-2' />
           Download
         </Button>
-        <Button onClick={handleOpenInNewTab} variant='outline' size='sm'>
+        <Button
+          onClick={() => handleOpenInNewTab(data.fileUrl)}
+          variant='outline'
+          size='sm'
+        >
           <ExternalLink className='w-4 h-4 mr-2' />
           Open in New Tab
         </Button>

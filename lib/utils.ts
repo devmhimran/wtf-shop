@@ -6,6 +6,7 @@ import { verifyAccessToken } from './jwt';
 import { authApi } from './api-helper';
 import { CommonApiResponseError, ErrorItem } from '@/types/common.types';
 import { ZodError } from 'zod';
+import { toast } from 'sonner';
 
 export const USER_COUNT_PER_PAGE = 10;
 
@@ -196,4 +197,43 @@ export const formatFileSize = (bytes: number) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+};
+
+export const handleCopyUrl = (imageUrl: string) => {
+  const fullUrl = `${imageUrl}`;
+  navigator.clipboard.writeText(fullUrl);
+  toast.success('URL copied to clipboard!');
+};
+
+export const handleDownload = async (imageUrl: string, imageName: string) => {
+  try {
+    const url = imageUrl || '/assets/img/placeholder-image.png';
+    const fileName = imageName || 'customized-image.png';
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch image');
+
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(blobUrl);
+
+    toast.success('Download started!');
+  } catch (error) {
+    console.error('Download failed:', error);
+    toast.error(
+      'Failed to download image. Please try opening in a new tab and saving manually.'
+    );
+  }
+};
+
+export const handleOpenInNewTab = (imageUrl: string) => {
+  window.open(imageUrl, '_blank');
 };
