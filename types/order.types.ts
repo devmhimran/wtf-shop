@@ -1,4 +1,5 @@
 import { $Enums } from '@/generated/prisma/client';
+import { MediaType } from './media.types';
 
 export type CartCustomizationType = {
   imagePreview: string;
@@ -140,4 +141,46 @@ export type OrderDetailType = OrdersType & {
   phone: string;
   updatedAt: string;
   items: OrderItemsType[];
+};
+
+export type CustomerOrderItemType = {
+  id: number;
+  productId: number;
+  color: string;
+  size: string;
+  printSide: string;
+  quantity: number;
+  price: number;
+  total: number;
+  customNote: string | null;
+  product: {
+    id: number;
+    title: string;
+    slug: string;
+    mainImage: MediaType;
+    alternativeImages: MediaType | null;
+    customImages: (Omit<CustomImageType, never> & {
+      orderId: number;
+    })[];
+  };
+};
+
+export type OrderCustomerType = {
+  id: number;
+  orderId: string;
+  email: string;
+  status: $Enums.OrderStatus;
+  paymentStatus: $Enums.PaymentStatus;
+  deliveryMethod: $Enums.DeliveryMethod;
+  stripeId: string;
+  subtotal: number;
+  shippingCost: number;
+  total: number;
+  address: string;
+  state: string;
+  postalCode: string | null;
+  country: string;
+  phone: string;
+  createdAt: string;
+  items: CustomerOrderItemType[];
 };

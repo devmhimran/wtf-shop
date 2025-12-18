@@ -1,6 +1,6 @@
 import { productApi } from '@/lib/api-helper';
 import { getQueryClient } from '@/lib/react-query';
-import { Meta, OrdersType, Response } from '@/types';
+import { Meta, OrderCustomerType, OrdersType, Response } from '@/types';
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 
 const queryClient = getQueryClient();
@@ -60,5 +60,24 @@ export function useGetAllOrders(options?: string) {
   return {
     fetchAllOrdersMutation,
     fetchAllOrdersMutationData: fetchAllOrdersMutation.data,
+  };
+}
+
+export function useGetAllCustomerOrders(options?: string) {
+  const fetchAllCustomerOrdersMutation = useQuery<
+    Response<OrderCustomerType[], Meta>
+  >({
+    queryKey: ['customer-orders', options],
+    queryFn: async () => {
+      const res = await productApi.order
+        .getCustomerOrders(options)
+        .then((response) => response.data);
+      return res;
+    },
+    placeholderData: keepPreviousData,
+  });
+  return {
+    fetchAllCustomerOrdersMutation,
+    fetchAllCustomerOrdersMutationData: fetchAllCustomerOrdersMutation.data,
   };
 }

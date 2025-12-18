@@ -10,6 +10,7 @@ import {
   CreateSubCategoryType,
   DetailsResponse,
   Meta,
+  OrderCustomerType,
   OrderDetailType,
   OrdersType,
   ProductType,
@@ -175,6 +176,12 @@ export const productApi = {
     updateOrderStatus: (orderId: string, newStatus: string) => {
       const url = `/protected/orders/${orderId}`;
       return axiosInstanceWithAuth.patch(url, { status: newStatus });
+    },
+    getCustomerOrders: (params?: string) => {
+      const url = `/protected/customer-orders` + (params ? params : '');
+      return axiosInstanceWithAuth.get<Response<OrderCustomerType[], Meta>>(
+        url
+      );
     },
   },
   public: {

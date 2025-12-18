@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useGetAllCustomerOrders } from '@/hooks';
 import { generateQueryString, orderStatusConvert } from '@/lib/utils';
 import { Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -34,6 +35,10 @@ export default function MyOrdersPage() {
   );
 
   const queryString = generateQueryString(params);
+  const { fetchAllCustomerOrdersMutationData } =
+    useGetAllCustomerOrders(queryString);
+
+  console.log({ fetchAllCustomerOrdersMutationData });
 
   const debounced = useDebouncedCallback((value) => {
     setParams((prevParams) => ({

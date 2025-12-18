@@ -46,6 +46,8 @@ import {
   OrderItemsType,
   OrdersType,
   CustomImageType,
+  OrderCustomerType,
+  CustomerOrderItemType,
 } from './order.types';
 
 export type {
@@ -91,4 +93,6 @@ export type {
   OrderItemsType,
   OrdersType,
   CustomImageType,
+  OrderCustomerType,
+  CustomerOrderItemType,
 };

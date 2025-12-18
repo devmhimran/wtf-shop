@@ -21,7 +21,11 @@ import {
   useGetAllRelatedPublicProducts,
 } from './use-products';
 import { useCartCalculations } from './use-cart-calculations';
-import { useGetAllOrders, useGetOrders } from './use-orders';
+import {
+  useGetAllOrders,
+  useGetOrders,
+  useGetAllCustomerOrders,
+} from './use-orders';
 
 export {
   useUser,
@@ -47,4 +51,5 @@ export {
   useCartCalculations,
   useGetAllOrders,
   useGetOrders,
+  useGetAllCustomerOrders,
 };
