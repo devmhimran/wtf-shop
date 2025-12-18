@@ -118,7 +118,7 @@ export default function OrderDetailsPage() {
             value={selectedStatus || order.status}
             onValueChange={setSelectedStatus}
           >
-            <SelectTrigger className='w-full sm:w-[180px]'>
+            <SelectTrigger className='w-full sm:w-[180px] bg-white'>
               <SelectValue placeholder='Update Status' />
             </SelectTrigger>
             <SelectContent>
@@ -143,7 +143,7 @@ export default function OrderDetailsPage() {
       </div>
 
       {/* Order Info Cards */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
         <Card>
           <CardContent className='p-6'>
             <div className='flex items-center gap-3'>
@@ -151,8 +151,11 @@ export default function OrderDetailsPage() {
                 <Package className='h-5 w-5 text-blue-600' />
               </div>
               <div>
-                <p className=' text-gray-500'>Order Status</p>
-                <Badge variant='outline' className={statusColors[order.status]}>
+                <p className='text-sm text-gray-500'>Order Status</p>
+                <Badge
+                  variant='outline'
+                  className={`${statusColors[order.status]} text-lg py-1 px-3`}
+                >
                   {orderStatusConvert[order.status]}
                 </Badge>
               </div>
@@ -167,10 +170,12 @@ export default function OrderDetailsPage() {
                 <CreditCard className='h-5 w-5 text-green-600' />
               </div>
               <div>
-                <p className='text-gray-500'>Payment Status</p>
+                <p className='text-sm text-gray-500'>Payment Status</p>
                 <Badge
                   variant='outline'
-                  className={paymentStatusColors[order.paymentStatus]}
+                  className={`${
+                    paymentStatusColors[order.paymentStatus]
+                  } text-lg py-1 px-3`}
                 >
                   {paymentStatusConvert[order.paymentStatus]}
                 </Badge>
@@ -186,8 +191,8 @@ export default function OrderDetailsPage() {
                 <Truck className='h-5 w-5 text-purple-600' />
               </div>
               <div>
-                <p className='text-gray-500'>Delivery Method</p>
-                <p className='font-semibold text-lg'>
+                <p className='text-sm text-gray-500'>Delivery Method</p>
+                <p className='font-semibold text-xl'>
                   {deliveryMethodConvert[order.deliveryMethod]}
                 </p>
               </div>
@@ -202,8 +207,8 @@ export default function OrderDetailsPage() {
                 <Calendar className='h-5 w-5 text-orange-600' />
               </div>
               <div>
-                <p className=' text-gray-500'>Order Date</p>
-                <p className='font-semibold'>
+                <p className='text-sm text-gray-500'>Order Date</p>
+                <p className='font-semibold text-lg'>
                   {dayjs(order.createdAt).format('MMM DD, YYYY, hh:mm A')}
                 </p>
               </div>

@@ -81,30 +81,6 @@ export default function OrdersPage() {
               <Funnel />
               Filters
             </Button>
-            {/* <Select
-              value={statusFilter}
-              onValueChange={(value) => {
-                setParams((prev) => ({
-                  ...prev,
-                  status: value === 'all' ? '' : value,
-                }));
-                setStatusFilter(value);
-              }}
-            >
-              <SelectTrigger className='w-full md:w-[180px]'>
-                <SelectValue placeholder='Filter by status' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='all'>All Status</SelectItem>
-                <SelectItem value='PENDING'>Pending</SelectItem>
-                <SelectItem value='CONFIRMED'>Confirmed</SelectItem>
-                <SelectItem value='PROCESSING'>Processing</SelectItem>
-                <SelectItem value='SHIPPING'>Shipping</SelectItem>
-                <SelectItem value='COMPLETED'>Completed</SelectItem>
-                <SelectItem value='CANCELLED'>Cancelled</SelectItem>
-                <SelectItem value='RETURNED'>Returned</SelectItem>
-              </SelectContent>
-            </Select> */}
           </div>
           <div className='flex flex-wrap gap-2'>
             {params.search && (
