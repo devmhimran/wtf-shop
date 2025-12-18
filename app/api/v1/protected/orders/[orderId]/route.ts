@@ -119,6 +119,7 @@ export const PATCH = catchAsyncNext(
       'PROCESSING',
       'SHIPPING',
       'COMPLETED',
+      'DELIVERED',
       'CANCELLED',
       'RETURNED',
     ];

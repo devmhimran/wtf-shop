@@ -8,6 +8,7 @@ import {
   CreateShippingChargeType,
   CreateSizesType,
   CreateSubCategoryType,
+  CustomerOrderCalculationType,
   DetailsResponse,
   Meta,
   OrderCustomerType,
@@ -182,6 +183,12 @@ export const productApi = {
       return axiosInstanceWithAuth.get<Response<OrderCustomerType[], Meta>>(
         url
       );
+    },
+    getCustomerOrderCalculations: () => {
+      const url = `/protected/customer-order-calculation`;
+      return axiosInstanceWithAuth.get<
+        DetailsResponse<CustomerOrderCalculationType>
+      >(url);
     },
   },
   public: {

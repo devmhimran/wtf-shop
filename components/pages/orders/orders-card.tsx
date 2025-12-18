@@ -10,21 +10,43 @@ import { Button } from '@/components/ui/button';
 import { OrdersType } from '@/types';
 import { OrdersCardSkeleton } from '@/components/skeletons';
 import {
+  cn,
   deliveryMethodConvert,
   orderStatusConvert,
   paymentStatusConvert,
 } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useGetOrders } from '@/hooks';
+import { toast } from 'sonner';
 
 type OrdersCardProps = {
   data?: OrdersType[];
   loading?: boolean;
 };
 
+const orderStatus = [
+  { value: 'PENDING', label: 'Pending' },
+  { value: 'CONFIRMED', label: 'Confirmed' },
+  { value: 'PROCESSING', label: 'Processing' },
+  { value: 'SHIPPING', label: 'Shipping' },
+  { value: 'COMPLETED', label: 'Completed' },
+  { value: 'DELIVERED', label: 'Delivered' },
+  { value: 'CANCELLED', label: 'Cancelled' },
+  { value: 'RETURNED', label: 'Returned' },
+];
+
 const statusColors = {
   PENDING: 'bg-yellow-100 text-yellow-800',
   CONFIRMED: 'bg-blue-100 text-blue-800',
   PROCESSING: 'bg-purple-100 text-purple-800',
   SHIPPING: 'bg-indigo-100 text-indigo-800',
+  DELIVERED: 'bg-teal-100 text-teal-800',
   COMPLETED: 'bg-green-100 text-green-800',
   CANCELLED: 'bg-red-100 text-red-800',
   RETURNED: 'bg-orange-100 text-orange-800',
@@ -39,6 +61,16 @@ const paymentStatusColors = {
 };
 
 export function OrdersCard({ data, loading }: OrdersCardProps) {
+  const { updateOrderStatusAsync } = useGetOrders();
+  const handleStatusChange = (orderId: string, newStatus: string) => {
+    const response = updateOrderStatusAsync({ orderId, newStatus });
+
+    toast.promise(response, {
+      loading: 'Updating order status...',
+      success: 'Order status updated successfully!',
+      error: 'Failed to update order status.',
+    });
+  };
   if (loading) {
     return <OrdersCardSkeleton />;
   }
@@ -90,7 +122,25 @@ export function OrdersCard({ data, loading }: OrdersCardProps) {
                   {deliveryMethodConvert[order.deliveryMethod]}
                 </Badge>
               </div>
-
+              <Select
+                value={order.status}
+                onValueChange={(newStatus) =>
+                  handleStatusChange(order.orderId, newStatus)
+                }
+              >
+                <SelectTrigger
+                  className={cn(statusColors[order.status], 'w-full')}
+                >
+                  <SelectValue placeholder='Order Status' />
+                </SelectTrigger>
+                <SelectContent>
+                  {orderStatus.map((status) => (
+                    <SelectItem key={status.value} value={status.value}>
+                      {status.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Link
                 href={`/dashboard/orders/${order.orderId}`}
                 className='block'

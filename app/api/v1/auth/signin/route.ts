@@ -24,7 +24,10 @@ export async function POST(request: NextRequest) {
       !user.password ||
       !(await comparePassword(password, user.password))
     ) {
-      return createResponse({ error: 'Invalid credentials' }, 401);
+      return createResponse(
+        { error: 'The email or password you entered is incorrect' },
+        401
+      );
     }
 
     if (user.isDelete) {

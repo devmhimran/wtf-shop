@@ -159,10 +159,10 @@ export type CustomerOrderItemType = {
     slug: string;
     mainImage: MediaType;
     alternativeImages: MediaType | null;
-    customImages: (Omit<CustomImageType, never> & {
-      orderId: number;
-    })[];
   };
+  customImages: (Omit<CustomImageType, never> & {
+    orderId: number;
+  })[];
 };
 
 export type OrderCustomerType = {
@@ -183,4 +183,18 @@ export type OrderCustomerType = {
   phone: string;
   createdAt: string;
   items: CustomerOrderItemType[];
+};
+
+export type CustomerOrderCalculationType = {
+  summary: {
+    totalOrders: number;
+    totalSpent: number;
+    averageOrderValue: number;
+    totalShippingPaid: number;
+    activeOrdersCount: number;
+    completedOrdersCount: number;
+  };
+  monthlySpending: {
+    [monthYear: string]: number;
+  };
 };

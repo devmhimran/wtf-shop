@@ -43,6 +43,7 @@ const statusColors = {
   PROCESSING: 'bg-purple-100 text-purple-800',
   SHIPPING: 'bg-indigo-100 text-indigo-800',
   COMPLETED: 'bg-green-100 text-green-800',
+  DELIVERED: 'bg-teal-100 text-teal-800',
   CANCELLED: 'bg-red-100 text-red-800',
   RETURNED: 'bg-orange-100 text-orange-800',
 };

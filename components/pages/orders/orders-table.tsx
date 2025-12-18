@@ -37,6 +37,7 @@ const orderStatus = [
   { value: 'PROCESSING', label: 'Processing' },
   { value: 'SHIPPING', label: 'Shipping' },
   { value: 'COMPLETED', label: 'Completed' },
+  { value: 'DELIVERED', label: 'Delivered' },
   { value: 'CANCELLED', label: 'Cancelled' },
   { value: 'RETURNED', label: 'Returned' },
 ];
@@ -46,6 +47,7 @@ const statusColors = {
   CONFIRMED: 'bg-blue-100 text-blue-800',
   PROCESSING: 'bg-purple-100 text-purple-800',
   SHIPPING: 'bg-indigo-100 text-indigo-800',
+  DELIVERED: 'bg-teal-100 text-teal-800',
   COMPLETED: 'bg-green-100 text-green-800',
   CANCELLED: 'bg-red-100 text-red-800',
   RETURNED: 'bg-orange-100 text-orange-800',

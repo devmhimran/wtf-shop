@@ -25,6 +25,7 @@ import {
   useGetAllOrders,
   useGetOrders,
   useGetAllCustomerOrders,
+  useGetCustomerOrderCalculations,
 } from './use-orders';
 
 export {
@@ -52,4 +53,5 @@ export {
   useGetAllOrders,
   useGetOrders,
   useGetAllCustomerOrders,
+  useGetCustomerOrderCalculations,
 };

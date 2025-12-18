@@ -138,6 +138,7 @@ export const orderStatusConvert = {
   CONFIRMED: 'Confirmed',
   PROCESSING: 'Processing',
   SHIPPING: 'Shipping',
+  DELIVERED: 'Delivered',
   COMPLETED: 'Completed',
   CANCELLED: 'Cancelled',
   RETURNED: 'Returned',

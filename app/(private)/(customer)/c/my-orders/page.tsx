@@ -1,5 +1,10 @@
 'use client';
 
+import {
+  CustomerOrderCalculations,
+  CustomerOrderCards,
+} from '@/components/pages/customer';
+import { CustomerOrderSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { useGetAllCustomerOrders } from '@/hooks';
 import { generateQueryString, orderStatusConvert } from '@/lib/utils';
-import { Search, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -35,7 +40,7 @@ export default function MyOrdersPage() {
   );
 
   const queryString = generateQueryString(params);
-  const { fetchAllCustomerOrdersMutationData } =
+  const { fetchAllCustomerOrdersMutationData, fetchAllCustomerOrdersMutation } =
     useGetAllCustomerOrders(queryString);
 
   console.log({ fetchAllCustomerOrdersMutationData });
@@ -54,6 +59,7 @@ export default function MyOrdersPage() {
 
   return (
     <div className='space-y-6 w-full '>
+      <CustomerOrderCalculations />
       <div className='flex items-center justify-between'>
         <h1 className='text-xl md:text-3xl font-bold'>My Orders</h1>
       </div>
@@ -95,6 +101,8 @@ export default function MyOrdersPage() {
                 <SelectItem value='PROCESSING'>Processing</SelectItem>
                 <SelectItem value='SHIPPING'>Shipping</SelectItem>
                 <SelectItem value='COMPLETED'>Completed</SelectItem>
+                <SelectItem value='DELIVERED'>Delivered</SelectItem>
+
                 <SelectItem value='CANCELLED'>Cancelled</SelectItem>
                 <SelectItem value='RETURNED'>Returned</SelectItem>
               </SelectContent>
@@ -140,13 +148,21 @@ export default function MyOrdersPage() {
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card className='py-4'>
         <CardHeader>
           <CardTitle>Orders Lists</CardTitle>
         </CardHeader>
-        <CardContent>
-          {/* {fetchAllSizesMutationData &&
-            fetchAllSizesMutationData.meta.count > 0 && (
+        <CardContent className='md:px-6 px-4'>
+          {fetchAllCustomerOrdersMutation.isLoading ? (
+            <CustomerOrderSkeleton />
+          ) : (
+            <CustomerOrderCards
+              data={fetchAllCustomerOrdersMutationData?.data || []}
+            />
+          )}
+
+          {fetchAllCustomerOrdersMutationData &&
+            fetchAllCustomerOrdersMutationData.meta.count > 0 && (
               <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
                 <div className='flex items-center space-x-2'>
                   <Button
@@ -174,8 +190,8 @@ export default function MyOrdersPage() {
                     }
                     disabled={
                       +params.page ===
-                      (fetchAllSizesMutationData &&
-                        fetchAllSizesMutationData.meta.totalPages)
+                      (fetchAllCustomerOrdersMutationData &&
+                        fetchAllCustomerOrdersMutationData.meta.totalPages)
                     }
                   >
                     Next
@@ -183,7 +199,7 @@ export default function MyOrdersPage() {
                   </Button>
                 </div>
               </div>
-            )} */}
+            )}
         </CardContent>
       </Card>
     </div>
