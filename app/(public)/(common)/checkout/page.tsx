@@ -34,20 +34,24 @@ import { useUser } from '@/hooks';
 export default function CheckoutPage() {
   const router = useRouter();
   const { items } = useCartStore();
-  const { fetchMe } = useUser();
+
+  // Disable auto-fetch for public checkout page to support guest users
+  const { fetchMe } = useUser(false);
   const { productsWithDetails, calculations, loading } =
     useCartCalculations(items);
 
-  // Form state
+  // Form state - initialize empty for guest users
   const [formData, setFormData] = useState({
-    name: fetchMe?.name || '',
-    email: fetchMe?.email || '',
+    name: '',
+    email: '',
     phone: '',
     address: '',
     country: '',
     state: '',
     deliveryMethod: 'SHIPPING',
   });
+
+  const [isUserDataLoaded, setIsUserDataLoaded] = useState(false);
 
   // Shipping & promo state
   const [shippingCost, setShippingCost] = useState(0);
@@ -63,6 +67,29 @@ export default function CheckoutPage() {
 
   const [availableStates, setAvailableStates] = useState<string[]>([]);
   const [availabilityErrors, setAvailabilityErrors] = useState<string[]>([]);
+
+  // Try to fetch user data once on mount if there's a token
+  useEffect(() => {
+    const checkUserData = async () => {
+      try {
+        const response = await axios.get('/api/v1/protected/me');
+
+        if (response.data && response.data.user) {
+          setFormData((prev) => ({
+            ...prev,
+            name: response.data.user.name || '',
+            email: response.data.user.email || '',
+          }));
+          setIsUserDataLoaded(true);
+        }
+      } catch (error) {
+        // Silently fail for guest users
+        console.log('Guest checkout - no user data available');
+      }
+    };
+
+    checkUserData();
+  }, []);
 
   useEffect(() => {
     const errorData = sessionStorage.getItem('paymentError');
@@ -114,16 +141,6 @@ export default function CheckoutPage() {
     },
     [totalQuantity]
   );
-
-  useEffect(() => {
-    if (fetchMe && fetchMe.role === 'CUSTOMER') {
-      setFormData((prev) => ({
-        ...prev,
-        name: fetchMe.name || '',
-        email: fetchMe.email || '',
-      }));
-    }
-  }, [fetchMe]);
 
   // Handle country change
   useEffect(() => {
