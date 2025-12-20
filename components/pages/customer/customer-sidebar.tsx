@@ -14,8 +14,8 @@ export function CustomerSidebar() {
   const pathname = usePathname();
 
   return (
-    <Card className='py-4 sticky top-26 '>
-      <CardContent className='flex flex-col gap-4 px-5'>
+    <Card className='py-5 sticky top-26 '>
+      <CardContent className='flex flex-col gap-4 px-4'>
         {sidebarItems.map((item) => (
           <Link
             key={item.href}

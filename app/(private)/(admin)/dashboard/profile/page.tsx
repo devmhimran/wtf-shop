@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useUser } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Save } from 'lucide-react';
+import { Eye, EyeOff, Loader2Icon, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -51,6 +51,7 @@ const formSchema = z
 export default function ProfilePage() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const { fetchMe, updateUserAsync } = useUser();
 
@@ -80,9 +81,13 @@ export default function ProfilePage() {
       name: values.name,
       password: values.password,
     });
+    setIsPending(true);
     toast.promise(response, {
       loading: 'Updating profile...',
-      success: 'Profile updated successfully!',
+      success: () => {
+        setIsPending(false);
+        return 'Profile updated successfully!';
+      },
       error: 'Error updating profile.',
     });
   }
@@ -117,7 +122,7 @@ export default function ProfilePage() {
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
               <div>
                 <h3 className='text-lg font-semibold mb-4'>Profile Settings</h3>
-                <div className='flex gap-6'>
+                <div className='flex flex-col md:flex-row gap-6'>
                   <FormField
                     control={form.control}
                     name='name'
@@ -149,7 +154,7 @@ export default function ProfilePage() {
               </div>
               <div>
                 <h3 className='text-lg font-semibold mb-4'>Change Password</h3>
-                <div className='flex gap-6'>
+                <div className='flex flex-col md:flex-row gap-6'>
                   <FormField
                     control={form.control}
                     name='password'
@@ -210,8 +215,17 @@ export default function ProfilePage() {
                   />
                 </div>
               </div>
-              <Button type='submit' disabled={!form.formState.isDirty}>
-                <Save />
+              <Button
+                type='submit'
+                disabled={isPending || !form.formState.isDirty}
+              >
+                {isPending ? (
+                  <Loader2Icon className='animate-spin' />
+                ) : (
+                  <span className='flex items-center gap-2'>
+                    <Save />
+                  </span>
+                )}
                 Save Changes
               </Button>
             </form>

@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useUser } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Save } from 'lucide-react';
+import { Eye, EyeOff, Loader2Icon, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -51,6 +51,7 @@ const formSchema = z
 export default function CustomerProfilePage() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const { fetchMe, updateUserAsync } = useUser();
 
@@ -80,9 +81,13 @@ export default function CustomerProfilePage() {
       name: values.name,
       password: values.password,
     });
+    setIsPending(true);
     toast.promise(response, {
       loading: 'Updating profile...',
-      success: 'Profile updated successfully!',
+      success: () => {
+        setIsPending(false);
+        return 'Profile updated successfully!';
+      },
       error: 'Error updating profile.',
     });
   }
@@ -211,8 +216,17 @@ export default function CustomerProfilePage() {
                   />
                 </div>
               </div>
-              <Button type='submit' disabled={!form.formState.isDirty}>
-                <Save />
+              <Button
+                type='submit'
+                disabled={isPending || !form.formState.isDirty}
+              >
+                {isPending ? (
+                  <Loader2Icon className='animate-spin' />
+                ) : (
+                  <span className='flex items-center gap-2'>
+                    <Save />
+                  </span>
+                )}
                 Save Changes
               </Button>
             </form>
