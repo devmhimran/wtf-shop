@@ -116,7 +116,7 @@ export default function CustomerProfilePage() {
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
               <div>
                 <h3 className='text-lg font-semibold mb-4'>Profile Settings</h3>
-                <div className='flex gap-6'>
+                <div className='flex flex-col md:flex-row gap-6'>
                   <FormField
                     control={form.control}
                     name='name'
@@ -148,7 +148,7 @@ export default function CustomerProfilePage() {
               </div>
               <div>
                 <h3 className='text-lg font-semibold mb-4'>Change Password</h3>
-                <div className='flex gap-6'>
+                <div className='flex flex-col md:flex-row gap-6'>
                   <FormField
                     control={form.control}
                     name='password'

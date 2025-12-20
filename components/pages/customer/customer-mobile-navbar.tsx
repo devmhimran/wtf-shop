@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select';
 import { authLogout } from '@/lib/utils';
 import { Package, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const sidebarItems = [
   { label: 'My Orders', href: '/c/my-orders', icon: Package },
@@ -18,6 +18,7 @@ const sidebarItems = [
 ];
 
 export function CustomerMobileNavbar() {
+  const pathname = usePathname();
   const router = useRouter();
 
   const handleValueChange = (value: string) => {
@@ -29,7 +30,7 @@ export function CustomerMobileNavbar() {
   };
 
   return (
-    <Select defaultValue='/c/my-orders' onValueChange={handleValueChange}>
+    <Select defaultValue={pathname} onValueChange={handleValueChange}>
       <SelectTrigger className='w-full'>
         <SelectValue />
       </SelectTrigger>
