@@ -43,8 +43,6 @@ export default function MyOrdersPage() {
   const { fetchAllCustomerOrdersMutationData, fetchAllCustomerOrdersMutation } =
     useGetAllCustomerOrders(queryString);
 
-  console.log({ fetchAllCustomerOrdersMutationData });
-
   const debounced = useDebouncedCallback((value) => {
     setParams((prevParams) => ({
       ...prevParams,

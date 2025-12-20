@@ -22,4 +22,10 @@ export const authApi = {
     const url = '/auth/logout';
     return axiosInstanceWithAuth.post(url);
   },
+  profile: {
+    updateProfile: (data: { name?: string; password?: string }) => {
+      const url = '/protected/profile';
+      return axiosInstanceWithAuth.put(url, data);
+    },
+  },
 };
