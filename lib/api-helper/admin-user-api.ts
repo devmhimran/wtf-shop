@@ -1,4 +1,4 @@
-import { CreateAdminUserType } from '@/types';
+import { CreateAdminUserType, UpdateCustomerType } from '@/types';
 import { axiosInstanceWithAuth } from '../axios';
 import { USER_COUNT_PER_PAGE } from '../utils';
 
@@ -21,5 +21,16 @@ export const adminUserApi = {
   deleteUser: (id: number) => {
     const url = `/protected/users/${id}`;
     return axiosInstanceWithAuth.delete(url);
+  },
+  customer: {
+    getAllCustomers: (params?: string) => {
+      const url =
+        protectedUrl + '/customers' + params + '&limit=' + USER_COUNT_PER_PAGE;
+      return axiosInstanceWithAuth.get(url);
+    },
+    updateCustomer: (id: number, updateData: UpdateCustomerType) => {
+      const url = `/protected/customers/${id}`;
+      return axiosInstanceWithAuth.patch(url, updateData);
+    },
   },
 };

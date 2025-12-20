@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import {
   Mail,
-  Shield,
   Calendar,
   EllipsisVertical,
   Eye,
@@ -12,7 +11,7 @@ import {
   UserX,
 } from 'lucide-react';
 
-import { UsersType } from '@/types';
+import { CustomersType } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { UsersTableSkeleton } from '@/components/skeletons/users-table-skeleton';
 import {
@@ -26,19 +25,19 @@ import {
 import { useUser } from '@/hooks';
 import { useAdminUsersMutation } from '@/hooks/use-admin-users';
 import { AlertModal, ConfirmModal } from '@/components/shared';
-import { UserDetails } from './user-details';
-import { UpdateUserForm } from '@/components/forms';
+import { UpdateCustomerForm } from '@/components/forms';
 import { Card, CardContent } from '@/components/ui/card';
+import { CustomerDetails } from './customer-details';
 
 type UsersCardProps = {
-  data?: UsersType[];
+  data?: CustomersType[];
   loading?: boolean;
 };
 
-export function UsersCard({ data, loading }: UsersCardProps) {
+export function CustomerCard({ data, loading }: UsersCardProps) {
   const { fetchMe } = useUser();
   const [userId, setUserId] = useState<number | null>(null);
-  const [userDetails, setUserDetails] = useState<UsersType | null>(null);
+  const [userDetails, setUserDetails] = useState<CustomersType | null>(null);
   const [openUserDetails, setOpenUserDetails] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -80,12 +79,12 @@ export function UsersCard({ data, loading }: UsersCardProps) {
     );
   }
 
-  const handleViewUser = (user: UsersType) => {
+  const handleViewUser = (user: CustomersType) => {
     setUserDetails(user);
     setOpenUserDetails(true);
   };
 
-  const handleEditUser = (user: UsersType) => {
+  const handleEditUser = (user: CustomersType) => {
     setUserDetails(user);
     setOpenUpdateModal(true);
   };
@@ -141,20 +140,6 @@ export function UsersCard({ data, loading }: UsersCardProps) {
             <div className='space-y-3 p-0 mt-4'>
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2 text-sm text-muted-foreground'>
-                  <Shield className='h-4 w-4' />
-                  <span>Role</span>
-                </div>
-                <Badge
-                  variant={
-                    user.role === 'SUPER_ADMIN' ? 'default' : 'secondary'
-                  }
-                >
-                  {user.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Admin'}
-                </Badge>
-              </div>
-
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-2 text-sm text-muted-foreground'>
                   <span>Status</span>
                 </div>
                 <Badge variant={user.isActive ? 'default' : 'destructive'}>
@@ -189,19 +174,19 @@ export function UsersCard({ data, loading }: UsersCardProps) {
       <AlertModal
         isOpen={openUpdateModal}
         setIsOpen={setOpenUpdateModal}
-        title='Update User Details'
+        title='Update Customer Details'
         description=' '
       >
-        <UpdateUserForm setIsOpen={setOpenUpdateModal} data={userDetails} />
+        <UpdateCustomerForm setIsOpen={setOpenUpdateModal} data={userDetails} />
       </AlertModal>
 
       <AlertModal
         isOpen={openUserDetails}
         setIsOpen={setOpenUserDetails}
-        title='View User Details'
+        title='View Customer Details'
         description=' '
       >
-        <UserDetails data={userDetails} />
+        <CustomerDetails data={userDetails} />
       </AlertModal>
     </div>
   );

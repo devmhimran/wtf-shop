@@ -1,13 +1,7 @@
 'use client';
 
-import { Loader2Icon } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { useState } from 'react';
+import { CustomersType } from '@/types';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-
-import { Button } from '../ui/button';
 import {
   Form,
   FormControl,
@@ -24,9 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { useAdminUsersMutation } from '@/hooks/use-admin-users';
+import { Button } from '../ui/button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { getErrorResponse } from '@/lib/utils';
-import { UsersType } from '@/types';
+import { Loader2Icon } from 'lucide-react';
+import { useCustomerMutation } from '@/hooks';
 
 export const FormSchema = z
   .object({
@@ -45,9 +44,6 @@ export const FormSchema = z
 
     confirmPassword: z.string().optional().or(z.literal('')),
 
-    role: z.enum(['SUPER_ADMIN', 'ADMIN'], {
-      message: 'Please select a valid role',
-    }),
     isActive: z.enum(['ACTIVE', 'INACTIVE'], {
       message: 'Please select a valid status',
     }),
@@ -57,15 +53,15 @@ export const FormSchema = z
     path: ['confirmPassword'],
   });
 
-export function UpdateUserForm({
+export function UpdateCustomerForm({
   setIsOpen,
   data,
 }: {
   setIsOpen: (open: boolean) => void;
-  data: UsersType | null;
+  data: CustomersType | null;
 }) {
   const [isPending, setIsPending] = useState(false);
-  const { updateUserAsync } = useAdminUsersMutation();
+  const { updateCustomerAsync } = useCustomerMutation();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -74,7 +70,6 @@ export function UpdateUserForm({
       email: data?.email || '',
       password: '',
       confirmPassword: '',
-      role: data?.role || 'ADMIN',
       isActive: data?.isActive ? 'ACTIVE' : 'INACTIVE',
     },
   });
@@ -91,16 +86,16 @@ export function UpdateUserForm({
       isActive: formData.isActive === 'ACTIVE' ? true : false,
     };
 
-    const response = updateUserAsync(payload);
+    const response = updateCustomerAsync(payload);
 
     setIsPending(true);
     toast.promise(response, {
-      loading: 'Updating User...',
+      loading: 'Updating Customer...',
       success: (response) => {
         form.reset();
         setIsPending(false);
         setIsOpen(false);
-        return response.message || 'Successfully updated User!';
+        return response.message || 'Successfully updated Customer!';
       },
 
       error: (error) => {
@@ -179,28 +174,6 @@ export function UpdateUserForm({
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='role'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Role</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Select a user role' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className='z-9999'>
-                  <SelectItem value='ADMIN'>Admin</SelectItem>
-                  <SelectItem value='SUPER_ADMIN'>Super Admin</SelectItem>
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

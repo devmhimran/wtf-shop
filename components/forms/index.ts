@@ -15,6 +15,7 @@ import { UpdatePromoCodeForm } from './update-promo-code-form';
 import { CreateMediaForm } from './create-media-form';
 import { CreateProductForm } from './create-product-form';
 import { UpdateProductForm } from './update-product-form';
+import { UpdateCustomerForm } from './update-customer-form';
 
 export {
   CreateUserForm,
@@ -34,4 +35,5 @@ export {
   CreateMediaForm,
   CreateProductForm,
   UpdateProductForm,
+  UpdateCustomerForm,
 };

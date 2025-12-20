@@ -14,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { roleConvert } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,19 +27,20 @@ import { AlertModal, ConfirmModal } from '@/components/shared';
 import { useAdminUsersMutation } from '@/hooks/use-admin-users';
 
 import { useUser } from '@/hooks';
-import { UserDetails } from './user-details';
-import { UpdateUserForm } from '@/components/forms';
-import { UsersType } from '@/types';
 
-type UsersTableProps = {
-  data?: UsersType[];
+import { UpdateCustomerForm } from '@/components/forms';
+import { CustomersType } from '@/types';
+import { CustomerDetails } from './customer-details';
+
+type CustomerTableProps = {
+  data?: CustomersType[];
   loading?: boolean;
 };
 
-export function UsersTable({ data, loading }: UsersTableProps) {
+export function CustomerTable({ data, loading }: CustomerTableProps) {
   const { fetchMe } = useUser();
   const [userId, setUserId] = useState<number | null>(null);
-  const [userDetails, setUserDetails] = useState<UsersType | null>(null);
+  const [userDetails, setUserDetails] = useState<CustomersType | null>(null);
   const [openUserDetails, setOpenUserDetails] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -69,12 +69,12 @@ export function UsersTable({ data, loading }: UsersTableProps) {
     });
   };
 
-  const handleViewUser = (user: UsersType) => {
+  const handleViewUser = (user: CustomersType) => {
     setUserDetails(user);
     setOpenUserDetails(true);
   };
 
-  const handleEditUser = (user: UsersType) => {
+  const handleEditUser = (user: CustomersType) => {
     setUserDetails(user);
     setOpenUpdateModal(true);
   };
@@ -88,7 +88,6 @@ export function UsersTable({ data, loading }: UsersTableProps) {
           <TableHead>Serial</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
-          <TableHead>Role</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Joined At</TableHead>
           <TableHead className='text-center'>Actions</TableHead>
@@ -101,9 +100,7 @@ export function UsersTable({ data, loading }: UsersTableProps) {
               <TableCell>{index + 1}</TableCell>
               <TableCell className='font-medium'>{user.name}</TableCell>
               <TableCell className='font-medium'>{user.email}</TableCell>
-              <TableCell className='capitalize'>
-                {roleConvert[user.role as keyof typeof roleConvert]}
-              </TableCell>
+
               <TableCell>
                 {user.isActive ? (
                   <Badge variant='secondary'>Active</Badge>
@@ -152,25 +149,25 @@ export function UsersTable({ data, loading }: UsersTableProps) {
       <AlertModal
         isOpen={openUpdateModal}
         setIsOpen={setOpenUpdateModal}
-        title='Update User Details'
+        title='Update Customer Details'
         description=' '
       >
-        <UpdateUserForm setIsOpen={setOpenUpdateModal} data={userDetails} />
+        <UpdateCustomerForm setIsOpen={setOpenUpdateModal} data={userDetails} />
       </AlertModal>
 
       <AlertModal
         isOpen={openUserDetails}
         setIsOpen={setOpenUserDetails}
-        title='View User Details'
+        title='View Customer Details'
         description=' '
       >
-        <UserDetails data={userDetails} />
+        <CustomerDetails data={userDetails} />
       </AlertModal>
       <ConfirmModal
         isOpen={confirmModal}
         setIsOpen={setConfirmModal}
         loading={isPending}
-        title='This action cannot be undone. This will permanently delete your user '
+        title='This action cannot be undone. This will permanently delete your customer '
         onClick={handleDeleteUser}
       />
     </Table>

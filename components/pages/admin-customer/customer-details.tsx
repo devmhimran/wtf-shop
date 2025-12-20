@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
-import { UsersType } from '@/types';
+import { CustomersType } from '@/types';
 import { DetailItems } from '@/components/shared';
 import { roleConvert } from '@/lib/utils';
 
-type UserDetailsProps = {
-  data: UsersType | null;
+type CustomerDetailsProps = {
+  data: CustomersType | null;
 };
 
-export function UserDetails({ data }: UserDetailsProps) {
+export function CustomerDetails({ data }: CustomerDetailsProps) {
   if (!data) {
     return (
       <div className='flex items-center justify-center py-10'>

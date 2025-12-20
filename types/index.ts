@@ -50,6 +50,7 @@ import {
   CustomerOrderItemType,
   CustomerOrderCalculationType,
 } from './order.types';
+import { CustomersType, UpdateCustomerType } from './customer.types';
 
 export type {
   SignInResponse,
@@ -97,4 +98,6 @@ export type {
   OrderCustomerType,
   CustomerOrderItemType,
   CustomerOrderCalculationType,
+  CustomersType,
+  UpdateCustomerType,
 };

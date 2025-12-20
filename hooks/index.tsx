@@ -27,6 +27,7 @@ import {
   useGetAllCustomerOrders,
   useGetCustomerOrderCalculations,
 } from './use-orders';
+import { useCustomers, useCustomerMutation } from './use-customers';
 
 export {
   useUser,
@@ -54,4 +55,6 @@ export {
   useGetOrders,
   useGetAllCustomerOrders,
   useGetCustomerOrderCalculations,
+  useCustomers,
+  useCustomerMutation,
 };
