@@ -105,7 +105,7 @@ export function PublicNavbar() {
             <ShoppingCart />
           </Link>
           <div className='hidden md:block'>
-            {fetchMe?.id ? (
+            {fetchMe?.role === 'CUSTOMER' ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className='cursor-pointer px-2'>
                   <User />
