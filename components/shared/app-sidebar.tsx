@@ -37,7 +37,7 @@ import { useUser } from '@/hooks';
 const superAdminMenuItems = [
   {
     title: 'Dashboard',
-    url: '/dashboard/',
+    url: '/dashboard',
     icon: LayoutDashboard,
   },
   {
