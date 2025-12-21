@@ -1,8 +1,7 @@
 'use client';
 
-import { Menu, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,14 +13,13 @@ import {
 import { useGetPublicCategories } from '@/hooks';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { Button } from '../ui/button';
-import { PhoneMenu } from './phone-menu';
 import { Skeleton } from '../ui/skeleton';
+import { useCartStore } from '@/store/useCart';
 
 export function PublicNavbar() {
   const { fetchPublicCategoriesData, fetchPublicCategories } =
     useGetPublicCategories();
-  const [isOpen, setIsOpen] = useState(false);
+  const { items } = useCartStore();
 
   return (
     <div
@@ -88,10 +86,14 @@ export function PublicNavbar() {
           </div>
         </div>
         <div className='flex items-center gap-3'>
-          <Link href='/cart'>
+          <Link href='/cart' className='relative'>
+            {items.length > 0 && (
+              <div className='w-2 h-2 rounded-full bg-orange-500 absolute top-0 -right-1'></div>
+            )}
+
             <ShoppingCart />
           </Link>
-          <span className='md:hidden block'>
+          {/* <span className='md:hidden block'>
             <Button
               variant='outline'
               size='icon'
@@ -99,9 +101,9 @@ export function PublicNavbar() {
             >
               <Menu />
             </Button>
-          </span>
+          </span> */}
         </div>
-        <PhoneMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+        {/* <PhoneMenu isOpen={isOpen} setIsOpen={setIsOpen} /> */}
       </div>
     </div>
   );
