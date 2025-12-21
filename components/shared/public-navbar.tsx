@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, User } from 'lucide-react';
 import Link from 'next/link';
 import {
   NavigationMenu,
@@ -10,13 +10,22 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '../ui/navigation-menu';
-import { useGetPublicCategories } from '@/hooks';
-import { cn } from '@/lib/utils';
+import { useGetPublicCategories, useUser } from '@/hooks';
+import { authLogout, cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
 import { useCartStore } from '@/store/useCart';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 
 export function PublicNavbar() {
+  const { fetchMe } = useUser();
   const { fetchPublicCategoriesData, fetchPublicCategories } =
     useGetPublicCategories();
   const { items } = useCartStore();
@@ -49,7 +58,9 @@ export function PublicNavbar() {
                     <NavigationMenuTrigger
                       className='cursor-pointer text-lg p-0 font-normal bg-transparent hover:bg-transparent focus:bg-transparent 
                         data-[state=open]:hover:bg-transparent
-                        data-[state=open]:focus:bg-transparent data-[state=open]:bg-transparent'
+                        data-[state=open]:focus:bg-transparent data-[state=open]:bg-transparent 
+                         data-[state=open]:hover:text-orange-500 data-[state=open]:focus:text-orange-500
+                        hover:text-orange-500 focus:text-orange-500'
                     >
                       Shop
                     </NavigationMenuTrigger>
@@ -85,7 +96,7 @@ export function PublicNavbar() {
             </Link>
           </div>
         </div>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-4'>
           <Link href='/cart' className='relative'>
             {items.length > 0 && (
               <div className='w-2 h-2 rounded-full bg-orange-500 absolute top-0 -right-1'></div>
@@ -93,6 +104,34 @@ export function PublicNavbar() {
 
             <ShoppingCart />
           </Link>
+          <div className='hidden md:block'>
+            {fetchMe?.id ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger className='cursor-pointer px-2'>
+                  <User />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='w-44 font-oswald'>
+                  <DropdownMenuLabel>
+                    {fetchMe?.name || 'User'}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href='/c/my-orders'>My Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href='/c/profile'>My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => authLogout()}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href='/signin' className='hover:text-[#FF4C01]'>
+                Sign In
+              </Link>
+            )}
+          </div>
           {/* <span className='md:hidden block'>
             <Button
               variant='outline'
