@@ -1,10 +1,19 @@
-import { SignInRequest, SignInResponse } from '@/types';
+import {
+  SignInRequest,
+  SignInResponse,
+  SignUpRequest,
+  SignUpResponse,
+} from '@/types';
 import { axiosInstance, axiosInstanceWithAuth } from '../axios';
 
 export const authApi = {
   signIn: (data: SignInRequest) => {
     const url = '/auth/signin';
     return axiosInstance.post<SignInResponse>(url, data);
+  },
+  signUp: (data: SignUpRequest) => {
+    const url = '/auth/signup';
+    return axiosInstance.post<SignUpResponse>(url, data);
   },
   me: () => {
     const url = '/protected/me';

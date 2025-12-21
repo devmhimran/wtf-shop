@@ -3,6 +3,8 @@ import {
   SignInRequest,
   UserMeResponse,
   UserRole,
+  SignUpRequest,
+  SignUpResponse,
 } from './auth.types';
 import {
   Response,
@@ -100,4 +102,6 @@ export type {
   CustomerOrderCalculationType,
   CustomersType,
   UpdateCustomerType,
+  SignUpRequest,
+  SignUpResponse,
 };

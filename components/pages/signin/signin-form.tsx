@@ -146,11 +146,17 @@ export function SignInForm() {
                 )}
               />
 
-              <Button type='submit' disabled={isPending}>
+              <Button type='submit' disabled={isPending} className='w-full'>
                 {isPending && <Loader2Icon className='animate-spin' />} Sign in
               </Button>
             </form>
           </Form>
+          <div className='mt-4 text-center'>
+            Don&apos;t have an account?{' '}
+            <Link href='/signup' className='text-[#FF8804]'>
+              Create Account
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

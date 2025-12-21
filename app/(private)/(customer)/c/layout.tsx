@@ -9,7 +9,7 @@ export default function CustomerDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-5 gap-8 container mx-auto pt-20 px-2 md:px-0'>
+    <div className='grid grid-cols-1 lg:grid-cols-5 gap-8 container mx-auto pt-20 pb-10 px-2 md:px-0'>
       <div className='lg:block hidden lg:col-span-1'>
         <CustomerSidebar />
       </div>

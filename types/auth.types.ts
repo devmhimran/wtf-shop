@@ -18,6 +18,16 @@ export type SignInRequest = {
   password: string;
 };
 
+export type SignUpRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type SignUpResponse = {
+  message: string;
+};
+
 export type MeResponse = {
   message: string;
   user: ProfileType;
