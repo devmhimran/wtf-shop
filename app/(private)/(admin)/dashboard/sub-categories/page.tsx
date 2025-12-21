@@ -46,7 +46,7 @@ export default function SubCategoriesPage() {
   }, [queryString, router]);
 
   return (
-    <div className='space-y-6 w-full md:w-4/6 lg:w-3/6 mx-auto '>
+    <div className='space-y-6 w-full mx-auto '>
       {' '}
       <div className='flex items-center justify-between'>
         <h1 className='text-xl md:text-3xl font-bold'>Sub Categories</h1>
@@ -76,7 +76,7 @@ export default function SubCategoriesPage() {
           </div>
           <div className='flex flex-wrap gap-2'>
             {params.search && (
-              <div className='pl-3 pr-2 py-1 border flex gap-2 items-center rounded-full text-sm'>
+              <div className='pl-3 pr-2 py-1 border flex gap-2 items-center rounded-full'>
                 {params.search}
                 <span
                   onClick={() => {
@@ -94,60 +94,52 @@ export default function SubCategoriesPage() {
           </div>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Sub Categories List</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {fetchAllSubCategoriesMutation.isLoading ? (
-            <CategoriesSkeleton />
-          ) : (
-            <SubCategoriesCard
-              data={fetchAllSubCategoriesMutationData?.data || []}
-            />
-          )}
-
-          {fetchAllSubCategoriesMutationData &&
-            fetchAllSubCategoriesMutationData.meta.count > 0 && (
-              <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
-                <div className='flex items-center space-x-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page - 1).toString(),
-                      }))
-                    }
-                    disabled={+params.page === 1}
-                  >
-                    <ChevronLeft className='h-4 w-4' />
-                    Previous
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page + 1).toString(),
-                      }))
-                    }
-                    disabled={
-                      +params.page ===
-                      (fetchAllSubCategoriesMutationData &&
-                        fetchAllSubCategoriesMutationData.meta.totalPages)
-                    }
-                  >
-                    Next
-                    <ChevronRight className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            )}
-        </CardContent>
-      </Card>
+      {fetchAllSubCategoriesMutation.isLoading ? (
+        <CategoriesSkeleton />
+      ) : (
+        <SubCategoriesCard
+          data={fetchAllSubCategoriesMutationData?.data || []}
+        />
+      )}
+      {fetchAllSubCategoriesMutationData &&
+        fetchAllSubCategoriesMutationData.meta.count > 0 && (
+          <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
+            <div className='flex items-center space-x-2'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page - 1).toString(),
+                  }))
+                }
+                disabled={+params.page === 1}
+              >
+                <ChevronLeft className='h-4 w-4' />
+                Previous
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page + 1).toString(),
+                  }))
+                }
+                disabled={
+                  +params.page ===
+                  (fetchAllSubCategoriesMutationData &&
+                    fetchAllSubCategoriesMutationData.meta.totalPages)
+                }
+              >
+                Next
+                <ChevronRight className='h-4 w-4' />
+              </Button>
+            </div>
+          </div>
+        )}
       <AlertModal
         isOpen={addCategoryOpen}
         setIsOpen={setAddCategoryOpen}

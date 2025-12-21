@@ -83,10 +83,12 @@ export function ColorsCard({ data }: ColorsCardProps) {
         <TableBody>
           {data.map((color, index) => (
             <TableRow key={color.id} className='hover:bg-muted/50 '>
-              <TableCell className='font-medium text-muted-foreground'>
-                {index + 1}
+              <TableCell className='font-medium text-primary text-base'>
+                {index + 1}.
               </TableCell>
-              <TableCell className='font-medium'>{color.name}</TableCell>
+              <TableCell className='font-medium text-base'>
+                {color.name}
+              </TableCell>
               {/* <TableCell>
                 {color.hexCode ? (
                   <Badge variant='secondary' className='font-mono'>

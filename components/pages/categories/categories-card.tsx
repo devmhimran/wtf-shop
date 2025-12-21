@@ -75,7 +75,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
   }
 
   return (
-    <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 font-inter'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 font-inter'>
       {data.map((category) => (
         <Card className='p-4' key={category.id}>
           <CardHeader className='px-0'>
@@ -98,7 +98,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
                   <CardTitle className='text-lg line-clamp-1'>
                     {category.name}
                   </CardTitle>
-                  <CardDescription className='text-xs mt-1'>
+                  <CardDescription className='text-sm mt-1'>
                     /{category.slug}
                   </CardDescription>
                 </div>
@@ -131,7 +131,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
             </div>
           </CardHeader>
           <CardContent className='space-y-3 p-0'>
-            <div className='flex items-center justify-between text-sm'>
+            <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Layers className='h-4 w-4' />
                 <span>Subcategories</span>
@@ -141,7 +141,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
               </Badge>
             </div>
 
-            <div className='flex items-center justify-between text-sm'>
+            <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Package className='h-4 w-4' />
                 <span>Products</span>

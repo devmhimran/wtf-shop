@@ -83,10 +83,12 @@ export function SizesCard({ data }: SizesCardProps) {
         <TableBody>
           {data.map((size, index) => (
             <TableRow key={size.id} className='hover:bg-muted/50 '>
-              <TableCell className='font-medium text-muted-foreground'>
-                {index + 1}
+              <TableCell className='font-medium text-primary text-base'>
+                {index + 1}.
               </TableCell>
-              <TableCell className='font-medium'>{size.name}</TableCell>
+              <TableCell className='font-medium text-base'>
+                {size.name}
+              </TableCell>
               <TableCell className='text-end'>
                 <DropdownMenu>
                   <DropdownMenuTrigger className='cursor-pointer'>

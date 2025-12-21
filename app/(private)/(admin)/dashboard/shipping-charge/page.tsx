@@ -51,7 +51,7 @@ export default function ShippingChargePage() {
   }, [queryString, router]);
 
   return (
-    <div className='space-y-6 w-full md:w-4/6 lg:w-3/6 mx-auto '>
+    <div className='space-y-6 w-full mx-auto '>
       <div className='flex items-center justify-between'>
         <h1 className='text-xl md:text-3xl font-bold'>Shipping Charges</h1>
         <Button onClick={() => setAddShippingChargeModalOpen(true)}>
@@ -162,60 +162,53 @@ export default function ShippingChargePage() {
           </div>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Shipping Charges List</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {fetchAllShippingChargeMutation.isLoading ? (
-            <ShippingChargeSkeleton />
-          ) : (
-            <ShippingChargeCard
-              data={fetchAllShippingChargeMutationData?.data || []}
-            />
-          )}
+      {fetchAllShippingChargeMutation.isLoading ? (
+        <ShippingChargeSkeleton />
+      ) : (
+        <ShippingChargeCard
+          data={fetchAllShippingChargeMutationData?.data || []}
+        />
+      )}
 
-          {fetchAllShippingChargeMutationData &&
-            fetchAllShippingChargeMutationData.meta.count > 0 && (
-              <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
-                <div className='flex items-center space-x-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page - 1).toString(),
-                      }))
-                    }
-                    disabled={+params.page === 1}
-                  >
-                    <ChevronLeft className='h-4 w-4' />
-                    Previous
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page + 1).toString(),
-                      }))
-                    }
-                    disabled={
-                      +params.page ===
-                      (fetchAllShippingChargeMutationData &&
-                        fetchAllShippingChargeMutationData.meta.totalPages)
-                    }
-                  >
-                    Next
-                    <ChevronRight className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            )}
-        </CardContent>
-      </Card>
+      {fetchAllShippingChargeMutationData &&
+        fetchAllShippingChargeMutationData.meta.count > 0 && (
+          <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
+            <div className='flex items-center space-x-2'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page - 1).toString(),
+                  }))
+                }
+                disabled={+params.page === 1}
+              >
+                <ChevronLeft className='h-4 w-4' />
+                Previous
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page + 1).toString(),
+                  }))
+                }
+                disabled={
+                  +params.page ===
+                  (fetchAllShippingChargeMutationData &&
+                    fetchAllShippingChargeMutationData.meta.totalPages)
+                }
+              >
+                Next
+                <ChevronRight className='h-4 w-4' />
+              </Button>
+            </div>
+          </div>
+        )}
       <AlertModal
         isOpen={addShippingChargeModalOpen}
         setIsOpen={setAddShippingChargeModalOpen}

@@ -96,7 +96,7 @@ export function PromoCodesCard({ data }: { data?: PromoCodeType[] }) {
   }
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
       {data.map((promoCode) => {
         const active = isActive(promoCode.startDate, promoCode.endDate);
         const expired = new Date(promoCode.endDate) < new Date();

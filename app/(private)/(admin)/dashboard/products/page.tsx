@@ -134,57 +134,50 @@ export default function ProductsPage() {
         </TabsList>
       </Tabs>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Products List</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {fetchAllProductsMutation.isLoading ? (
-            <ProductCardSkeleton />
-          ) : (
-            <ProductCards data={fetchAllProductsMutationData?.data || []} />
-          )}
-          {fetchAllProductsMutationData &&
-            fetchAllProductsMutationData.meta.count > 0 && (
-              <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
-                <div className='flex items-center space-x-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page - 1).toString(),
-                      }))
-                    }
-                    disabled={+params.page === 1}
-                  >
-                    <ChevronLeft className='h-4 w-4' />
-                    Previous
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page + 1).toString(),
-                      }))
-                    }
-                    disabled={
-                      +params.page ===
-                      (fetchAllProductsMutationData &&
-                        fetchAllProductsMutationData.meta.totalPages)
-                    }
-                  >
-                    Next
-                    <ChevronRight className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            )}
-        </CardContent>
-      </Card>
+      {fetchAllProductsMutation.isLoading ? (
+        <ProductCardSkeleton />
+      ) : (
+        <ProductCards data={fetchAllProductsMutationData?.data || []} />
+      )}
+      {fetchAllProductsMutationData &&
+        fetchAllProductsMutationData.meta.count > 0 && (
+          <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
+            <div className='flex items-center space-x-2'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page - 1).toString(),
+                  }))
+                }
+                disabled={+params.page === 1}
+              >
+                <ChevronLeft className='h-4 w-4' />
+                Previous
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page + 1).toString(),
+                  }))
+                }
+                disabled={
+                  +params.page ===
+                  (fetchAllProductsMutationData &&
+                    fetchAllProductsMutationData.meta.totalPages)
+                }
+              >
+                Next
+                <ChevronRight className='h-4 w-4' />
+              </Button>
+            </div>
+          </div>
+        )}
 
       <Modal
         isOpen={openFilter}

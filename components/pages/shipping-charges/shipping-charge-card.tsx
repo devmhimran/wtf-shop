@@ -64,7 +64,7 @@ export function ShippingChargeCard({ data }: { data?: ShippingChargeType[] }) {
   }
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
       {data.map((charge) => (
         <Card key={charge.id} className='hover:shadow-md transition-shadow'>
           <CardHeader className='flex flex-row items-start justify-between space-y-0 pb-3'>
@@ -111,39 +111,30 @@ export function ShippingChargeCard({ data }: { data?: ShippingChargeType[] }) {
           <CardContent className='space-y-3'>
             <div className='flex items-center gap-2'>
               <Package className='w-4 h-4 text-muted-foreground' />
-              <span className='text-sm text-muted-foreground'>
-                Quantity Range:
-              </span>
-              <span className='text-sm font-medium ml-auto'>
+              <span className='text-muted-foreground'>Quantity Range:</span>
+              <span className='font-medium ml-auto'>
                 {charge.minQty} - {charge.maxQty ?? '∞'}
               </span>
             </div>
             <div className='flex items-center gap-2'>
               <DollarSign className='w-4 h-4 text-muted-foreground' />
-              <span className='text-sm text-muted-foreground'>
-                Base Charge:
-              </span>
-              <span className='text-sm font-semibold ml-auto'>
-                <span className='text-gray-600'>AU$</span>
-                {charge.baseCharge.toFixed(2)}
+              <span className='text-muted-foreground'>Base Charge:</span>
+              <span className='font-semibold ml-auto'>
+                AU${charge.baseCharge.toFixed(2)}
               </span>
             </div>
             {charge.additionalChargePerItem > 0 && (
               <div className='flex items-center gap-2'>
                 <DollarSign className='w-4 h-4 text-muted-foreground' />
-                <span className='text-sm text-muted-foreground'>
-                  Additional/Item:
-                </span>
-                <span className='text-sm font-medium ml-auto'>
-                  ${charge.additionalChargePerItem.toFixed(2)}
+                <span className='text-muted-foreground'>Additional/Item:</span>
+                <span className='font-medium ml-auto'>
+                  AU${charge.additionalChargePerItem.toFixed(2)}
                 </span>
               </div>
             )}
             <div className='flex items-center gap-2 pt-2 border-t'>
               <Truck className='w-4 h-4 text-muted-foreground' />
-              <span className='text-sm text-muted-foreground'>
-                Free Shipping:
-              </span>
+              <span className='text-muted-foreground'>Free Shipping:</span>
               <Badge
                 variant={charge.freeShipping ? 'default' : 'outline'}
                 className='ml-auto'

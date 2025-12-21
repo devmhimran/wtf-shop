@@ -44,7 +44,7 @@ export default function SizesPage() {
   }, [queryString, router]);
 
   return (
-    <div className='space-y-6 w-full md:w-4/6 lg:w-3/6 mx-auto '>
+    <div className='space-y-6 w-full mx-auto '>
       <div className='flex items-center justify-between'>
         <h1 className='text-xl md:text-3xl font-bold'>Promo Code</h1>
         <Button onClick={() => setAddPromoModalOpen(true)}>
@@ -91,59 +91,53 @@ export default function SizesPage() {
           </div>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Promo Code List</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {fetchAllPromoCodesMutation.isLoading ? (
-            <PromoCodeSkeleton />
-          ) : (
-            // <SizesCard data={fetchAllPromoCodesMutationData?.data || []} />
-            <PromoCodesCard data={fetchAllPromoCodesMutationData?.data || []} />
-          )}
 
-          {fetchAllPromoCodesMutationData &&
-            fetchAllPromoCodesMutationData.meta.count > 0 && (
-              <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
-                <div className='flex items-center space-x-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page - 1).toString(),
-                      }))
-                    }
-                    disabled={+params.page === 1}
-                  >
-                    <ChevronLeft className='h-4 w-4' />
-                    Previous
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page + 1).toString(),
-                      }))
-                    }
-                    disabled={
-                      +params.page ===
-                      (fetchAllPromoCodesMutationData &&
-                        fetchAllPromoCodesMutationData.meta.totalPages)
-                    }
-                  >
-                    Next
-                    <ChevronRight className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            )}
-        </CardContent>
-      </Card>
+      {fetchAllPromoCodesMutation.isLoading ? (
+        <PromoCodeSkeleton />
+      ) : (
+        <PromoCodesCard data={fetchAllPromoCodesMutationData?.data || []} />
+      )}
+
+      {fetchAllPromoCodesMutationData &&
+        fetchAllPromoCodesMutationData.meta.count > 0 && (
+          <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
+            <div className='flex items-center space-x-2'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page - 1).toString(),
+                  }))
+                }
+                disabled={+params.page === 1}
+              >
+                <ChevronLeft className='h-4 w-4' />
+                Previous
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page + 1).toString(),
+                  }))
+                }
+                disabled={
+                  +params.page ===
+                  (fetchAllPromoCodesMutationData &&
+                    fetchAllPromoCodesMutationData.meta.totalPages)
+                }
+              >
+                Next
+                <ChevronRight className='h-4 w-4' />
+              </Button>
+            </div>
+          </div>
+        )}
+
       <AlertModal
         isOpen={addPromo}
         setIsOpen={setAddPromoModalOpen}

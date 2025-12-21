@@ -45,7 +45,7 @@ export default function CategoriesPage() {
   }, [queryString, router]);
 
   return (
-    <div className='space-y-6 w-full md:w-4/6 lg:w-3/6 mx-auto '>
+    <div className='space-y-6 w-full mx-auto '>
       <div className='flex items-center justify-between'>
         <h1 className='text-xl md:text-3xl font-bold'>Categories</h1>
         <Button onClick={() => setAddCategoryOpen(true)}>
@@ -92,58 +92,51 @@ export default function CategoriesPage() {
           </div>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Categories List</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {fetchAllCategoriesMutation.isLoading ? (
-            <CategoriesSkeleton />
-          ) : (
-            <CategoriesCard data={fetchAllCategoriesMutationData?.data || []} />
-          )}
+      {fetchAllCategoriesMutation.isLoading ? (
+        <CategoriesSkeleton />
+      ) : (
+        <CategoriesCard data={fetchAllCategoriesMutationData?.data || []} />
+      )}
 
-          {fetchAllCategoriesMutationData &&
-            fetchAllCategoriesMutationData.meta.count > 0 && (
-              <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
-                <div className='flex items-center space-x-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page - 1).toString(),
-                      }))
-                    }
-                    disabled={+params.page === 1}
-                  >
-                    <ChevronLeft className='h-4 w-4' />
-                    Previous
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        page: (+params.page + 1).toString(),
-                      }))
-                    }
-                    disabled={
-                      +params.page ===
-                      (fetchAllCategoriesMutationData &&
-                        fetchAllCategoriesMutationData.meta.totalPages)
-                    }
-                  >
-                    Next
-                    <ChevronRight className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            )}
-        </CardContent>
-      </Card>
+      {fetchAllCategoriesMutationData &&
+        fetchAllCategoriesMutationData.meta.count > 0 && (
+          <div className='flex md:flex-row flex-col items-center md:justify-end justify-center gap-3 py-4'>
+            <div className='flex items-center space-x-2'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page - 1).toString(),
+                  }))
+                }
+                disabled={+params.page === 1}
+              >
+                <ChevronLeft className='h-4 w-4' />
+                Previous
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() =>
+                  setParams((prev) => ({
+                    ...prev,
+                    page: (+params.page + 1).toString(),
+                  }))
+                }
+                disabled={
+                  +params.page ===
+                  (fetchAllCategoriesMutationData &&
+                    fetchAllCategoriesMutationData.meta.totalPages)
+                }
+              >
+                Next
+                <ChevronRight className='h-4 w-4' />
+              </Button>
+            </div>
+          </div>
+        )}
       <AlertModal
         isOpen={addCategoryOpen}
         setIsOpen={setAddCategoryOpen}
