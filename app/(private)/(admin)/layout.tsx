@@ -5,6 +5,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import NextTopLoader from 'nextjs-toploader';
 
 export default function AdminLayout({
   children,
@@ -27,6 +28,12 @@ export default function AdminLayout({
           {children}
         </div>
       </SidebarInset>
+      <NextTopLoader
+        color='#0B0B0B'
+        showSpinner={false}
+        showAtBottom={false}
+        shadow='0 0 0 0'
+      />
     </SidebarProvider>
   );
 }

@@ -35,7 +35,7 @@ export function PublicNavbar() {
       className='sticky top-0 z-50 -mb-20 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-900/10 
     dark:border-slate-50/6 bg-white/50 supports-backdrop-blur:bg-white/65 dark:bg-transparent'
     >
-      <div className='max-w-screen-2xl flex justify-between items-center mx-auto py-2 px-2'>
+      <div className='max-w-screen-2xl flex justify-between items-center mx-auto py-2 pl-3 pr-4'>
         <Link href='/'>
           <Image
             src='/assets/png/what-the-funk.png'
@@ -115,12 +115,12 @@ export function PublicNavbar() {
                     {fetchMe?.name || 'User'}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link href='/c/my-orders'>My Orders</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href='/c/profile'>My Profile</Link>
-                  </DropdownMenuItem>
+                  <Link href='/c/my-orders'>
+                    <DropdownMenuItem>My Orders</DropdownMenuItem>
+                  </Link>
+                  <Link href='/c/profile'>
+                    <DropdownMenuItem>My Profile</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem onClick={() => authLogout()}>
                     Logout
                   </DropdownMenuItem>
