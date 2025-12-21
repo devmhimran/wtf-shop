@@ -68,33 +68,37 @@ export default function Cart() {
 
   return (
     <div>
-      <div className='container mx-auto px-4 py-16'>
-        <div className='flex items-center justify-between mb-8'>
-          <h1 className='text-4xl font-bold'>Shopping Cart</h1>
+      <div className='container mx-auto px-2 sm:px-4 py-8 sm:py-16'>
+        <div className='flex items-center justify-between mb-4 sm:mb-8'>
+          <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold'>
+            Shopping Cart
+          </h1>
           <Button
             variant='outline'
+            size='sm'
             onClick={() => {
               clearCart();
               toast.success('Cart cleared');
             }}
-            className='text-red-500 hover:text-red-700'
+            className='text-red-500 hover:text-red-700 text-xs sm:text-sm'
           >
-            Clear Cart
+            <span className='hidden sm:inline'>Clear Cart</span>
+            <Trash2 size={16} className='sm:hidden' />
           </Button>
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8'>
           {/* Cart Items */}
-          <div className='lg:col-span-2 space-y-6'>
+          <div className='lg:col-span-2 space-y-4 sm:space-y-6'>
             {productsWithDetails.map((product) => (
               <div
                 key={product.productId}
-                className='border rounded-lg p-6 bg-white shadow-sm'
+                className='border rounded-lg p-3 sm:p-6 bg-white shadow-sm'
               >
                 {/* Product Header */}
-                <div className='mb-4'>
+                <div className='mb-3 sm:mb-4'>
                   <Link href={`/product-details/${product.slug}`}>
-                    <h2 className='text-2xl font-semibold hover:text-orange-500'>
+                    <h2 className='text-lg sm:text-2xl font-semibold hover:text-orange-500'>
                       {product.details?.title || 'Product'}
                     </h2>
                   </Link>
@@ -128,22 +132,42 @@ export default function Cart() {
                     return (
                       <div
                         key={`${variant.color}-${variant.size}-${index}`}
-                        className='flex gap-4 p-4 border rounded-lg hover:border-orange-300 transition-colors'
+                        className='flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 border rounded-lg hover:border-orange-300 transition-colors'
                       >
-                        {/* Image */}
-                        <div className='shrink-0'>
-                          <Image
-                            src={variant.image}
-                            alt={`${variant.color} ${variant.size}`}
-                            width={100}
-                            height={100}
-                            className='object-cover rounded'
-                          />
+                        {/* Image and Remove Button Container for Mobile */}
+                        <div className='flex gap-3 sm:block'>
+                          <div className='shrink-0'>
+                            <Image
+                              src={variant.image}
+                              alt={`${variant.color} ${variant.size}`}
+                              width={80}
+                              height={80}
+                              className='sm:w-[100px] sm:h-[100px] object-cover rounded'
+                            />
+                          </div>
+
+                          {/* Details section for mobile */}
+                          <div className='grow sm:hidden'>
+                            <p className='font-medium text-sm'>
+                              <span className='capitalize'>
+                                {variant.color}
+                              </span>
+                            </p>
+                            <p className='text-gray-600 text-sm'>
+                              Size:{' '}
+                              <span className='uppercase'>{variant.size}</span>
+                            </p>
+                            <p className='text-gray-600 text-xs'>
+                              {variant.printSide === 'one'
+                                ? 'Front'
+                                : 'Front & Back'}
+                            </p>
+                          </div>
                         </div>
 
-                        {/* Details */}
+                        {/* Details for Desktop */}
                         <div className='grow'>
-                          <div className='flex justify-between items-start mb-2'>
+                          <div className='hidden sm:flex justify-between items-start mb-2'>
                             <div>
                               <p className='font-medium'>
                                 Color:{' '}
@@ -208,8 +232,8 @@ export default function Cart() {
                             )}
 
                           {/* Quantity and Price */}
-                          <div className='flex items-center justify-between mt-3'>
-                            <div className='flex items-center gap-2 border rounded-lg'>
+                          <div className='flex items-center justify-between mt-3 gap-2'>
+                            <div className='flex items-center gap-1 sm:gap-2 border rounded-lg'>
                               <Button
                                 variant='ghost'
                                 size='sm'
@@ -221,11 +245,11 @@ export default function Cart() {
                                     variant.quantity - 1
                                   )
                                 }
-                                className='h-8 w-8 p-0'
+                                className='h-7 w-7 sm:h-8 sm:w-8 p-0'
                               >
-                                <Minus size={16} />
+                                <Minus size={14} className='sm:w-4 sm:h-4' />
                               </Button>
-                              <span className='w-12 text-center font-medium'>
+                              <span className='w-8 sm:w-12 text-center font-medium text-sm sm:text-base'>
                                 {variant.quantity}
                               </span>
                               <Button
@@ -239,14 +263,30 @@ export default function Cart() {
                                     variant.quantity + 1
                                   )
                                 }
-                                className='h-8 w-8 p-0'
+                                className='h-7 w-7 sm:h-8 sm:w-8 p-0'
                               >
-                                <Plus size={16} />
+                                <Plus size={14} className='sm:w-4 sm:h-4' />
                               </Button>
                             </div>
-                            <p className='text-lg font-semibold'>
-                              AU${totalPrice.toFixed(2)}
-                            </p>
+                            <div className='flex items-center gap-2'>
+                              <p className='text-base sm:text-lg font-semibold'>
+                                AU${totalPrice.toFixed(2)}
+                              </p>
+                              <Button
+                                variant='ghost'
+                                size='sm'
+                                onClick={() =>
+                                  handleRemoveItem(
+                                    product.productId,
+                                    variant.size,
+                                    variant.color
+                                  )
+                                }
+                                className='text-red-500 hover:text-red-700 hover:bg-red-50 h-7 w-7 sm:hidden p-0'
+                              >
+                                <Trash2 size={14} />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -283,10 +323,12 @@ export default function Cart() {
 
           {/* Order Summary */}
           <div className='lg:col-span-1'>
-            <div className='border rounded-lg p-6 bg-white shadow-sm sticky top-24'>
-              <h2 className='text-2xl font-bold mb-6'>Order Summary</h2>
+            <div className='border rounded-lg p-4 sm:p-6 bg-white shadow-sm lg:sticky lg:top-24'>
+              <h2 className='text-xl sm:text-2xl font-bold mb-4 sm:mb-6'>
+                Order Summary
+              </h2>
 
-              <div className='space-y-3 mb-6'>
+              <div className='space-y-2 sm:space-y-3 mb-4 sm:mb-6 text-sm sm:text-base'>
                 <div className='flex justify-between text-gray-600'>
                   <span>Subtotal:</span>
                   <span>AU${calculations.subtotal.toFixed(2)}</span>
@@ -312,13 +354,16 @@ export default function Cart() {
               </div>
 
               <Link href='/checkout'>
-                <Button className='w-full bg-orange-400 hover:bg-orange-500 text-white text-lg py-6'>
+                <Button className='w-full bg-orange-400 hover:bg-orange-500 text-white text-base sm:text-lg py-4 sm:py-6'>
                   Proceed to Checkout
                 </Button>
               </Link>
 
               <Link href='/'>
-                <Button variant='outline' className='w-full mt-3'>
+                <Button
+                  variant='outline'
+                  className='w-full mt-2 sm:mt-3 text-sm sm:text-base'
+                >
                   Continue Shopping
                 </Button>
               </Link>
