@@ -82,7 +82,7 @@ export default function CheckoutPage() {
           }));
           setIsUserDataLoaded(true);
         }
-      } catch (error) {
+      } catch {
         // Silently fail for guest users
         console.log('Guest checkout - no user data available');
       }

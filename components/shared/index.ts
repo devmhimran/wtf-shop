@@ -14,6 +14,8 @@ import { PublicFooter } from './public-footer';
 import { HeroHighlight } from './hero-highlight';
 import { HeroSection } from './hero-section';
 import { LightBox } from './light-box';
+import { PhoneMenu } from './phone-menu';
+import { MobileBottomNav } from './mobile-bottom-nav';
 
 export {
   AppSidebar,
@@ -32,4 +34,6 @@ export {
   HeroHighlight,
   HeroSection,
   LightBox,
+  PhoneMenu,
+  MobileBottomNav,
 };
