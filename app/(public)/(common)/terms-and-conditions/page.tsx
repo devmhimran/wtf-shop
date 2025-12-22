@@ -1,3 +1,5 @@
+import { TermsAndConditionsPageContent } from '@/components/public-pages/terms-and-conditions';
+
 export default function TermsAndConditions() {
-  return <div>Terms and Conditions</div>;
+  return <TermsAndConditionsPageContent />;
 }

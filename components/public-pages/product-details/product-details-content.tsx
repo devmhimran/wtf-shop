@@ -143,14 +143,14 @@ export function ProductDetailsContent() {
   //   (image: MediaType, index: number) => ({
   //     src:
   //       image.fileUrl ||
-  //       '/images/placeholder-image.png',
+  //       '/assets/img/placeholder-image.png',
   //     alt: `product-image-${index}`,
   //     loading: 'lazy',
   //   })
   // );
 
   const lightBoxImages = combinedGalleryData.map((image) => ({
-    src: image?.fileUrl || '/images/placeholder-image.png',
+    src: image?.fileUrl || '/assets/img/placeholder-image.png',
     alt: image?.alt || image?.alt || image?.fileName || 'product-image',
     loading: 'lazy',
   }));
@@ -250,7 +250,7 @@ export function ProductDetailsContent() {
       quantity: quantity,
       image:
         combinedGalleryData[photoIndex]?.fileUrl ||
-        '/images/placeholder-image.png',
+        '/assets/img/placeholder-image.png',
       color: selectedColor,
       size: selectedSize,
       printSide: 'one' as const,
@@ -328,7 +328,7 @@ export function ProductDetailsContent() {
       quantity: qty,
       image:
         combinedGalleryData[photoIndex]?.fileUrl ||
-        '/images/placeholder-image.png',
+        '/assets/img/placeholder-image.png',
       color: selectedColor,
       size: size,
       printSide: selectedPrintSide,
@@ -393,7 +393,9 @@ export function ProductDetailsContent() {
                     <Image
                       width={132}
                       height={132}
-                      src={image?.fileUrl || '/images/placeholder-image.png'}
+                      src={
+                        image?.fileUrl || '/assets/img/placeholder-image.png'
+                      }
                       alt={product?.title}
                       className={cn(
                         index !== photoIndex && 'opacity-40',

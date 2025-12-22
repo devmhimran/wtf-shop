@@ -1,3 +1,5 @@
+import { ContactPageContent } from '@/components/public-pages/contact';
+
 export default function Contact() {
-  return <div>Contact</div>;
+  return <ContactPageContent />;
 }

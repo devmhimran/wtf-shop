@@ -57,6 +57,7 @@ import {
   CreateSingularPageType,
   SingularPagesTypes,
 } from './singular-pages.types';
+import { ContactFormType } from './email.types';
 
 export type {
   SignInResponse,
@@ -110,4 +111,5 @@ export type {
   SignUpResponse,
   CreateSingularPageType,
   SingularPagesTypes,
+  ContactFormType,
 };
