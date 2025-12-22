@@ -32,6 +32,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
       paymentStatus: true,
       deliveryMethod: true,
       total: true,
+      stripeId: true,
       subtotal: true,
       shippingCost: true,
       createdAt: true,
@@ -41,6 +42,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
 
   return NextResponse.json({
     success: true,
+    message: 'Recent orders fetched successfully',
     data: {
       orders: recentOrders,
       count: recentOrders.length,

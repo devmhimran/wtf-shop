@@ -81,6 +81,7 @@ export const GET = catchAsyncNext(async (req: NextRequest) => {
 
   return NextResponse.json({
     success: true,
+    message: 'Dashboard calculations fetched successfully',
     data: {
       totalProducts,
       totalOrders,
