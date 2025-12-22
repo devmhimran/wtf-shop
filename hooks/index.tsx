@@ -28,6 +28,12 @@ import {
   useGetCustomerOrderCalculations,
 } from './use-orders';
 import { useCustomers, useCustomerMutation } from './use-customers';
+import {
+  useAboutPage,
+  useTermsAndConditionPage,
+  usePrivacyPolicyPage,
+  useReturnAndExchangePage,
+} from './use-singular-page';
 
 export {
   useUser,
@@ -57,4 +63,8 @@ export {
   useGetCustomerOrderCalculations,
   useCustomers,
   useCustomerMutation,
+  useAboutPage,
+  useTermsAndConditionPage,
+  usePrivacyPolicyPage,
+  useReturnAndExchangePage,
 };

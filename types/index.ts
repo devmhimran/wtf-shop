@@ -53,6 +53,10 @@ import {
   CustomerOrderCalculationType,
 } from './order.types';
 import { CustomersType, UpdateCustomerType } from './customer.types';
+import {
+  CreateSingularPageType,
+  SingularPagesTypes,
+} from './singular-pages.types';
 
 export type {
   SignInResponse,
@@ -104,4 +108,6 @@ export type {
   UpdateCustomerType,
   SignUpRequest,
   SignUpResponse,
+  CreateSingularPageType,
+  SingularPagesTypes,
 };

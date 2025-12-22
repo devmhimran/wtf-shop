@@ -1,6 +1,7 @@
 'use client';
 
-import ReactQuill from 'react-quill-new';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 
 interface TextEditorProps {
@@ -16,6 +17,15 @@ export function TextEditor({
   placeholder,
   readOnly = false,
 }: TextEditorProps) {
+  const ReactQuill = useMemo(
+    () =>
+      dynamic(() => import('react-quill-new'), {
+        ssr: false,
+        loading: () => <p>Loading editor...</p>,
+      }),
+    []
+  );
+
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],

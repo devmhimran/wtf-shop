@@ -116,6 +116,29 @@ const adminMenuItems = [
   },
 ];
 
+const singularPages = [
+  {
+    title: 'About Us',
+    url: '/dashboard/about-us',
+    icon: Users,
+  },
+  {
+    title: 'Privacy Policy',
+    url: '/dashboard/privacy-policy',
+    icon: Users,
+  },
+  {
+    title: 'Terms of Service',
+    url: '/dashboard/terms-and-conditions',
+    icon: Users,
+  },
+  {
+    title: 'Returns and Exchanges',
+    url: '/dashboard/returns-and-exchanges',
+    icon: Users,
+  },
+];
+
 const MenuSkeleton = () => (
   <SidebarGroup>
     <SidebarGroupLabel>
@@ -212,6 +235,25 @@ export function AppSidebar() {
               </SidebarGroup>
             )}
           </>
+        )}
+        {!fetchMeMutation.isLoading && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Single Page content</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {singularPages.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
         )}
       </SidebarContent>
       <SidebarFooter>
