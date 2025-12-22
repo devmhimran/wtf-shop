@@ -22,8 +22,8 @@ export function useDashboardCalculations() {
 
   return {
     dashboardCalculations: fetchDashboardCalculations.data?.data,
-    isLoading: fetchDashboardCalculations.isLoading,
-    isError: fetchDashboardCalculations.isError,
+    dashboardCalculationsLoading: fetchDashboardCalculations.isLoading,
+    dashboardCalculationsIsError: fetchDashboardCalculations.isError,
   };
 }
 export function useDashboardRecentOrders(limit?: number) {
@@ -41,8 +41,8 @@ export function useDashboardRecentOrders(limit?: number) {
   });
   return {
     dashboardRecentOrders: fetchDashboardRecentOrders.data?.data,
-    isLoading: fetchDashboardRecentOrders.isLoading,
-    isError: fetchDashboardRecentOrders.isError,
+    dashboardRecentOrdersIsLoading: fetchDashboardRecentOrders.isLoading,
+    dashboardRecentOrdersIsError: fetchDashboardRecentOrders.isError,
   };
 }
 export function useDashboardStatistics(year?: number) {
@@ -58,7 +58,7 @@ export function useDashboardStatistics(year?: number) {
   });
   return {
     dashboardStatistics: fetchDashboardStatistics.data?.data,
-    isLoading: fetchDashboardStatistics.isLoading,
-    isError: fetchDashboardStatistics.isError,
+    dashboardStatisticsIsLoading: fetchDashboardStatistics.isLoading,
+    dashboardStatisticsIsError: fetchDashboardStatistics.isError,
   };
 }

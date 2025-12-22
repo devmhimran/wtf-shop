@@ -20,10 +20,11 @@ export type DashboardStatisticsType = {
 };
 
 export type DashboardRecentOrderType = {
-  orders: OrdersType & {
+  orders: (OrdersType & {
     subtotal: number;
     shippingCost: number;
     createdAt: string;
     updatedAt: string;
-  };
+  })[];
+  count: number;
 };

@@ -24,7 +24,7 @@ export default function AdminLayout({
             <div className='flex items-center gap-2'></div>
           </div>
         </header>
-        <div className='flex flex-1 flex-col gap-4 md:p-4 p-3 bg-sidebar'>
+        <div className='flex flex-1 flex-col gap-4 md:p-6 p-4 bg-sidebar'>
           {children}
         </div>
       </SidebarInset>
