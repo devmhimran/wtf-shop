@@ -3,25 +3,6 @@ import { authenticateRequest } from '@/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prisma';
 
-export const GET = catchAsyncNext(async (req: NextRequest) => {
-  const { error, payload } = await authenticateRequest(req);
-  if (error) return error;
-
-  if (payload.role === 'CUSTOMER') {
-    return NextResponse.json(
-      { error: 'Unauthorized: Insufficient permissions' },
-      { status: 403 }
-    );
-  }
-
-  const termsAndConditions = await prisma.termsAndConditions.findFirst();
-
-  return NextResponse.json({
-    success: true,
-    data: termsAndConditions,
-  });
-});
-
 export const POST = catchAsyncNext(async (req: NextRequest) => {
   const { error, payload } = await authenticateRequest(req);
   if (error) return error;
