@@ -361,3 +361,75 @@ model CustomOrderImage {
   imageName    String?
   note         String?
 }
+
+//
+// ABOUT US PAGE
+//
+model AboutUs {
+  id              Int       @id @default(autoincrement())
+  isSingleton     Boolean   @unique @default(true)
+  title           String
+  content         String    @db.Text
+  
+  metaTitle       String?
+  metaDescription String?
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+//
+// TERMS AND CONDITIONS PAGE
+//
+model TermsAndConditions {
+  id              Int       @id @default(autoincrement())
+  isSingleton     Boolean   @unique @default(true)
+  title           String
+  content         String    @db.Text
+  
+  metaTitle       String?
+  metaDescription String?
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+//
+// PRIVACY POLICY PAGE
+//
+model PrivacyPolicy {
+  id              Int       @id @default(autoincrement())
+  isSingleton     Boolean   @unique @default(true)
+  title           String
+  content         String    @db.Text
+  
+  metaTitle       String?
+  metaDescription String?
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+//
+// RETURNS AND EXCHANGES PAGE
+//
+model ReturnsAndExchanges {
+  id              Int       @id @default(autoincrement())
+  isSingleton     Boolean   @unique @default(true)
+  title           String
+  content         String    @db.Text
+  
+  metaTitle       String?
+  metaDescription String?
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}

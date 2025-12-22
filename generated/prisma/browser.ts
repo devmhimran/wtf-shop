@@ -92,3 +92,23 @@ export type OrderItem = Prisma.OrderItemModel
  * 
  */
 export type CustomOrderImage = Prisma.CustomOrderImageModel
+/**
+ * Model AboutUs
+ * 
+ */
+export type AboutUs = Prisma.AboutUsModel
+/**
+ * Model TermsAndConditions
+ * 
+ */
+export type TermsAndConditions = Prisma.TermsAndConditionsModel
+/**
+ * Model PrivacyPolicy
+ * 
+ */
+export type PrivacyPolicy = Prisma.PrivacyPolicyModel
+/**
+ * Model ReturnsAndExchanges
+ * 
+ */
+export type ReturnsAndExchanges = Prisma.ReturnsAndExchangesModel

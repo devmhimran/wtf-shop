@@ -65,7 +65,11 @@ export const ModelName = {
   PromoCode: 'PromoCode',
   Order: 'Order',
   OrderItem: 'OrderItem',
-  CustomOrderImage: 'CustomOrderImage'
+  CustomOrderImage: 'CustomOrderImage',
+  AboutUs: 'AboutUs',
+  TermsAndConditions: 'TermsAndConditions',
+  PrivacyPolicy: 'PrivacyPolicy',
+  ReturnsAndExchanges: 'ReturnsAndExchanges'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -298,6 +302,66 @@ export const CustomOrderImageScalarFieldEnum = {
 } as const
 
 export type CustomOrderImageScalarFieldEnum = (typeof CustomOrderImageScalarFieldEnum)[keyof typeof CustomOrderImageScalarFieldEnum]
+
+
+export const AboutUsScalarFieldEnum = {
+  id: 'id',
+  isSingleton: 'isSingleton',
+  title: 'title',
+  content: 'content',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AboutUsScalarFieldEnum = (typeof AboutUsScalarFieldEnum)[keyof typeof AboutUsScalarFieldEnum]
+
+
+export const TermsAndConditionsScalarFieldEnum = {
+  id: 'id',
+  isSingleton: 'isSingleton',
+  title: 'title',
+  content: 'content',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TermsAndConditionsScalarFieldEnum = (typeof TermsAndConditionsScalarFieldEnum)[keyof typeof TermsAndConditionsScalarFieldEnum]
+
+
+export const PrivacyPolicyScalarFieldEnum = {
+  id: 'id',
+  isSingleton: 'isSingleton',
+  title: 'title',
+  content: 'content',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PrivacyPolicyScalarFieldEnum = (typeof PrivacyPolicyScalarFieldEnum)[keyof typeof PrivacyPolicyScalarFieldEnum]
+
+
+export const ReturnsAndExchangesScalarFieldEnum = {
+  id: 'id',
+  isSingleton: 'isSingleton',
+  title: 'title',
+  content: 'content',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReturnsAndExchangesScalarFieldEnum = (typeof ReturnsAndExchangesScalarFieldEnum)[keyof typeof ReturnsAndExchangesScalarFieldEnum]
 
 
 export const SortOrder = {
