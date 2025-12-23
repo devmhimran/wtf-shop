@@ -36,4 +36,22 @@ export const singularPagesApi = {
     const url = protectedUrl + '/returns-and-exchanges';
     return axiosInstanceWithAuth.post(url, data);
   },
+  public: {
+    getAboutUs: () => {
+      const url = '/public/about-us';
+      return axiosInstanceWithAuth.get(url);
+    },
+    getTermsAndConditions: () => {
+      const url = '/public/terms-and-conditions';
+      return axiosInstanceWithAuth.get(url);
+    },
+    getPrivacyPolicy: () => {
+      const url = '/public/privacy-policy';
+      return axiosInstanceWithAuth.get(url);
+    },
+    getReturnAndExchange: () => {
+      const url = '/public/returns-and-exchanges';
+      return axiosInstanceWithAuth.get(url);
+    },
+  },
 };

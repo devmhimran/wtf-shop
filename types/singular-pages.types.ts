@@ -1,4 +1,5 @@
 export type SingularPagesTypes = {
+  id: number;
   isSingleton: boolean;
   title: string;
   content: string;
