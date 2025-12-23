@@ -74,7 +74,11 @@ axiosInstanceWithAuth.interceptors.response.use(
 
           if (pathname.includes('/dashboard') || pathname.includes('/c/')) {
             setTimeout(() => {
-              window.location.href = '/signin';
+              if (pathname === '/signin') {
+                window.location.href = '/signin';
+              } else {
+                window.location.href = `/signin?callbackUrl=${pathname}`;
+              }
             }, 20);
           }
         }

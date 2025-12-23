@@ -31,23 +31,61 @@ const COMMON_PATHS = ['/profile'];
 export async function proxy(request: NextRequest) {
   const refreshToken = request.cookies.get('refreshToken')?.value;
   const accessToken = request.cookies.get('accessToken')?.value;
+  const pathname = request.nextUrl.pathname;
+
+  // If user is authenticated and trying to access signin page, redirect them away
+  if ((refreshToken || accessToken) && pathname === '/signin') {
+    const payload = await verifyRefreshToken(refreshToken!);
+
+    if (payload) {
+      const { role } = payload;
+      const callbackUrl = request.nextUrl.searchParams.get('callbackUrl');
+
+      // If callbackUrl exists, redirect there
+      if (callbackUrl) {
+        return NextResponse.redirect(new URL(callbackUrl, request.url));
+      }
+
+      // Otherwise redirect based on role
+      if (role === 'CUSTOMER') {
+        return NextResponse.redirect(new URL('/c/my-orders', request.url));
+      } else if (role === 'ADMIN') {
+        return NextResponse.redirect(
+          new URL('/dashboard/products', request.url)
+        );
+      } else if (role === 'SUPER_ADMIN') {
+        return NextResponse.redirect(new URL('/dashboard/', request.url));
+      }
+    }
+  }
+
+  // Allow unauthenticated access to signin page
+  if (pathname === '/signin') {
+    return NextResponse.next();
+  }
 
   if (!refreshToken && !accessToken) {
-    return NextResponse.redirect(new URL('/signin', request.url));
+    const signInUrl = new URL('/signin', request.url);
+    signInUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(signInUrl);
   }
 
   if (!refreshToken) {
-    return NextResponse.redirect(new URL('/signin', request.url));
+    const signInUrl = new URL('/signin', request.url);
+    signInUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(signInUrl);
   }
 
   const payload = await verifyRefreshToken(refreshToken);
 
   if (!payload) {
-    return NextResponse.redirect(new URL('/signin', request.url));
+    const signInUrl = new URL('/signin', request.url);
+    signInUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(signInUrl);
   }
 
   const { role } = payload;
-  const path = request.nextUrl.pathname;
+  const path = pathname;
 
   // Allow common paths
   if (COMMON_PATHS.some((p) => path.startsWith(p))) {
@@ -96,5 +134,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/c/:path*', '/my-profile'],
+  matcher: ['/dashboard/:path*', '/c/:path*', '/my-profile', '/signin'],
 };

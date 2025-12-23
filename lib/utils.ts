@@ -161,7 +161,15 @@ export const authLogout = async () => {
   await authApi.logout();
 
   if (typeof window !== 'undefined') {
-    window.location.href = '/signin';
+    const pathname = window.location.pathname;
+
+    if (pathname === '/signin') {
+      window.location.href = '/signin';
+    } else {
+      window.location.href = `/signin?callbackUrl=${encodeURIComponent(
+        pathname
+      )}`;
+    }
   }
 };
 
