@@ -39,6 +39,9 @@ export const GET = catchAsyncNext(
         mainImage: true,
         alternativeImage: true,
         productType: true,
+        metaTitle: true,
+        metaDescription: true,
+        metaKeyword: true,
 
         variants: {
           select: {

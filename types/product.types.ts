@@ -165,4 +165,7 @@ export type PublicProductDetailsType = {
   maxPrice: number;
   quantity: number;
   inStock: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeyword: string | null;
 };

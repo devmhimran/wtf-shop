@@ -29,6 +29,7 @@ import { toast } from 'sonner';
 import { RelatedProducts } from './related-products';
 import { ProductDescription } from './product-description';
 import { useCartStore } from '@/store/useCart';
+import { Badge } from '@/components/ui/badge';
 
 interface CustomizationItem {
   id: string;
@@ -413,6 +414,9 @@ export function ProductDetailsContent() {
           <p className='text-gray-500 text-lg'>
             Tax included. Shipping calculated at checkout.
           </p>
+          {!product.inStock && (
+            <Badge variant='destructive'>Out of Stock</Badge>
+          )}
           <div>
             <p className='text-4xl'>
               AU$
@@ -522,14 +526,15 @@ export function ProductDetailsContent() {
                       </div>
                     )}
 
-                    {product.flatDiscount && product.flatDiscount > 0 && (
-                      <div className='flex items-center justify-between text-green-600 font-medium'>
-                        <span>Flat Discount ({product.flatDiscount}%):</span>
-                        <span>-AU${flatDiscountAmount.toFixed(2)}</span>
-                      </div>
-                    )}
+                    {typeof product.flatDiscount === 'number' &&
+                      product.flatDiscount > 0 && (
+                        <div className='flex items-center justify-between text-green-600 font-medium'>
+                          <span>Flat Discount ({product.flatDiscount}%):</span>
+                          <span>-AU${flatDiscountAmount.toFixed(2)}</span>
+                        </div>
+                      )}
 
-                    {hasAnyDiscount && (
+                    {typeof hasAnyDiscount === 'boolean' && hasAnyDiscount && (
                       <div className='border-t pt-1'>
                         <div className='flex items-center justify-between text-lg font-semibold text-gray-900'>
                           <span>Final Price:</span>
@@ -599,7 +604,8 @@ export function ProductDetailsContent() {
 
                 const hasAnyDiscount =
                   applicableDiscount ||
-                  (product.flatDiscount && product.flatDiscount > 0);
+                  (typeof product.flatDiscount === 'number' &&
+                    product.flatDiscount > 0);
 
                 return (
                   <div className='mt-2 space-y-1 text-sm'>
@@ -634,12 +640,13 @@ export function ProductDetailsContent() {
                       </div>
                     )}
 
-                    {product.flatDiscount && product.flatDiscount > 0 && (
-                      <div className='flex items-center justify-between text-green-600 font-medium'>
-                        <span>Flat Discount ({product.flatDiscount}%):</span>
-                        <span>-AU${flatDiscountAmount.toFixed(2)}</span>
-                      </div>
-                    )}
+                    {typeof product.flatDiscount === 'number' &&
+                      product.flatDiscount > 0 && (
+                        <div className='flex items-center justify-between text-green-600 font-medium'>
+                          <span>Flat Discount ({product.flatDiscount}%):</span>
+                          <span>-AU${flatDiscountAmount.toFixed(2)}</span>
+                        </div>
+                      )}
 
                     {hasAnyDiscount && (
                       <div className='border-t pt-1'>
@@ -654,7 +661,7 @@ export function ProductDetailsContent() {
               })()}
 
             {product.productType === 'CUSTOM' &&
-              product.twoSidePrice &&
+              typeof product.twoSidePrice === 'number' &&
               product.twoSidePrice > 0 && (
                 <p className='text-sm text-gray-500 mt-2'>
                   Print side pricing: Front (+AU$0) | Back (+AU$
@@ -1071,7 +1078,8 @@ export function ProductDetailsContent() {
                 product.productType === 'CUSTOM' && (
                   <Button
                     onClick={handleAddToCart}
-                    className='flex items-center gap-2.5 w-full h-full rounded-full bg-orange-400 hover:bg-orange-500'
+                    disabled={!product.inStock}
+                    className='flex items-center gap-2.5 w-full h-full rounded-full bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed'
                     aria-label={`Add ${product.title} to cart`}
                     type='button'
                   >
@@ -1082,7 +1090,8 @@ export function ProductDetailsContent() {
               {product.productType !== 'CUSTOM' && (
                 <Button
                   onClick={addStandardToCart}
-                  className='flex items-center gap-2.5 w-full h-full rounded-full bg-orange-400 hover:bg-orange-500'
+                  disabled={!product.inStock}
+                  className='flex items-center gap-2.5 w-full h-full rounded-full bg-orange-400 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed'
                   aria-label={`Add ${product.title} to cart`}
                   type='button'
                 >
