@@ -1,0 +1,93 @@
+import { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  const baseUrl =
+    process.env.Next_PUBLIC_BASE_SITE_URL || 'https://www.whatthefunk.com.au';
+
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: [
+          '/',
+          '/new-drops',
+          '//custom-products',
+          '/about-us',
+          '/contact',
+          '/terms-and-conditions',
+          '/privacy-policy',
+          '/returns-and-exchanges',
+        ],
+        disallow: [
+          '/c/',
+          '/c/my-orders',
+          '/c/profile',
+          '/dashboard',
+          '/dashboard/media-library',
+          '/dashboard/products',
+          '/dashboard/orders',
+          '/dashboard/categories',
+          '/dashboard/sub-categories',
+          '/dashboard/colors',
+          '/dashboard/sizes',
+          '/dashboard/promo-code',
+          '/dashboard/shipping-charge',
+          '/dashboard/users',
+          '/dashboard/customers',
+          '/dashboard/about-us',
+          '/dashboard/privacy-policy',
+          '/dashboard/terms-and-conditions',
+          '/dashboard/returns-and-exchanges',
+          '/checkout',
+          '/cart',
+          '/payment',
+          '/api/',
+          '/_next/',
+        ],
+        crawlDelay: 1,
+      },
+
+      {
+        userAgent: 'Googlebot',
+        allow: [
+          '/',
+          '/new-drops',
+          '//custom-products',
+          '/about-us',
+          '/contact',
+          '/terms-and-conditions',
+          '/privacy-policy',
+          '/returns-and-exchanges',
+        ],
+        disallow: [
+          '/c/',
+          '/c/my-orders',
+          '/c/profile',
+          '/dashboard',
+          '/dashboard/media-library',
+          '/dashboard/products',
+          '/dashboard/orders',
+          '/dashboard/categories',
+          '/dashboard/sub-categories',
+          '/dashboard/colors',
+          '/dashboard/sizes',
+          '/dashboard/promo-code',
+          '/dashboard/shipping-charge',
+          '/dashboard/users',
+          '/dashboard/customers',
+          '/dashboard/about-us',
+          '/dashboard/privacy-policy',
+          '/dashboard/terms-and-conditions',
+          '/dashboard/returns-and-exchanges',
+          '/checkout',
+          '/cart',
+          '/payment',
+          '/api/',
+          '/_next/',
+        ],
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
+  };
+}
