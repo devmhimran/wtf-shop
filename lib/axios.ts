@@ -39,13 +39,11 @@ export const axiosInstanceWithAuth = axios.create({
 
 axiosInstanceWithAuth.interceptors.response.use(
   (res) => res,
-
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
 
-    // Must retry only once
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -53,7 +51,6 @@ axiosInstanceWithAuth.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      // ⏳ If refresh already in progress → wait
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
@@ -63,28 +60,23 @@ axiosInstanceWithAuth.interceptors.response.use(
         });
       }
 
-      // 🚀 Start refresh
       isRefreshing = true;
 
       try {
         await axiosInstanceWithAuth.post('/auth/refresh');
-        // If refresh succeeded → retry all queued requests
         processQueue(null);
-
         return axiosInstanceWithAuth(originalRequest);
       } catch (err) {
         processQueue(err as AxiosError);
 
-        // Only redirect to signin if we're on a protected route (dashboard)
-        if (
-          typeof window !== 'undefined' &&
-          (window.location.pathname.includes('/dashboard') ||
-            window.location.pathname.includes('/c'))
-        ) {
-          // Delay to avoid cutting off queue processing
-          setTimeout(() => {
-            window.location.href = '/signin';
-          }, 20);
+        if (typeof window !== 'undefined') {
+          const pathname = window.location.pathname;
+
+          if (pathname.includes('/dashboard') || pathname.includes('/c/')) {
+            setTimeout(() => {
+              window.location.href = '/signin';
+            }, 20);
+          }
         }
 
         return Promise.reject(err);
