@@ -128,7 +128,7 @@ const singularPages = [
     icon: Users,
   },
   {
-    title: 'Terms of Service',
+    title: 'Terms & Conditions',
     url: '/dashboard/terms-and-conditions',
     icon: Users,
   },
