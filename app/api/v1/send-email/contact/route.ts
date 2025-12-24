@@ -73,7 +73,7 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
 
   await transporter.sendMail({
     from: `"What The Funk - Contact Form" <${process.env.GMAIL_USER}>`,
-    to: 'mahmudhimran10@gmail.com',
+    to: process.env.GMAIL_USER,
     replyTo: email,
     subject: `Contact Form: ${subject}`,
     html: htmlContent,

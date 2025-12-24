@@ -29,17 +29,6 @@ const CUSTOMER_PATHS = ['/c/my-orders', '/c/profile'];
 const COMMON_PATHS = ['/profile'];
 
 export async function proxy(request: NextRequest) {
-  request.headers.append('Access-Control-Allow-Credentials', 'true');
-  request.headers.append('Access-Control-Allow-Origin', '*');
-  request.headers.append(
-    'Access-Control-Allow-Methods',
-    'GET,DELETE,PATCH,POST,PUT'
-  );
-  request.headers.append(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
   const refreshToken = request.cookies.get('refreshToken')?.value;
   const accessToken = request.cookies.get('accessToken')?.value;
   const pathname = request.nextUrl.pathname;

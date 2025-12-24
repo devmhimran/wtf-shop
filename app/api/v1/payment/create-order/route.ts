@@ -3,6 +3,8 @@ import { prisma } from '@/prisma/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateOrderId } from '@/lib/generate-order-id';
 import imagekit from '@/lib/image-kit';
+import { transporter } from '@/lib/mailer';
+import { orderAdminEmailTemplate, orderEmailTemplate } from '@/lib/utils';
 
 interface CustomImage {
   imagePreview: string;
@@ -224,6 +226,24 @@ export const POST = catchAsyncNext(async (req: NextRequest) => {
 
       return newOrder;
     });
+
+    try {
+      await transporter.sendMail({
+        from: `"What The Funk" <${process.env.GMAIL_USER}>`,
+        to: order.email,
+        subject: `Order Confirmation — ${order.orderId}`,
+        html: orderEmailTemplate(order),
+      });
+
+      await transporter.sendMail({
+        from: `"What The Funk Orders" <${process.env.GMAIL_USER}>`,
+        to: process.env.GMAIL_USER,
+        subject: `New Order Received — ${order.orderId}`,
+        html: orderAdminEmailTemplate(order),
+      });
+    } catch (err) {
+      console.error('Order email failed:', err);
+    }
 
     return NextResponse.json({
       success: true,

@@ -7,6 +7,7 @@ import { authApi } from './api-helper';
 import { CommonApiResponseError, ErrorItem } from '@/types/common.types';
 import { ZodError } from 'zod';
 import { toast } from 'sonner';
+import { OrderEmailType } from '@/types';
 
 export const USER_COUNT_PER_PAGE = 10;
 
@@ -245,4 +246,148 @@ export const handleDownload = async (imageUrl: string, imageName: string) => {
 
 export const handleOpenInNewTab = (imageUrl: string) => {
   window.open(imageUrl, '_blank');
+};
+
+export const orderEmailTemplate = (order: OrderEmailType) => {
+  const itemsHtml = order.items
+    ?.map(
+      (item) => `
+      <tr>
+        <td>${item.product?.title ?? 'Product'}</td>
+        <td>${item.color} / ${item.size}</td>
+        <td>${item.quantity}</td>
+        <td>$${item.price.toFixed(2)}</td>
+        <td>$${item.total.toFixed(2)}</td>
+      </tr>
+    `
+    )
+    .join('');
+
+  return `
+  <div style="font-family: Arial; background:#f6f6f6; padding:20px">
+    <div style="max-width:600px;margin:auto;background:#fff;border-radius:8px;padding:20px">
+      <h2 style="color:#111">Order Confirmation</h2>
+      <p>Thank you for your order! We’ve received your order and it’s being processed.</p>
+
+      <h3>Order Details</h3>
+      <p><strong>Order ID:</strong> ${order.orderId}</p>
+      <p><strong>Status:</strong> ${order.status}</p>
+
+      <h3>Customer Info</h3>
+      <p><strong>Email:</strong> ${order.email}</p>
+      <p><strong>Phone:</strong> ${order.phone ?? 'N/A'}</p>
+
+      ${
+        order.deliveryMethod === 'SHIPPING'
+          ? `
+      <h3>Shipping Address</h3>
+      <p>
+        ${order.address ?? ''} <br/>
+        ${order.state ?? ''} <br/>
+        ${order.country ?? ''}
+      </p>`
+          : ''
+      }
+
+      <h3>Order Items</h3>
+      <table width="100%" border="1" cellspacing="0" cellpadding="8">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Variant</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>${itemsHtml}</tbody>
+      </table>
+
+      <h3>Payment Summary</h3>
+      <p>Subtotal: $${order.subtotal.toFixed(2)}</p>
+      <p>Shipping: $${order.shippingCost.toFixed(2)}</p>
+      <p style="font-size:18px"><strong>Total:</strong> $${order.total.toFixed(
+        2
+      )}</p>
+
+      <p style="margin-top:20px">We’ll notify you once it ships.</p>
+      <p>Thanks,<br/>What The Funk Team</p>
+    </div>
+  </div>
+`;
+};
+
+export const orderAdminEmailTemplate = (order: OrderEmailType) => {
+  const itemsHtml = order.items
+    ?.map(
+      (item) => `
+      <tr>
+        <td>${item.product?.title ?? 'Product'}</td>
+        <td>${item.color} / ${item.size}</td>
+        <td>${item.quantity}</td>
+        <td>$${item.price.toFixed(2)}</td>
+        <td>$${item.total.toFixed(2)}</td>
+      </tr>
+    `
+    )
+    .join('');
+
+  return `
+  <div style="font-family: Arial; background:#f6f6f6; padding:20px">
+    <div style="max-width:650px;margin:auto;background:#fff;border-radius:8px;padding:20px">
+      
+      <h2 style="color:#111">🛒 New Order Received</h2>
+      <p>A new order has been placed on your store.</p>
+
+      <h3>Order Summary</h3>
+      <p><strong>Order ID:</strong> ${order.orderId}</p>
+      <p><strong>Status:</strong> ${order.status}</p>
+      <p><strong>Payment Status:</strong> ${order.paymentStatus}</p>
+      <p><strong>Delivery Method:</strong> ${order.deliveryMethod}</p>
+
+      <h3>Customer Info</h3>
+      <p><strong>Email:</strong> ${order.email}</p>
+      <p><strong>Phone:</strong> ${order.phone ?? 'N/A'}</p>
+
+      ${
+        order.deliveryMethod === 'SHIPPING'
+          ? `
+      <h3>Shipping Address</h3>
+      <p>
+        ${order.address ?? ''} <br/>
+        ${order.state ?? ''}<br/>
+        ${order.country ?? ''}
+      </p>`
+          : `<p><strong>Pickup Order</strong></p>`
+      }
+
+      <h3>Order Items</h3>
+      <table width="100%" border="1" cellspacing="0" cellpadding="8">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Variant</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>${itemsHtml}</tbody>
+      </table>
+
+      <h3>Payment Summary</h3>
+      <p>Subtotal: $${order.subtotal.toFixed(2)}</p>
+      <p>Shipping: $${order.shippingCost.toFixed(2)}</p>
+      <p style="font-size:18px"><strong>Total:</strong> $${order.total.toFixed(
+        2
+      )}</p>
+
+      <p style="margin-top:20px">
+        Login to the dashboard to process this order.
+      </p>
+
+      <p>Regards,<br/>What The Funk System</p>
+    </div>
+  </div>
+`;
 };
