@@ -112,3 +112,8 @@ export type PrivacyPolicy = Prisma.PrivacyPolicyModel
  * 
  */
 export type ReturnsAndExchanges = Prisma.ReturnsAndExchangesModel
+/**
+ * Model ForgotPassword
+ * 
+ */
+export type ForgotPassword = Prisma.ForgotPasswordModel

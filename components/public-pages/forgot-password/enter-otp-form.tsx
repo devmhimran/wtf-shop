@@ -15,6 +15,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { authApi } from '@/lib/api-helper';
 import { getErrorMessage } from '@/lib/utils';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -66,6 +67,19 @@ export function EnterOtpForm({
     }
 
     setError('');
+    setIsPending(true);
+    const response = authApi.otpVerify(email, otpValue);
+    toast.promise(response, {
+      loading: 'Verifying OTP...',
+      success: () => {
+        setMatchOtp(true);
+        setIsPending(false);
+        setOtp(otpValue);
+
+        return 'OTP verified successfully!';
+      },
+      error: (err) => getErrorMessage(err) || 'Failed to verify OTP.',
+    });
   };
 
   const handleOtpChange = (value: string) => {

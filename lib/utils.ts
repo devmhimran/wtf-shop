@@ -391,3 +391,19 @@ export const orderAdminEmailTemplate = (order: OrderEmailType) => {
   </div>
 `;
 };
+
+export const generateUnique6DigitCode = (() => {
+  const used = new Set<number>();
+
+  return () => {
+    if (used.size >= 900000) throw new Error('All codes used');
+
+    while (true) {
+      const code = Math.floor(100000 + Math.random() * 900000);
+      if (!used.has(code)) {
+        used.add(code);
+        return code;
+      }
+    }
+  };
+})();

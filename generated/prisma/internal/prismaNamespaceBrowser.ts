@@ -69,7 +69,8 @@ export const ModelName = {
   AboutUs: 'AboutUs',
   TermsAndConditions: 'TermsAndConditions',
   PrivacyPolicy: 'PrivacyPolicy',
-  ReturnsAndExchanges: 'ReturnsAndExchanges'
+  ReturnsAndExchanges: 'ReturnsAndExchanges',
+  ForgotPassword: 'ForgotPassword'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -362,6 +363,17 @@ export const ReturnsAndExchangesScalarFieldEnum = {
 } as const
 
 export type ReturnsAndExchangesScalarFieldEnum = (typeof ReturnsAndExchangesScalarFieldEnum)[keyof typeof ReturnsAndExchangesScalarFieldEnum]
+
+
+export const ForgotPasswordScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  is_valid: 'is_valid',
+  createdAt: 'createdAt',
+  email: 'email'
+} as const
+
+export type ForgotPasswordScalarFieldEnum = (typeof ForgotPasswordScalarFieldEnum)[keyof typeof ForgotPasswordScalarFieldEnum]
 
 
 export const SortOrder = {

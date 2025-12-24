@@ -17,11 +17,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { authApi } from '@/lib/api-helper';
+import { getErrorMessage } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 type UserPasswordChangeForm = {
@@ -65,7 +68,21 @@ export function UserPasswordChangeForm({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {};
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    const response = authApi.resetPassword(email, otp, data.password);
+    setIsPending(true);
+    toast.promise(response, {
+      loading: 'Resetting password...',
+      success: () => {
+        setIsPending(false);
+        setEmail('');
+        setOtp('');
+        router.push('/signin');
+        return 'Password has been reset successfully!';
+      },
+      error: (err) => getErrorMessage(err) || 'Failed to reset password.',
+    });
+  };
   return (
     <Card className='w-full max-w-md'>
       <CardHeader className='space-y-1'>
@@ -99,12 +116,12 @@ export function UserPasswordChangeForm({
                   <FormMessage />
                   {!showPassword && (
                     <span onClick={() => setShowPassword(true)}>
-                      <Eye className='w-5 h-5 absolute right-2 top-10' />
+                      <Eye className='w-5 h-5 absolute right-2 top-7.5' />
                     </span>
                   )}
                   {showPassword && (
                     <span onClick={() => setShowPassword(false)}>
-                      <EyeOff className='w-5 h-5 absolute right-2 top-10' />
+                      <EyeOff className='w-5 h-5 absolute right-2 top-7.5' />
                     </span>
                   )}
                 </FormItem>
@@ -128,12 +145,12 @@ export function UserPasswordChangeForm({
                   <FormMessage />
                   {!showConfirmPassword && (
                     <span onClick={() => setShowConfirmPassword(true)}>
-                      <Eye className='w-5 h-5 absolute right-2 top-10' />
+                      <Eye className='w-5 h-5 absolute right-2 top-7.5' />
                     </span>
                   )}
                   {showConfirmPassword && (
                     <span onClick={() => setShowConfirmPassword(false)}>
-                      <EyeOff className='w-5 h-5 absolute right-2 top-10' />
+                      <EyeOff className='w-5 h-5 absolute right-2 top-7.5' />
                     </span>
                   )}
                 </FormItem>

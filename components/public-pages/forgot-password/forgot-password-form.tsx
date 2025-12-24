@@ -17,11 +17,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { authApi } from '@/lib/api-helper';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, Loader2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 type ForgotPasswordFormProps = {
@@ -48,7 +50,21 @@ export function ForgotPasswordForm({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {};
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    setIsPending(true);
+    const response = authApi.forgotPassword(data.email);
+
+    toast.promise(response, {
+      loading: 'Sending password reset code...',
+      success: () => {
+        setIsPending(false);
+        setEmail(data.email);
+        setSendLink(true);
+        return 'Password reset code sent to your email!';
+      },
+      error: (err) => err?.response?.data?.message || 'Something went wrong.',
+    });
+  };
   return (
     <Card className='w-full max-w-md'>
       <CardHeader className='space-y-1'>

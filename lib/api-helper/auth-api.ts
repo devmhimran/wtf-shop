@@ -15,6 +15,18 @@ export const authApi = {
     const url = '/auth/signup';
     return axiosInstance.post<SignUpResponse>(url, data);
   },
+  forgotPassword: (email: string) => {
+    const url = '/forgot-password';
+    return axiosInstance.post(url, { email });
+  },
+  otpVerify: (email: string, code: string) => {
+    const url = '/verify-otp';
+    return axiosInstance.post(url, { email, code });
+  },
+  resetPassword: (email: string, code: string, newPassword: string) => {
+    const url = '/reset-password';
+    return axiosInstance.post(url, { email, code, newPassword });
+  },
   me: () => {
     const url = '/protected/me';
     return axiosInstanceWithAuth.get(url);
