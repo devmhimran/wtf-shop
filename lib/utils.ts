@@ -256,8 +256,8 @@ export const orderEmailTemplate = (order: OrderEmailType) => {
         <td>${item.product?.title ?? 'Product'}</td>
         <td>${item.color} / ${item.size}</td>
         <td>${item.quantity}</td>
-        <td>$${item.price.toFixed(2)}</td>
-        <td>$${item.total.toFixed(2)}</td>
+        <td>AU$${item.price.toFixed(2)}</td>
+        <td>AU$${item.total.toFixed(2)}</td>
       </tr>
     `
     )
@@ -304,9 +304,9 @@ export const orderEmailTemplate = (order: OrderEmailType) => {
       </table>
 
       <h3>Payment Summary</h3>
-      <p>Subtotal: $${order.subtotal.toFixed(2)}</p>
-      <p>Shipping: $${order.shippingCost.toFixed(2)}</p>
-      <p style="font-size:18px"><strong>Total:</strong> $${order.total.toFixed(
+      <p>Subtotal: AU$${order.subtotal.toFixed(2)}</p>
+      <p>Shipping: AU$${order.shippingCost.toFixed(2)}</p>
+      <p style="font-size:18px"><strong>Total:</strong> AU$${order.total.toFixed(
         2
       )}</p>
 
@@ -325,8 +325,8 @@ export const orderAdminEmailTemplate = (order: OrderEmailType) => {
         <td>${item.product?.title ?? 'Product'}</td>
         <td>${item.color} / ${item.size}</td>
         <td>${item.quantity}</td>
-        <td>$${item.price.toFixed(2)}</td>
-        <td>$${item.total.toFixed(2)}</td>
+        <td>AU$${item.price.toFixed(2)}</td>
+        <td>AU$${item.total.toFixed(2)}</td>
       </tr>
     `
     )
@@ -376,9 +376,9 @@ export const orderAdminEmailTemplate = (order: OrderEmailType) => {
       </table>
 
       <h3>Payment Summary</h3>
-      <p>Subtotal: $${order.subtotal.toFixed(2)}</p>
-      <p>Shipping: $${order.shippingCost.toFixed(2)}</p>
-      <p style="font-size:18px"><strong>Total:</strong> $${order.total.toFixed(
+      <p>Subtotal: AU$${order.subtotal.toFixed(2)}</p>
+      <p>Shipping: AU$${order.shippingCost.toFixed(2)}</p>
+      <p style="font-size:18px"><strong>Total:</strong> AU$${order.total.toFixed(
         2
       )}</p>
 

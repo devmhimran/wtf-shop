@@ -127,7 +127,7 @@ export function PublicNavbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href='/signin' className='hover:text-[#FF4C01]'>
+              <Link href='/signin' className='hover:text-[#FF4C01] px-1'>
                 Sign In
               </Link>
             )}
