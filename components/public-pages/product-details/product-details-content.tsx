@@ -354,6 +354,82 @@ export function ProductDetailsContent() {
   };
 
   const handleContactForOrder = () => {
+    // if (!product) return;
+
+    // const totalQuantity = Object.values(sizeQuantities).reduce(
+    //   (sum, qty) => sum + qty,
+    //   0
+    // );
+
+    // if (totalQuantity < 10) {
+    //   toast.error(
+    //     'Please add at least 10 products in total (e.g. S-3, M-4, L-2, XL-1)'
+    //   );
+    //   return;
+    // }
+
+    // if (!selectedColor) {
+    //   setColorError(true);
+    //   toast.error('Please select a color');
+    //   return;
+    // }
+
+    // const sizesToAdd = Object.entries(sizeQuantities).filter(
+    //   ([, qty]) => qty > 0
+    // );
+
+    // if (sizesToAdd.length === 0) {
+    //   toast.error('Please select at least one size and quantity');
+    //   return;
+    // }
+
+    // if (customizations.length > 0) {
+    //   const emptyNoteCustomizations = customizations.filter(
+    //     (item) => !item.note.trim()
+    //   );
+    //   if (emptyNoteCustomizations.length > 0) {
+    //     toast.error(
+    //       'Please add notes for all customizations before adding to cart'
+    //     );
+    //     return;
+    //   }
+    // }
+
+    // const serializableCustomizations = customizations.map((item) => ({
+    //   id: item.id,
+    //   imagePreview: item.imagePreview, // base64 string
+    //   imageName: item.image?.name || '',
+    //   imageSize: item.image?.size || 0,
+    //   imageType: item.image?.type || '',
+    //   note: item.note,
+    // }));
+
+    // const allPayloads = sizesToAdd.map(([size, qty]) => ({
+    //   productId: product.id,
+    //   slug: product.slug,
+    //   quantity: qty,
+    //   image:
+    //     combinedGalleryData[photoIndex]?.fileUrl ||
+    //     '/assets/img/placeholder-image.png',
+    //   color: selectedColor,
+    //   size: size,
+    //   printSide: selectedPrintSide,
+    //   customizations: serializableCustomizations,
+    // }));
+
+    // console.log({ allPayloads });
+
+    // toast.success(`Successfully added ${sizesToAdd.length} variant(s) to cart`);
+
+    // // Reset fields
+    // setSelectedColor('');
+    // setSizeQuantities({});
+    // setSelectedPrintSide('one');
+    // setCustomizations([]);
+    // setShowCustomization(false);
+    // setColorError(false);
+    // setSizeError(false);
+
     toast.info('Contact functionality coming soon!');
   };
 
