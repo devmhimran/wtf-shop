@@ -12,8 +12,8 @@ export default function PublicLayout({
 }) {
   return (
     <main className='font-oswald'>
-      <PublicNavbar />
-      <div className='min-h-screen pb-10'>children</div>
+      {/* <PublicNavbar /> */}
+      <div className='min-h-screen pb-10'>{children}</div>
       <PublicFooter />
       <MobileBottomNav />
       <NextTopLoader
