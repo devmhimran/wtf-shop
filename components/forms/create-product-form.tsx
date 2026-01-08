@@ -507,7 +507,7 @@ export function CreateProductForm() {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name='subCategory'
               render={({ field }) => (
@@ -563,7 +563,7 @@ export function CreateProductForm() {
                   )}
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name='productType'

@@ -7,7 +7,7 @@ import * as z from 'zod';
 const colorSchema = z.object({
   name: z
     .string()
-    .min(4, { message: 'Name must be at least 4 characters long' }),
+    .min(2, { message: 'Name must be at least 2 characters long' }),
   hex: z
     .string()
     .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
