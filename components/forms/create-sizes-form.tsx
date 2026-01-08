@@ -27,7 +27,8 @@ const FormSchema = z.object({
   name: z
     .string()
     .min(1, 'Name must be at least 1 character long')
-    .max(100, 'Name cannot exceed 100 characters'),
+    .max(100, 'Name cannot exceed 100 characters')
+    .regex(/^\S+$/, 'Only a single word is allowed (no spaces)'),
 });
 
 export function CreateSizesForm({ setIsOpen }: CreateSizesFormProps) {
@@ -43,7 +44,10 @@ export function CreateSizesForm({ setIsOpen }: CreateSizesFormProps) {
   const { createSizeAsync } = useSizes();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    const response = createSizeAsync(data);
+    const payload = {
+      name: data.name.trim().toUpperCase(),
+    };
+    const response = createSizeAsync(payload);
 
     setIsPending(true);
     toast.promise(response, {
@@ -75,7 +79,7 @@ export function CreateSizesForm({ setIsOpen }: CreateSizesFormProps) {
               <FormControl>
                 <Input
                   className='w-full'
-                  placeholder='Enter category name'
+                  placeholder='Enter size name'
                   {...field}
                 />
               </FormControl>

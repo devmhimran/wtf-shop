@@ -619,7 +619,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name='subCategory'
               render={({ field }) => (
@@ -675,7 +675,7 @@ export function UpdateProductForm({ data }: UpdateProductFormProps) {
                   )}
                 </FormItem>
               )}
-            />
+            /> */}
 
             <FormField
               control={form.control}

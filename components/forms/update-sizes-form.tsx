@@ -29,7 +29,8 @@ const FormSchema = z.object({
   name: z
     .string()
     .min(1, 'Name must be at least 1 character long')
-    .max(100, 'Name cannot exceed 100 characters'),
+    .max(100, 'Name cannot exceed 100 characters')
+    .regex(/^\S+$/, 'Only a single word is allowed (no spaces)'),
 });
 
 export function UpdateSizesForm({ setIsOpen, data }: CreateSizesFormProps) {
@@ -78,7 +79,7 @@ export function UpdateSizesForm({ setIsOpen, data }: CreateSizesFormProps) {
               <FormControl>
                 <Input
                   className='w-full'
-                  placeholder='Enter category name'
+                  placeholder='Enter size name'
                   {...field}
                 />
               </FormControl>

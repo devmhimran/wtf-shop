@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { FolderOpen, Package, Layers, EllipsisVertical } from 'lucide-react';
+import { FolderOpen, Package, EllipsisVertical } from 'lucide-react';
 
 import { CategoryType } from '@/types';
 import {
@@ -131,7 +131,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
             </div>
           </CardHeader>
           <CardContent className='space-y-3 p-0'>
-            <div className='flex items-center justify-between'>
+            {/* <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Layers className='h-4 w-4' />
                 <span>Subcategories</span>
@@ -139,7 +139,7 @@ export function CategoriesCard({ data }: { data?: CategoryType[] }) {
               <Badge variant='secondary'>
                 {category._count?.subcategories || 0}
               </Badge>
-            </div>
+            </div> */}
 
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2 text-muted-foreground'>

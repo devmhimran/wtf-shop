@@ -60,11 +60,11 @@ const superAdminMenuItems = [
     url: '/dashboard/categories',
     icon: List,
   },
-  {
-    title: 'Sub Categories',
-    url: '/dashboard/sub-categories',
-    icon: List,
-  },
+  // {
+  //   title: 'Sub Categories',
+  //   url: '/dashboard/sub-categories',
+  //   icon: List,
+  // },
   {
     title: 'Colors',
     url: '/dashboard/colors',
