@@ -17,7 +17,9 @@ export async function POST(request: NextRequest) {
       return createResponse({ error: 'Missing required fields' }, 400);
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
     if (
       !user ||
@@ -41,13 +43,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    /* --------------------------------------------------
+       Generate tokens
+    -------------------------------------------------- */
+
     const accessToken = await generateAccessToken(user.id, user.role);
     const refreshToken = await generateRefreshToken(user.id, user.role);
 
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { refreshToken },
+    /* --------------------------------------------------
+       Store refresh token per device/session
+    -------------------------------------------------- */
+
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: user.id,
+        deviceInfo: request.headers.get('user-agent'),
+        ipAddress:
+          request.headers.get('x-forwarded-for') ??
+          request.headers.get('x-real-ip'),
+        expiresAt: new Date(Date.now() + REFRESH_TOKEN_EXPIRES),
+      },
     });
+
+    /* --------------------------------------------------
+       Response + cookies
+    -------------------------------------------------- */
 
     const res = createResponse(
       {

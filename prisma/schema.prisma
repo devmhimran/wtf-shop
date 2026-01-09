@@ -66,11 +66,27 @@ model User {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  refreshToken     String?
-  refreshTokenUpdatedAt DateTime?
+  refreshTokens RefreshToken[]
 
   mediaLibrary MediaLibrary[] @relation("MediaUploadedBy")
 }
+
+// REFRESH TOKEN MODEL
+
+model RefreshToken {
+  id          Int      @id @default(autoincrement())
+  token       String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+
+  deviceInfo  String?        // browser / OS
+  ipAddress   String?
+  isRevoked   Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+}
+
 
 //
 // CATEGORY
