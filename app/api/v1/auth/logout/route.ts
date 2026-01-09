@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccessToken } from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
-import { createResponse, setAuthCookies } from '@/lib/auth-reponse';
+import { createResponse, setAuthCookies } from '@/lib/auth-response';
 
 export async function POST(req: NextRequest) {
   try {

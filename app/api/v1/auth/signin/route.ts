@@ -7,7 +7,7 @@ import {
   ACCESS_TOKEN_EXPIRES,
   REFRESH_TOKEN_EXPIRES,
 } from '@/lib/jwt';
-import { createResponse, setAuthCookies } from '@/lib/auth-reponse';
+import { createResponse, setAuthCookies } from '@/lib/auth-response';
 
 export async function POST(request: NextRequest) {
   try {
