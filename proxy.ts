@@ -34,7 +34,7 @@ export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // If user is authenticated and trying to access signin page, redirect them away
-  if ((refreshToken || accessToken) && pathname === '/signin') {
+  if (refreshToken && accessToken && pathname === '/signin') {
     const payload = await verifyRefreshToken(refreshToken!);
 
     if (payload) {
