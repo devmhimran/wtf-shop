@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 
 export const getOrigin = () => {
   return process.env.NODE_ENV === 'production'
-    ? process.env.FRONTEND_BASE_URL || 'http://localhost:3000'
-    : 'http://localhost:3000';
+    ? process.env.NEXT_PUBLIC_BASE_SITE_URL || 'https://wtf-shop.vercel.app'
+    : 'https://wtf-shop.vercel.app';
 };
 
 export const corsHeaders = {
