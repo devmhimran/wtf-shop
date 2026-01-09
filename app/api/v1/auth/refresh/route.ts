@@ -7,7 +7,7 @@ import {
   REFRESH_TOKEN_EXPIRES,
 } from '@/lib/jwt';
 import { prisma } from '@/prisma/prisma';
-import { createResponse, setAuthCookies } from '@/lib/auth-reponse';
+import { createResponse, setAuthCookies } from '@/lib/auth-response';
 
 const REFRESH_TOKEN_REUSE_WINDOW = 5 * 60 * 1000;
 
