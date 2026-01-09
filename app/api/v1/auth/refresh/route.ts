@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import {
   verifyRefreshToken,
   generateAccessToken,
@@ -9,8 +9,6 @@ import {
 import { prisma } from '@/prisma/prisma';
 import { createResponse, setAuthCookies } from '@/lib/auth-response';
 
-const REFRESH_TOKEN_REUSE_WINDOW = 5 * 60 * 1000;
-
 export async function POST(req: NextRequest) {
   try {
     const refreshToken = req.cookies.get('refreshToken')?.value;
@@ -19,49 +17,64 @@ export async function POST(req: NextRequest) {
       return createResponse({ error: 'Refresh token required' }, 400);
     }
 
+    /* --------------------------------------------------
+       Verify JWT signature & payload
+    -------------------------------------------------- */
+
     const payload = await verifyRefreshToken(refreshToken);
     if (!payload) {
       return createResponse({ error: 'Invalid refresh token' }, 401);
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: Number(payload.userId) },
+    /* --------------------------------------------------
+       Validate refresh token from DB
+    -------------------------------------------------- */
+
+    const storedToken = await prisma.refreshToken.findUnique({
+      where: { token: refreshToken },
+      include: { user: true },
     });
 
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid refresh token' },
-        { status: 401 }
-      );
+    if (
+      !storedToken ||
+      storedToken.isRevoked ||
+      storedToken.expiresAt < new Date()
+    ) {
+      return createResponse({ error: 'Invalid refresh token' }, 401);
     }
 
-    const now = Date.now();
-    const storedToken = user.refreshToken;
-    const updatedAt = user.refreshTokenUpdatedAt
-      ? user.refreshTokenUpdatedAt.getTime()
-      : 0;
+    const user = storedToken.user;
 
-    const isSameToken = storedToken === refreshToken;
-    const isWithinReuseWindow =
-      storedToken && now - updatedAt <= REFRESH_TOKEN_REUSE_WINDOW;
-
-    if (!isSameToken && !isWithinReuseWindow) {
-      return NextResponse.json(
-        { error: 'Invalid refresh token' },
-        { status: 401 }
-      );
+    if (!user || user.isDelete || !user.isActive) {
+      return createResponse({ error: 'Account not accessible' }, 403);
     }
+
+    /* --------------------------------------------------
+       Rotate refresh token (secure)
+    -------------------------------------------------- */
+
+    await prisma.refreshToken.update({
+      where: { id: storedToken.id },
+      data: { isRevoked: true },
+    });
 
     const newAccessToken = await generateAccessToken(user.id, user.role);
     const newRefreshToken = await generateRefreshToken(user.id, user.role);
 
-    await prisma.user.update({
-      where: { id: user.id },
+    await prisma.refreshToken.create({
       data: {
-        refreshToken: newRefreshToken,
-        refreshTokenUpdatedAt: new Date(),
+        token: newRefreshToken,
+        userId: user.id,
+        deviceInfo: req.headers.get('user-agent'),
+        ipAddress:
+          req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip'),
+        expiresAt: new Date(Date.now() + REFRESH_TOKEN_EXPIRES),
       },
     });
+
+    /* --------------------------------------------------
+       Response + cookies
+    -------------------------------------------------- */
 
     const res = createResponse(
       {
@@ -85,10 +98,6 @@ export async function POST(req: NextRequest) {
     return res;
   } catch (err) {
     console.error('Refresh error', err);
-
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return createResponse({ error: 'Internal server error' }, 500);
   }
 }

@@ -340,11 +340,7 @@ async function createCustomProductsJsonLd(searchParams: SearchParams) {
   };
 }
 
-export default async function CustomProductPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function CustomProductPage(searchParams: SearchParams) {
   const params = await searchParams;
   const page = params.page ? params.page : 1;
   const search = params.search || '';

@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  RefreshToken: 'RefreshToken',
   Category: 'Category',
   SubCategory: 'SubCategory',
   Color: 'Color',
@@ -99,12 +100,24 @@ export const UserScalarFieldEnum = {
   isDelete: 'isDelete',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  refreshToken: 'refreshToken',
-  refreshTokenUpdatedAt: 'refreshTokenUpdatedAt'
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  deviceInfo: 'deviceInfo',
+  ipAddress: 'ipAddress',
+  isRevoked: 'isRevoked',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {

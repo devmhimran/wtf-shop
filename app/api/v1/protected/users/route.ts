@@ -145,17 +145,16 @@ export const POST = catchAsyncNext(async (request: NextRequest) => {
     },
   });
 
-  const {
-    password,
-    refreshToken,
-    refreshTokenUpdatedAt,
-    ...userWithoutPassword
-  } = newUser;
-
   return NextResponse.json(
     {
       message: 'Successfully created user',
-      data: userWithoutPassword,
+      data: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        createdAt: newUser.createdAt,
+      },
     },
     { status: 201 }
   );
