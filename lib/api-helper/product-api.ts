@@ -152,6 +152,10 @@ export const productApi = {
       const url = '/protected/products';
       return axiosInstanceWithAuth.post(url, data);
     },
+    cloneProduct: (productId: number) => {
+      const url = `/protected/product-clone`;
+      return axiosInstanceWithAuth.post(url, { productId });
+    },
     deleteProduct: (id: number) => {
       const url = `/protected/products/${id}`;
       return axiosInstanceWithAuth.delete(url);

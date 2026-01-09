@@ -150,7 +150,7 @@ export function CreateCategoryForm({
                         className='w-16 h-16 object-cover rounded'
                       />
                       <div className='flex-1'>
-                        <p className='text-sm font-medium'>
+                        <p className='text-sm font-medium break-all'>
                           {categoryImage.fileName}
                         </p>
                       </div>
