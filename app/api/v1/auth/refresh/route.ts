@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       where: { token: refreshToken },
       include: { user: true },
     });
-
+    console.log({ storedToken });
     if (
       !storedToken ||
       storedToken.isRevoked ||
@@ -69,6 +69,16 @@ export async function POST(req: NextRequest) {
         ipAddress:
           req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip'),
         expiresAt: new Date(Date.now() + REFRESH_TOKEN_EXPIRES),
+      },
+    });
+
+    /* --------------------------------------------------
+       Clean up tokens that are revoked OR expired
+    -------------------------------------------------- */
+    await prisma.refreshToken.deleteMany({
+      where: {
+        userId: user.id,
+        OR: [{ isRevoked: true }, { expiresAt: { lt: new Date() } }],
       },
     });
 
