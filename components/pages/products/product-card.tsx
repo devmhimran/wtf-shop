@@ -32,7 +32,7 @@ export function ProductCard({ data, index }: ProductCardProps) {
 
   const [confirmModal, setConfirmModal] = useState(false);
   const { minPrice, maxPrice, quantity: totalQuantity, inStock } = data;
-  const { deleteProductAsync } = useProducts();
+  const { deleteProductAsync, cloneProductAsync } = useProducts();
 
   const handleDeleteProduct = () => {
     setIsPending(true);
@@ -51,6 +51,24 @@ export function ProductCard({ data, index }: ProductCardProps) {
           error?.response?.data?.error ||
           error.message ||
           'Failed to delete product'
+        );
+      },
+    });
+  };
+
+  const handleCloneProduct = (id: number) => {
+    if (!data.id) return;
+    const response = cloneProductAsync(id);
+    toast.promise(response, {
+      loading: 'Cloning product...',
+      success: () => {
+        return 'Product cloned successfully';
+      },
+      error: (error) => {
+        return (
+          error?.response?.data?.error ||
+          error.message ||
+          'Failed to clone product'
         );
       },
     });
@@ -124,6 +142,11 @@ export function ProductCard({ data, index }: ProductCardProps) {
                 <DropdownMenuContent align='end'>
                   <DropdownMenuLabel>Options</DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => handleCloneProduct(data.id as number)}
+                  >
+                    Clone
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>
                       router.push(

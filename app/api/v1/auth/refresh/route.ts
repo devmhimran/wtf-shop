@@ -73,6 +73,16 @@ export async function POST(req: NextRequest) {
     });
 
     /* --------------------------------------------------
+       Clean up tokens that are revoked OR expired
+    -------------------------------------------------- */
+    await prisma.refreshToken.deleteMany({
+      where: {
+        userId: user.id,
+        OR: [{ isRevoked: true }, { expiresAt: { lt: new Date() } }],
+      },
+    });
+
+    /* --------------------------------------------------
        Response + cookies
     -------------------------------------------------- */
 

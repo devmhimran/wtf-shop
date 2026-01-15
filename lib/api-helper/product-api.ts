@@ -152,6 +152,10 @@ export const productApi = {
       const url = '/protected/products';
       return axiosInstanceWithAuth.post(url, data);
     },
+    cloneProduct: (productId: number) => {
+      const url = `/protected/product-clone`;
+      return axiosInstanceWithAuth.post(url, { productId });
+    },
     deleteProduct: (id: number) => {
       const url = `/protected/products/${id}`;
       return axiosInstanceWithAuth.delete(url);
@@ -233,6 +237,10 @@ export const productApi = {
         return axiosInstance.post(url, data, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
+      },
+      contactOrder: (data: any) => {
+        const url = '/public/contact-order';
+        return axiosInstance.post(url, data);
       },
     },
   },

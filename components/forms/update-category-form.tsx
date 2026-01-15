@@ -158,7 +158,9 @@ export function UpdateCategoryForm({
                         className='w-16 h-16 object-cover rounded'
                       />
                       <div className='flex-1'>
-                        <p className='font-medium'>{categoryImage.fileName}</p>
+                        <p className='text-sm font-medium break-all'>
+                          {categoryImage.fileName}
+                        </p>
                       </div>
                       <Button
                         type='button'

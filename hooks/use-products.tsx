@@ -19,7 +19,17 @@ export function useProducts() {
     mutationFn: async (data: CreateProductType) =>
       await productApi.products.createProduct(data).then(({ data }) => data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sizes'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
+  const cloneProductMutation = useMutation({
+    mutationFn: async (productId: number) =>
+      await productApi.products
+        .cloneProduct(productId)
+        .then(({ data }) => data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 
@@ -51,6 +61,10 @@ export function useProducts() {
     createProductMutation,
     createProduct: createProductMutation.mutate,
     createProductAsync: createProductMutation.mutateAsync,
+
+    cloneProductMutation,
+    cloneProduct: cloneProductMutation.mutate,
+    cloneProductAsync: cloneProductMutation.mutateAsync,
 
     updateProductMutation,
     updateProduct: updateProductMutation.mutate,
