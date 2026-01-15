@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
       const storedToken = await prisma.refreshToken.findUnique({
         where: { token: refreshToken },
       });
-      console.log({ storedToken });
 
       if (storedToken) {
         // 1. Revoke the current token

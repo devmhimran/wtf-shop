@@ -16,6 +16,7 @@ import { CreateMediaForm } from './create-media-form';
 import { CreateProductForm } from './create-product-form';
 import { UpdateProductForm } from './update-product-form';
 import { UpdateCustomerForm } from './update-customer-form';
+import { CreateContactOrderForm } from './create-contact-order-form';
 
 export {
   CreateUserForm,
@@ -36,4 +37,5 @@ export {
   CreateProductForm,
   UpdateProductForm,
   UpdateCustomerForm,
+  CreateContactOrderForm,
 };

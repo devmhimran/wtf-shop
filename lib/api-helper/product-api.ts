@@ -238,6 +238,10 @@ export const productApi = {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       },
+      contactOrder: (data: any) => {
+        const url = '/public/contact-order';
+        return axiosInstance.post(url, data);
+      },
     },
   },
 };

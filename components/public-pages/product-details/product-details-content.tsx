@@ -13,7 +13,7 @@ import 'swiper/css/autoplay';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import Image from 'next/image';
-import { LightBox } from '@/components/shared';
+import { AlertModal, LightBox } from '@/components/shared';
 import { MediaType } from '@/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -30,12 +30,25 @@ import { RelatedProducts } from './related-products';
 import { ProductDescription } from './product-description';
 import { useCartStore } from '@/store/useCart';
 import { Badge } from '@/components/ui/badge';
+import { CreateContactOrderForm } from '@/components/forms';
 
 interface CustomizationItem {
   id: string;
   image: File | null;
   imagePreview: string;
   note: string;
+}
+
+interface ContactOrderItem {
+  productId: number;
+  title: string;
+  slug: string;
+  quantity: number;
+  image: string;
+  color: string;
+  size: string;
+  printSide: 'one' | 'two';
+  customizations: CustomizationItem[];
 }
 
 export function ProductDetailsContent() {
@@ -56,6 +69,8 @@ export function ProductDetailsContent() {
   }>({});
   const [showCustomization, setShowCustomization] = useState(false);
   const [customizations, setCustomizations] = useState<CustomizationItem[]>([]);
+  const [contactOrderOpen, setContactOrderOpen] = useState(false);
+  const [contactItems, setContactItems] = useState<ContactOrderItem[]>([]);
 
   const {
     fetchSinglePublicProductMutationData,
@@ -354,83 +369,73 @@ export function ProductDetailsContent() {
   };
 
   const handleContactForOrder = () => {
-    // if (!product) return;
+    if (!product) return;
 
-    // const totalQuantity = Object.values(sizeQuantities).reduce(
-    //   (sum, qty) => sum + qty,
-    //   0
-    // );
+    const totalQuantity = Object.values(sizeQuantities).reduce(
+      (sum, qty) => sum + qty,
+      0
+    );
 
-    // if (totalQuantity < 10) {
-    //   toast.error(
-    //     'Please add at least 10 products in total (e.g. S-3, M-4, L-2, XL-1)'
-    //   );
-    //   return;
-    // }
+    if (totalQuantity < 10) {
+      toast.error(
+        'Please add at least 10 products in total (e.g. S-3, M-4, L-2, XL-1)'
+      );
+      return;
+    }
 
-    // if (!selectedColor) {
-    //   setColorError(true);
-    //   toast.error('Please select a color');
-    //   return;
-    // }
+    if (!selectedColor) {
+      setColorError(true);
+      toast.error('Please select a color');
+      return;
+    }
 
-    // const sizesToAdd = Object.entries(sizeQuantities).filter(
-    //   ([, qty]) => qty > 0
-    // );
+    const sizesToAdd = Object.entries(sizeQuantities).filter(
+      ([, qty]) => qty > 0
+    );
 
-    // if (sizesToAdd.length === 0) {
-    //   toast.error('Please select at least one size and quantity');
-    //   return;
-    // }
+    if (sizesToAdd.length === 0) {
+      toast.error('Please select at least one size and quantity');
+      return;
+    }
 
-    // if (customizations.length > 0) {
-    //   const emptyNoteCustomizations = customizations.filter(
-    //     (item) => !item.note.trim()
-    //   );
-    //   if (emptyNoteCustomizations.length > 0) {
-    //     toast.error(
-    //       'Please add notes for all customizations before adding to cart'
-    //     );
-    //     return;
-    //   }
-    // }
+    if (customizations.length > 0) {
+      const emptyNoteCustomizations = customizations.filter(
+        (item) => !item.note.trim()
+      );
+      if (emptyNoteCustomizations.length > 0) {
+        toast.error(
+          'Please add notes for all customizations before adding to cart'
+        );
+        return;
+      }
+    }
 
-    // const serializableCustomizations = customizations.map((item) => ({
-    //   id: item.id,
-    //   imagePreview: item.imagePreview, // base64 string
-    //   imageName: item.image?.name || '',
-    //   imageSize: item.image?.size || 0,
-    //   imageType: item.image?.type || '',
-    //   note: item.note,
-    // }));
+    // Transform customizations once (same for all sizes)
+    const serializableCustomizations = customizations.map((item) => ({
+      id: item.id,
+      image: item.image,
+      imagePreview: item.imagePreview, // base64 string
+      imageName: item.image?.name || '',
+      note: item.note,
+    }));
 
-    // const allPayloads = sizesToAdd.map(([size, qty]) => ({
-    //   productId: product.id,
-    //   slug: product.slug,
-    //   quantity: qty,
-    //   image:
-    //     combinedGalleryData[photoIndex]?.fileUrl ||
-    //     '/assets/img/placeholder-image.png',
-    //   color: selectedColor,
-    //   size: size,
-    //   printSide: selectedPrintSide,
-    //   customizations: serializableCustomizations,
-    // }));
+    // Prepare all payloads
+    const allPayloads = sizesToAdd.map(([size, qty]) => ({
+      productId: product.id,
+      title: product.title,
+      slug: product.slug,
+      quantity: qty,
+      image:
+        combinedGalleryData[photoIndex]?.fileUrl ||
+        '/assets/img/placeholder-image.png',
+      color: selectedColor,
+      size: size,
+      printSide: selectedPrintSide,
+      customizations: serializableCustomizations,
+    }));
 
-    // console.log({ allPayloads });
-
-    // toast.success(`Successfully added ${sizesToAdd.length} variant(s) to cart`);
-
-    // // Reset fields
-    // setSelectedColor('');
-    // setSizeQuantities({});
-    // setSelectedPrintSide('one');
-    // setCustomizations([]);
-    // setShowCustomization(false);
-    // setColorError(false);
-    // setSizeError(false);
-
-    toast.info('Contact functionality coming soon!');
+    setContactItems(allPayloads);
+    setContactOrderOpen(true);
   };
 
   return fetchSinglePublicProductMutation.isLoading ? (
@@ -1189,6 +1194,27 @@ export function ProductDetailsContent() {
         currentImageIndex={photoIndex}
         setCurrentImageIndex={setPhotoIndex}
       />
+      <AlertModal
+        isOpen={contactOrderOpen}
+        setIsOpen={setContactOrderOpen}
+        title='Contact for Pricing'
+        description=' '
+        contentClassName='min-w-full md:min-w-[700px]'
+      >
+        <CreateContactOrderForm
+          setIsOpen={setContactOrderOpen}
+          items={contactItems}
+          onSuccess={() => {
+            setSelectedColor('');
+            setSizeQuantities({});
+            setSelectedPrintSide('one');
+            setCustomizations([]);
+            setShowCustomization(false);
+            setColorError(false);
+            setSizeError(false);
+          }}
+        />
+      </AlertModal>
     </div>
   );
 }

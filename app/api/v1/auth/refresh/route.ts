@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       where: { token: refreshToken },
       include: { user: true },
     });
-    console.log({ storedToken });
+
     if (
       !storedToken ||
       storedToken.isRevoked ||
